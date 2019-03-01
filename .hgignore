@@ -2,5 +2,4 @@ syntax: glob
 obj/
 bin/
 *.user
-wwwroot/
 node_modules/
