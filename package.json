@@ -1,16 +1,17 @@
 {
   "private": true,
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
+    "axios": "^0.18.0",
+    "es6-promise": "^4.2.6",
     "vue": "^2.6.7",
+    "vue-axios": "^2.1.4",
     "vuelidate": "^0.7.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.3.1",
     "rollup-plugin-alias": "^1.5.1",
-    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-commonjs": "8.3.0",
+    "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-replace": "^2.1.0"
   }
