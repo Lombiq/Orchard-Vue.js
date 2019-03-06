@@ -11,6 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="node_modules\**" />
+    <EmbeddedResource Remove="node_modules\**" />
+    <None Remove="node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove=".gitattributes" />
+    <EmbeddedResource Remove=".gitignore" />
+    <EmbeddedResource Remove=".hgignore" />
     <EmbeddedResource Remove="Gulpfile.js" />
   </ItemGroup>
 
