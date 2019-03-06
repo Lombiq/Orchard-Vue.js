@@ -4,7 +4,7 @@
 
 ## Project description
 
-Contains Vue.js and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.
+[Orchard Core](http://orchardproject.net/) module that contains [Vue.js](https://vuejs.org/) and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.
 
 
 ## Prerequisites
@@ -21,16 +21,16 @@ The packages will be automatically installed on build (i.e. `dotnet build`) or y
 
 ## Adding Vue.js component templates
 
-Place your template files (.cshtml or .liquid) to the Views/VueComponents folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
+Place your template files (.cshtml or .liquid) to the *Views/VueComponents* folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
 
     <shape type="VueComponent-App_UserProfile"></shape>
 
-In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component javascript code.
+In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component JavaScript code.
 
 
 ## Other resources
 
-Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app resource. These resources are automatically copied from node_modules folder to wwwroot using Gulp when building the project (or you can trigger it with the `gulp` command).
+Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the *node_modules* folder to *wwwroot* using Gulp when building the project (or you can trigger it with the `gulp` command).
 
 - [ES6-Promise](https://www.npmjs.com/package/es6-promise): Use this if you want to use ES6 Promises (or an ES6 module that uses them e.g. `axios`) include this resource so it will work in IE as well.
 
