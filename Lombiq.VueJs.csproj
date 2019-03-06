@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Gulpfile.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-70777" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-70777" />
@@ -18,11 +22,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\es6-promise\" />
+    <None Include="Gulpfile.js">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
   
   <Target Name="NpmInstall" BeforeTargets="BeforeBuild">
     <Exec Command="npm install" />
+    <Exec Command="gulp" />
   </Target>
 
 </Project>

@@ -12,7 +12,7 @@ namespace Lombiq.VueJs
             // ES6 Promise polyfill for IE. Use it as a dependency for Vue apps that uses Promises (e.g. axios).
             manifest
                 .DefineScript(ResourceNames.Es6PromisePolyfill)
-                .SetUrl("/Lombiq.VueJs/es6-promise/es6-promise.auto.min.js", "/Lombiq.VueJs/es6-promise/es6-promise.auto.js");
+                .SetUrl("/Lombiq.VueJs/es6-promise.auto.min.js", "/Lombiq.VueJs/es6-promise.auto.js");
         }
     }
 }
