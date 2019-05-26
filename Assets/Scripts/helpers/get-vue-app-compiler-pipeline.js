@@ -6,7 +6,6 @@ const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const buble = require('rollup-plugin-buble');
 const alias = require('rollup-plugin-alias');
-const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const json = require('rollup-plugin-json');
@@ -23,7 +22,7 @@ const defaultOptions = {
 };
 
 const getVueAppCompilerPipeline = options => {
-    const opts = options ? { ...options, ...defaultOptions } : defaultOptions;
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     return all(getVueApps(opts.rootPath)
         .map(function (appName) {
@@ -37,9 +36,13 @@ const getVueAppCompilerPipeline = options => {
                     output: {
                         format: 'cjs'
                     },
+                    onwarn: (warning, next) => {
+                        if (warning.code === 'THIS_IS_UNDEFINED') return;
+                        next(warning);
+                    },
                     plugins: [
                         json(),
-                        nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }),
+                        nodeResolve({ preferBuiltins: true, browser: true, mainFields: [ 'module', 'jsnext:main' ] }),
                         alias({
                             vue: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue/dist/vue.esm.browser.js')),
                             vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
@@ -49,7 +52,6 @@ const getVueAppCompilerPipeline = options => {
                             resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
                             ...opts.rollupAlias
                         }),
-                        resolve(),
                         replace({
                             'process.env.NODE_ENV': JSON.stringify('production'),
                             'process.env.BUILD': JSON.stringify('web')
