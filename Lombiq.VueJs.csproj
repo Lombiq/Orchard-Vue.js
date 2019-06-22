@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="node_modules\**" />
-    <EmbeddedResource Remove="node_modules\**" />
     <None Remove="node_modules\**" />
   </ItemGroup>
 
@@ -19,9 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-71610" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-71610" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-beta3-71610" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-71674" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-71674" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-beta3-71674" />
   </ItemGroup>
 
   <ItemGroup>
