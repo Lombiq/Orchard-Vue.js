@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
+    <OrchardCoreLibrariesRoot Condition="Exists('$(SolutionDir)src\OrchardCore')">$(SolutionDir)src\OrchardCore</OrchardCoreLibrariesRoot>
+    <OrchardCoreModulesRoot Condition="Exists('$(SolutionDir)src\OrchardCore.Modules')">$(SolutionDir)src\OrchardCore.Modules</OrchardCoreModulesRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +20,18 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-71674" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-71674" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-beta3-71674" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
+    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.DisplayManagement\OrchardCore.DisplayManagement.csproj" />
+    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ResourceManagement\OrchardCore.ResourceManagement.csproj" />
+    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Module.Targets\OrchardCore.Module.Targets.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +43,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
-  
+
   <Target Name="NpmInstall" BeforeTargets="BeforeBuild">
     <Exec Command="npm install" />
     <Exec Command="gulp" />
