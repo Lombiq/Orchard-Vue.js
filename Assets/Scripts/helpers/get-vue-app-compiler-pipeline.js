@@ -18,7 +18,8 @@ const defaultOptions = {
     rootPath: './Assets/Apps/',
     destinationPath: './wwwroot/Apps/',
     vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
-    rollupAlias: { }
+    rollupAlias: {},
+    isProduction: false
 };
 
 const getVueAppCompilerPipeline = options => {
@@ -44,16 +45,16 @@ const getVueAppCompilerPipeline = options => {
                         json(),
                         nodeResolve({ preferBuiltins: true, browser: true, mainFields: [ 'module', 'jsnext:main' ] }),
                         alias({
-                            vue: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue/dist/vue.esm.browser.js')),
+                            vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction ? 'vue/dist/vue.common.prod.js' : 'vue/dist/vue.esm.browser.js')),
                             vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
-                            'vue-router': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.esm.js')),
+                            'vue-router': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
                             'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
                             axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
                             resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
                             ...opts.rollupAlias
                         }),
                         replace({
-                            'process.env.NODE_ENV': JSON.stringify('production'),
+                            'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
                             'process.env.BUILD': JSON.stringify('web')
                         }),
                         commonjs(),
