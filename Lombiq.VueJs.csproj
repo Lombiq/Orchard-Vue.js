@@ -1,11 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
     <OrchardCoreLibrariesRoot Condition="Exists('$(SolutionDir)src\OrchardCore')">$(SolutionDir)src\OrchardCore</OrchardCoreLibrariesRoot>
     <OrchardCoreModulesRoot Condition="Exists('$(SolutionDir)src\OrchardCore.Modules')">$(SolutionDir)src\OrchardCore.Modules</OrchardCoreModulesRoot>
   </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="node_modules\**" />
@@ -18,14 +23,10 @@
     <EmbeddedResource Remove="Gulpfile.babel.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-71674" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-71674" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-beta3-71674" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-10106" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc1-10106" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc1-10106" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
