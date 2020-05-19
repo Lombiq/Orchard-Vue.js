@@ -2,7 +2,7 @@
 
 
 
-## Project description
+## About
 
 [Orchard Core](http://orchardproject.net/) module that contains [Vue.js](https://vuejs.org/) and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.
 
@@ -35,13 +35,8 @@ Some resources are registered in the resource manifest so you can add these as d
 - [ES6-Promise](https://www.npmjs.com/package/es6-promise): Use this if you want to use ES6 Promises (or an ES6 module that uses them e.g. `axios`) include this resource so it will work in IE as well.
 
 
-## Contribution and feedback
+## Contributing and support
 
-The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
+Bug reports, feature requests, comments, questions, code contributions, and love letters are warmly welcome, please do so via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
 
-- [https://bitbucket.org/Lombiq/orchard-vue.js](https://bitbucket.org/Lombiq/orchard-vue.js) (Mercurial repository)
-- [https://github.com/Lombiq/Orchard-Vue.js](https://github.com/Lombiq/Orchard-Vue.js) (Git repository)
-
-Bug reports, feature requests and comments are warmly welcome, **please do so via GitHub**. Feel free to send pull requests too, no matter which source repository you choose for this purpose.
-
-This project is developed by [Lombiq Technologies Ltd](https://lombiq.com/). Commercial-grade support is available through Lombiq.
+This project is developed by [Lombiq Technologies](https://lombiq.com/). Commercial-grade support is available through Lombiq.
