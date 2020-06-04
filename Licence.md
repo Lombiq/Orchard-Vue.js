@@ -1,4 +1,4 @@
-Copyright © 2019, [Lombiq Technologies Ltd.](lombiq.com)
+Copyright © 2019, [Lombiq Technologies Ltd.](https://lombiq.com)
 
 All rights reserved.
 
