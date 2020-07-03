@@ -1,4 +1,4 @@
-# Vue.js module for Orchard Core
+# Lombiq Vue.js module for Orchard Core
 
 
 

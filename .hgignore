@@ -1,6 +1,0 @@
-syntax: glob
-obj/
-bin/
-*.user
-node_modules/
-wwwroot/
