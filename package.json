@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "^0.20.0",
     "es6-promise": "4.2.6",
     "vue": "2.6.10",
     "vue-axios": "2.1.4",
