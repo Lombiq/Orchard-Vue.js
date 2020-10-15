@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-14694" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-14694" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-14694" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-14802" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-14802" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-14802" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
