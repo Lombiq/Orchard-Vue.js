@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-15320" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-15320" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-15320" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-15400" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-15400" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-15400" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
@@ -38,7 +38,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
-  
+
   <Target Name="NpmInstall" BeforeTargets="BeforeBuild">
     <Exec Command="npm install" />
     <Exec Command="gulp" />
