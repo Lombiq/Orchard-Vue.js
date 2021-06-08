@@ -1,0 +1,10 @@
+﻿AntiForgery: enabled
+Author: Lombiq Technologies Ltd.
+Website: https://lombiq.com
+Version: 1.0
+OrchardVersion: 1.10.2
+Features:
+    Lombiq.VueJs:
+        Name: Lombiq VueJs
+        Description: Adds Vue.js to Orchard.
+        Category: Vue.js
