@@ -6,19 +6,21 @@ const path = require('path');
 const getVueApps = require('./get-vue-apps');
 
 const defaultOptions = {
-    rootPath: './Scripts/Apps/',
-    destinationPath: './Scripts/Apps/',
+    rootPath: './Assets/Apps/',
+    destinationPath: './Styles/Apps/',
     vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
     stylesPath: 'Styles',
     rollupAlias: {},
 };
 
-const compileCss = (options) => {
+const getVueAppCssPipeline = options => {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     return all(getVueApps(opts.rootPath)
-        .map((appName) => {
+        .map(function (appName) {
             const entryPath = path.join(opts.rootPath, appName, opts.stylesPath, '/*.css');
+
+            console.log(entryPath);
 
             return gulp.src(entryPath)
                 .pipe(rename({ dirname: '' }))
@@ -26,4 +28,4 @@ const compileCss = (options) => {
         }));
 };
 
-module.exports = { compileCss };
+module.exports = getVueAppCssPipeline;

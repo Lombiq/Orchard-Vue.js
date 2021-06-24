@@ -104,11 +104,10 @@
   <ItemGroup>
     <Content Include="Gulpfile.babel.js" />
     <Content Include="packages.config" />
-    <Content Include="Scripts\helpers\get-vue-app-compiler-pipeline.js" />
-    <Content Include="Scripts\helpers\get-vue-app-css-pipeline.js" />
-    <Content Include="Scripts\helpers\get-vue-apps.js" />
+    <Content Include="Assets\Scripts\helpers\get-vue-app-compiler-pipeline.js" />
+    <Content Include="Assets\Scripts\helpers\get-vue-app-css-pipeline.js" />
+    <Content Include="Assets\Scripts\helpers\get-vue-apps.js" />
     <Content Include="Web.config" />
-    <Content Include="Scripts\Web.config" />
     <Content Include="Module.txt" />
   </ItemGroup>
   <ItemGroup>

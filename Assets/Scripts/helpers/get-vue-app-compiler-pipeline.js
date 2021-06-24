@@ -15,7 +15,7 @@ const path = require('path');
 const getVueApps = require('./get-vue-apps');
 
 const defaultOptions = {
-    rootPath: './Scripts/Apps/',
+    rootPath: './Assets/Apps/',
     destinationPath: './Scripts/Apps/',
     vueJsNodeModulesPath: '../../Modules/Lombiq.VueJs/node_modules',
     rollupAlias: {},
