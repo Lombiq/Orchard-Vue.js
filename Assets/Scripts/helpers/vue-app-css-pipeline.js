@@ -10,17 +10,15 @@ const defaultOptions = {
     destinationPath: './wwwroot/Apps/',
     vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
     stylesPath: 'styles',
-    rollupAlias: {}
+    rollupAlias: {},
 };
 
-const getVueAppCssPipeline = options => {
+const compileCss = (options) => {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     return all(getVueApps(opts.rootPath)
-        .map(function (appName) {
+        .map((appName) => {
             const entryPath = path.join(opts.rootPath, appName, opts.stylesPath, '/*.css');
-
-            console.log(entryPath);
 
             return gulp.src(entryPath)
                 .pipe(rename({ dirname: '' }))
@@ -28,4 +26,4 @@ const getVueAppCssPipeline = options => {
         }));
 };
 
-module.exports = getVueAppCssPipeline;
+module.exports = { compileCss };
