@@ -20,8 +20,6 @@ const getVueAppCssPipeline = options => {
         .map(function (appName) {
             const entryPath = path.join(opts.rootPath, appName, opts.stylesPath, '/*.css');
 
-            console.log(entryPath);
-
             return gulp.src(entryPath)
                 .pipe(rename({ dirname: '' }))
                 .pipe(gulp.dest(opts.destinationPath));
