@@ -9,9 +9,6 @@
     "vuelidate": "0.7.4"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
-    "@babel/preset-env": "7.12.11",
-    "@babel/register": "7.12.10",
     "fs": "0.0.1-security",
     "gulp": "4.0.2",
     "gulp-all": "1.1.0",

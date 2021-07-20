@@ -1,4 +1,4 @@
-﻿import gulp from 'gulp';
+﻿const gulp = require('gulp');
 
 const assetsSourceBasePath = './node_modules/';
 const assetsDestinationPath = './Scripts/';
