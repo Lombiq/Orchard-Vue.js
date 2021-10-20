@@ -10,8 +10,8 @@
 
   <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
   <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
-  <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets"/>
-  
+  <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-13929" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13929" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-13929" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
