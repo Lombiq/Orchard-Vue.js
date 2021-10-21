@@ -24,16 +24,6 @@ const defaultOptions = {
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    const originalAlterPlugins = opts.alterPlugins;
-    opts.alterPlugins = function (plugins) {
-        let alteredPlugins = plugins.concat();
-        alteredPlugins.splice(0, 0, vue());
-
-        if (originalAlterPlugins) alteredPlugins = originalAlterPlugins(alteredPlugins);
-
-        return alteredPlugins;
-    };
-
     return vueAppCompilerPipeline.compile(opts);
 }
 
