@@ -33,6 +33,10 @@ const defaultOptions = {
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
+    function nodeModulePath(relativePath) {
+        return path.resolve(path.join(__dirname, '..', '..', '..', 'node_modules', relativePath));
+    }
+
     return all(opts.getAppNames(opts.rootPath)
         .map((appName) => {
             const entryPath = opts.overrideEntryPath
@@ -59,14 +63,12 @@ function compile(options) {
                         json(),
                         nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
                         alias({
-                                vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
-                                    ? 'vue/dist/vue.common.prod.js'
-                                    : 'vue/dist/vue.esm.browser.js')),
-                                vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
-                                'vue-router': path.resolve(path.join(
-                                    opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
-                                'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
-                                axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
+                                vue: nodeModulePath(
+                                    opts.isProduction ? 'vue/dist/vue.common.prod.js' : 'vue/dist/vue.esm.browser.js'),
+                                vuelidate: nodeModulePath('vuelidate/'),
+                                'vue-router': nodeModulePath('vue-router/dist/vue-router.common.js'),
+                                'vue-axios': nodeModulePath('vue-axios/'),
+                                axios: nodeModulePath('axios/'),
                                 resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
                                 ...opts.rollupAlias,
                             }),
