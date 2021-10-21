@@ -13,16 +13,15 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const path = require('path');
 const onError = require('rollup-plugin-onerror');
+const vue = require('rollup-plugin-vue');
 
 const getVueApps = require('./get-vue-apps');
 
 const defaultOptions = {
     rootPath: './Assets/Apps/',
     destinationPath: './wwwroot/apps/',
-    vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
     rollupAlias: {},
     isProduction: false,
-    alterPlugins: (plugins) => plugins,
     overrideEntryPath: null,
     getAppNames: getVueApps,
     withCommonJs: true,
@@ -55,11 +54,12 @@ function compile(options) {
                         if (warning.code === 'THIS_IS_UNDEFINED') return;
                         next(warning);
                     },
-                    plugins: opts.alterPlugins([
+                    plugins: [
                         onError((err) => {
                             console.log('There was an Error with your rollup build');
                             console.error(err);
                         }),
+                        vue(),
                         json(),
                         nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
                         alias({
@@ -78,7 +78,7 @@ function compile(options) {
                         }),
                     ]
                         .concat(opts.withCommonJs ? [commonjs(opts.commonJsOptions)] : [])
-                        .concat(opts.withBabel ? [babel()] : [buble()])),
+                        .concat(opts.withBabel ? [babel()] : [buble()]),
                 }))
                 .pipe(rename(appName + '.js'))
                 .pipe(gulp.dest(opts.destinationPath))
