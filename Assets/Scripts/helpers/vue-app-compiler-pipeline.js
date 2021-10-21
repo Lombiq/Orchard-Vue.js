@@ -27,6 +27,7 @@ const defaultOptions = {
     getAppNames: getVueApps,
     withCommonJs: true,
     withBabel: false,
+    commonJsOptions: undefined,
 };
 
 function compile(options) {
@@ -57,9 +58,7 @@ function compile(options) {
                         }),
                         json(),
                         nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
-                        alias(
-                            opts.withCommonJs
-                            ? {
+                        alias({
                                 vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
                                     ? 'vue/dist/vue.common.prod.js'
                                     : 'vue/dist/vue.esm.browser.js')),
@@ -70,17 +69,13 @@ function compile(options) {
                                 axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
                                 resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
                                 ...opts.rollupAlias,
-                            }
-                            : {
-                                resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
-                                ...opts.rollupAlias,
                             }),
                         replace({
                             'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
                             'process.env.BUILD': JSON.stringify('web'),
                         }),
                     ]
-                        .concat(opts.withCommonJs ? [commonjs()] : [])
+                        .concat(opts.withCommonJs ? [commonjs(opts.commonJsOptions)] : [])
                         .concat(opts.withBabel ? [babel()] : [buble()])),
                 }))
                 .pipe(rename(appName + '.js'))
