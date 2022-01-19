@@ -11,9 +11,10 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 ## Prerequisites
 
-1. Make sure that you have the latest version of [Node.js](https://nodejs.org/en/) installed that fits your system architecture (x64 or x86).
-2. Install or update NPM to the latest version using the command: `npm install -g npm@latest`
-3. Install or update the Gulp CLI globally with this command: `npm install -g gulp-cli`
+1. Make sure that you have the latest **14.x** version (it can't be a later one because Gulp [doesn't officially support 14.x even](https://github.com/gulpjs/gulp/discussions/2649), let alone more recent ones) of [Node.js](https://nodejs.org/en/) installed that fits your system architecture (x64 or x86).
+2. Install or update NPM to the latest version using the command: `npm install --global npm@7.9.0`. You may also install [PNPM](https://pnpm.io/) with `npm install --global pnpm`.
+3. Install or update the Gulp CLI globally with this command: `npm install -g gulp-cli`.
+3. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly *C:\Program Files\NodeJS**) to the list and move it to the top.
 
 
 ## Using Vue.js node packages
