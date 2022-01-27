@@ -33,18 +33,25 @@ In these shapes you can use any format you want (e.g. JSX templates) and referen
 
 ## Using Vue.js Single File Components
 
-The module identifies Single File Components in the Assets directory and harvests them as shapes with a custom renderer. You can override them with cshtml or liquid the usual way. Inside an SFC template you are working with regular static content with the exception of the `[[ ... ]]` expression that replaces Razor's `@T["..."]` expression for localization.
+The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
 
-### Advantages
+
+### Advantages of SFCs.
 
 - The script and template are kept together, which makes understanding the individual component easier.
 - If you have an IDE plugin or similar tooling for Vue.js it will work better.
 - No need for `@@` on events.
 
+
 ### Limitations and Considerations
 - The HtmlLocalizer doesn't support arguments.
 - Including a script element in your template will break it. Although you shouldn't do that anyway.
-- No other Razor features. However if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic, If you still need something else, use a _cshtml_ templated module as outlined above, or shape overriding if it's only a specific circumstance.  
+- No other Razor features. However if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic, If you still need something else, use a _cshtml_ templated module as outlined above, or shape overriding if it's only a specific circumstance.
+
+
+### Shape Overriding
+
+The SFCs receive the shape name `VueComponent-{FileNameInPascalCase}`. The _.vue_ files customarily use kebab-case naming, but the shape name is converted into PascalCase, for example _announcement-listing.vue_ becomes _VueComponent-AnnouncementListing_ so you can make a view matching that shape name to override it.
 
 
 ## Other resources
