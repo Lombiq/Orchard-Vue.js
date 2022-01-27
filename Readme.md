@@ -31,6 +31,22 @@ Place your template files (.cshtml or .liquid) to the *Views/VueComponents* fold
 In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component JavaScript code.
 
 
+## Using Vue.js Single File Components
+
+The module identifies Single File Components in the Assets directory and harvests them as shapes with a custom renderer. You can override them with cshtml or liquid the usual way. Inside an SFC template you are working with regular static content with the exception of the `[[ ... ]]` expression that replaces Razor's `@T["..."]` expression for localization.
+
+### Advantages
+
+- The script and template are kept together, which makes understanding the individual component easier.
+- If you have an IDE plugin or similar tooling for Vue.js it will work better.
+- No need for `@@` on events.
+
+### Limitations and Considerations
+- The HtmlLocalizer doesn't support arguments.
+- Including a script element in your template will break it. Although you shouldn't do that anyway.
+- No other Razor features. However if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic, If you still need something else, use a _cshtml_ templated module as outlined above, or shape overriding if it's only a specific circumstance.  
+
+
 ## Other resources
 
 Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the *node_modules* folder to *wwwroot* using Gulp when building the project (or you can trigger it with the `gulp` command).

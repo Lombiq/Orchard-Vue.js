@@ -16,6 +16,8 @@ namespace Lombiq.VueJs
         {
             services.AddScoped<IShapeTemplateHarvester, VueComponentTemplateHarvester>();
             services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+
+            services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
         }
 
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
