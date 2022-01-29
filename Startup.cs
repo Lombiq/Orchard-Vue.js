@@ -17,7 +17,7 @@ namespace Lombiq.VueJs
             services.AddScoped<IShapeTemplateHarvester, VueComponentTemplateHarvester>();
             services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
 
-            services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
+            services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
             services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
         }
 
