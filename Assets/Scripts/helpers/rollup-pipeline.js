@@ -29,20 +29,20 @@ module.exports = function rollupPipeline(
                     next(warning);
                 },
             };
-            const rollupOptions = rollupOptions ? { ...defaultRollupOptions, ...rollupOptions } : defaultRollupOptions;
+            const options = rollupOptions ? { ...defaultRollupOptions, ...rollupOptions } : defaultRollupOptions;
 
             if (Array.isArray(rollupPlugins)) {
-                if (Array.isArray(rollupOptions.plugins)) {
-                    rollupPlugins.forEach(plugin => rollupOptions.plugins.push(plugin));
+                if (Array.isArray(options.plugins)) {
+                    rollupPlugins.forEach(plugin => options.plugins.push(plugin));
                 }
                 else {
-                    rollupOptions.plugins = rollupPlugins;
+                    options.plugins = rollupPlugins;
                 }
             }
 
             return gulp.src(entryPath)
                 .pipe(plumber())
-                .pipe(rollup(rollupOptions))
+                .pipe(rollup(options))
                 .pipe(rename(outputFileName + '.js'))
                 .pipe(gulp.dest(destinationPath))
                 .pipe(uglify())

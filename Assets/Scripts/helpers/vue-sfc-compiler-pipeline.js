@@ -28,7 +28,7 @@ function compile(options) {
 
     return rollupPipeline(
         opts.destinationPath,
-        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js'), })),
+        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName), })),
         [
             vuePlugin({
                 target: 'node',
