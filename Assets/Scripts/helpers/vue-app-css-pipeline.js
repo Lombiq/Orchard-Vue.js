@@ -3,7 +3,7 @@ const all = require('gulp-all');
 const rename = require('gulp-rename');
 const path = require('path');
 
-const getVueApps = require('./get-vue-apps');
+const { getVueApps } = require('./get-vue-files');
 
 const defaultOptions = {
     rootPath: './Assets/Apps/',

@@ -12,7 +12,7 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const path = require('path');
 
-const getVueApps = require('./get-vue-apps');
+const { getVueApps } = require('./get-vue-files');
 
 const defaultOptions = {
     rootPath: './Assets/Apps/',
