@@ -6,8 +6,9 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const path = require('path');
 const vuePlugin = require('rollup-plugin-vue');
+const log = require('fancy-log');
 
-const { getVueApps } = require('./get-vue-files');
+const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 
 const defaultOptions = {
@@ -21,10 +22,13 @@ const defaultOptions = {
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
+    const components = getVueComponents(opts.rootPath);
+
+    log('vue component files: ' + components.join(', '));
+
     return rollupPipeline(
         opts.destinationPath,
-        getVueApps(opts.rootPath)
-            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js'), })),
+        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js'), })),
         [
             vuePlugin({
                 target: 'node',
