@@ -44,10 +44,15 @@ The module identifies Single File Components in the _Assets/Scripts/VueComponent
 
 
 ### Limitations and Considerations
-- The HtmlLocalizer doesn't support arguments.
-- Including a script element in your template will break it. Although you shouldn't do that anyway.
-- No other Razor features. However if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic, If you still need something else, use a _cshtml_ templated module as outlined above, or shape overriding if it's only a specific circumstance.
 
+- The StringLocalizer doesn't accept arguments.
+- No other Razor features.
+- Including a script element in your template will break it. Although you shouldn't do that anyway.
+- As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue. 
+
+Regarding the first two points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. If you still need something else, either use a _cshtml_ templated module as outlined above or shape overriding as discussed below.
+
+Regarding the 
 
 ### Shape Overriding
 
