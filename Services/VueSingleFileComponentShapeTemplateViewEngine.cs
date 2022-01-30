@@ -49,7 +49,8 @@ namespace Lombiq.VueJs.Services
                 string.Empty,
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-            var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Id);
+            var shapeName = displayContext.Value.Id;
+            var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
 
             var localizationRanges = template
                 .AllIndexesOf("[[")
@@ -70,7 +71,8 @@ namespace Lombiq.VueJs.Services
 
             _memoryCache.Set(CachePrefix + relativePath, template);
 
-            return new HtmlString(template);
+            return new HtmlString(FormattableString.Invariant(
+                $"<script type=\"x-template\" class=\"{shapeName}\">{shapeName}</script>"));
         }
     }
 }
