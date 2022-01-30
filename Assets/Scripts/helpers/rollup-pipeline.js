@@ -30,6 +30,10 @@ module.exports = function rollupPipeline(
                     next(warning);
                 },
             };
+
+            if (typeof rollupOptions === 'function') rollupOptions = rollupOptions(fileName, entryPath);
+            if (typeof rollupPlugins === 'function') rollupPlugins = rollupPlugins(fileName, entryPath);
+
             const options = rollupOptions ? { ...defaultRollupOptions, ...rollupOptions } : defaultRollupOptions;
 
             if (Array.isArray(rollupPlugins)) {

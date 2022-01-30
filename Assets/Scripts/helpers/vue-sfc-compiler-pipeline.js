@@ -5,11 +5,11 @@ const replace = require('rollup-plugin-replace');
 const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const path = require('path');
-const vuePlugin = require('rollup-plugin-vue');
 const log = require('fancy-log');
 
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
+const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core')
 
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
@@ -30,9 +30,7 @@ function compile(options) {
         opts.destinationPath,
         components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName), })),
         [
-            vuePlugin({
-                target: 'node',
-            }),
+            vuePlugin(),
             json(),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             alias({
@@ -44,7 +42,7 @@ function compile(options) {
                     opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
                 'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
                 axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
-                resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
+                resolve: ['.vue', '.js', '/index.js', '/lib/index.js', '/src/index.js'],
                 ...opts.rollupAlias,
             }),
             replace({
