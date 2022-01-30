@@ -5,6 +5,7 @@ const plumber = require('gulp-plumber');
 const rollup = require('gulp-rollup');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
+const log = require('fancy-log');
 
 module.exports = function rollupPipeline(
     destinationPath,
@@ -41,7 +42,17 @@ module.exports = function rollupPipeline(
             }
 
             return gulp.src(entryPath)
-                .pipe(plumber())
+                .pipe(plumber({
+                    errorHandler: function errorHandler(error) {
+                        // Same as the default error handler, but doesn't show "loc: [object Object]".
+                        let errorText = error.toString();
+                        if (error.loc) {
+                            errorText = errorText.replace('loc: [object Object]', 'loc: ' + JSON.stringify(error.loc));
+                        }
+
+                        log('Plumber found unhandled error:\n', errorText);
+                    }
+                }))
                 .pipe(rollup(options))
                 .pipe(rename(outputFileName + '.js'))
                 .pipe(gulp.dest(destinationPath))
