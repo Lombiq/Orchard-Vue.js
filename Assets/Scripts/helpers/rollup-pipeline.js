@@ -44,13 +44,18 @@ module.exports = function rollupPipeline(
             return gulp.src(entryPath)
                 .pipe(plumber({
                     errorHandler: function errorHandler(error) {
-                        // Same as the default error handler, but doesn't show "loc: [object Object]".
-                        let errorText = error.toString();
-                        if (error.loc) {
-                            errorText = errorText.replace('loc: [object Object]', 'loc: ' + JSON.stringify(error.loc));
-                        }
+                        // Necessary because the regular error.toString() is a bit broken.
+                        const details = Object.entries(error)
+                            .map((pair) => ({
+                                name: pair[0],
+                                value: ('' + pair[1]) === '[object Object]' ? JSON.stringify(pair[1]) :  ('' + pair[1]),
+                            }))
+                            .filter((pair) => pair.name !== 'plugin' && pair.name !== 'message')
+                            .map((pair) => `    ${pair.name}: ${pair.value}`.replace(/\n/g, '\n    '))
+                            .join('\n')
 
-                        log('Plumber found unhandled error:\n', errorText);
+                        log(`Plumber has found an unhandled error:\nError in plugin "${error.plugin}"\nMessage:\n` +
+                            `    ${error.message}\nDetails:\n${details}`);
                     }
                 }))
                 .pipe(rollup(options))
