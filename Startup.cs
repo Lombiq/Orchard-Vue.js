@@ -1,4 +1,5 @@
 using Lombiq.VueJs.Services;
+using Lombiq.VueJs.TagHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ namespace Lombiq.VueJs
 
             services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
             services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
+            services.AddTagHelpers<VueComponentTagHelper>();
         }
 
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

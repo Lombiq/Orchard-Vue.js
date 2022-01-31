@@ -73,7 +73,7 @@ export default {
 </script>
 ```
 
-You can include the `<vue-component name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase).
+You can include the `<vue-component name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `vue-component-my-article` in your app ˙<script>˙ element's `depends-on` to ensure correct load order. 
 
 
 ### Advantages of SFCs.
