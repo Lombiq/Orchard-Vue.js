@@ -8,20 +8,20 @@ function onlyScript(source) {
     {
         if (source[i] !== '<') continue;
 
-        let script =    source.substr(i + 1).trim();
+        let script =    source.substring(i + 1).trim();
         if (!script.startsWith('script')) continue;
 
-        script = script.substr(script.indexOf('>') + 1);
+        script = script.substring(script.indexOf('>') + 1);
         for (let j = script.length - 2; j >= 0; j--)
         {
             if (script[j] !== '<' ||
                 script[j + 1] !== '/' ||
-                !script.substr(j + 2).trim().startsWith('script')) {
+                !script.substring(j + 2).trim().startsWith('script')) {
                 continue;
             }
 
-            let inner = script.substr(0, j);
-            while (inner.startsWith('\n')) inner = inner.substr(1);
+            let inner = script.substring(0, j);
+            while (inner.startsWith('\n')) inner = inner.substring(1);
 
             return inner;
         }
@@ -36,19 +36,20 @@ module.exports = function vuePlugin() {
 
             return (source.startsWith('./') && importer)
                 ? `${path.join(path.dirname(importer.replace(/\?vue-sfc/, '')), source)}?vue-sfc`
-                : `${source}?vue-sfc`;
+                : `${source}?vue-sfc-entry`;
         },
         async load (id) {
-            if (!id.endsWith('?vue-sfc')) return null;
+            const isEntryComponent = id.endsWith('?vue-sfc-entry');
+            if (!isEntryComponent && !id.endsWith('?vue-sfc')) return null;
 
-            const filePath = id.replace(/\?vue-sfc$/, '');
+            const filePath = id.replace(/\?vue-sfc(-entry)?$/, '');
 
             // Get and trim the source code.
             const source = await readFile(filePath, 'utf8')
             let code = onlyScript(source);
 
             // Create mapping information and restore first line's indent.
-            const first = source.substr(0, source.indexOf(code) + 1).split('\n');
+            const first = source.substring(0, source.indexOf(code) + 1).split('\n');
             const firstRow = first.length;
             const firstRowColumnOffset = first[first.length - 1].length;
             for (let i = 1; i < firstRowColumnOffset; i++) code = ' ' +  code;
@@ -71,7 +72,7 @@ module.exports = function vuePlugin() {
             const componentName = filePathParts[filePathParts.length -1].replace(/\.vue$/i, '');
             const pascalCaseName = componentName
                 .split('-')
-                .map((word) => word[0].toUpperCase() + word.substr(1).toLowerCase())
+                .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
                 .join('');
             const className = 'VueComponent-' + pascalCaseName;
 
@@ -79,6 +80,14 @@ module.exports = function vuePlugin() {
             const pattern = /export\s+default\s*{/;
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
             code = code.replace(pattern, `export default { name: '${componentName}', template: '.${className}',`);
+
+            if (isEntryComponent) {
+                code = code.replace('export default {', `window.Vue.component('${componentName}', {`);
+
+                let finalSemicolon = code.length - 1;
+                for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) { }
+                code = code.substring(0, finalSemicolon) + ');';
+            }
 
             return { code, map };
         },
