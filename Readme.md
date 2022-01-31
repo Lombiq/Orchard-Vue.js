@@ -35,6 +35,46 @@ In these shapes you can use any format you want (e.g. JSX templates) and referen
 
 The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
 
+What you need to know to write your own _.vue_ file:
+- Your component's script should have a `<template>` and `<script>` element in that order.
+- The script must export the module as an object literal ESM style (`export default { ... }`).
+  - You don't need to specify the `name` and `template` properties, as these are automatically provided during compilation.
+- If your component has child components, include the _.vue_ extension when importing them. 
+
+For example if you have the file _My.Module/Assets/Scripts/VueComponents/my-article.vue_:
+```vue
+<template>
+    <article>
+        <header>
+            <h3>{{ title }}</h3>
+        </header>
+        <slot></slot>
+        <footer>{{ formattedDate }}</footer>
+    </article>
+</template>
+
+<script>
+export default {
+    props: [ 'title', 'date' ],
+    computed: {
+        formattedDate(self) {
+            const formatter = new Intl.DateTimeFormat(
+                self.culture,
+                {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                });
+
+            return formatter.format(self.date);
+        }
+    }
+};
+</script>
+```
+
+You can include the `<vue-component name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase).
+
 
 ### Advantages of SFCs.
 
@@ -45,18 +85,11 @@ The module identifies Single File Components in the _Assets/Scripts/VueComponent
 
 ### Limitations and Considerations
 
-- The StringLocalizer doesn't accept arguments.
-- No other Razor features.
+- No other Razor features including string localizer with arguments.
 - Including a script element in your template will break it. Although you shouldn't do that anyway.
 - As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue. 
 
-Regarding the first two points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. If you still need something else, either use a _cshtml_ templated module as outlined above or shape overriding as discussed below.
-
-Regarding the 
-
-### Shape Overriding
-
-The SFCs receive the shape name `VueComponent-{FileNameInPascalCase}`. The _.vue_ files customarily use kebab-case naming, but the shape name is converted into PascalCase, for example _announcement-listing.vue_ becomes _VueComponent-AnnouncementListing_ so you can make a view matching that shape name to override it.
+Regarding the points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. For example pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
 
 
 ## Other resources
