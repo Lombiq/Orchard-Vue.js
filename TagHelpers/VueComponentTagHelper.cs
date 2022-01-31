@@ -1,13 +1,22 @@
 using Lombiq.VueJs.Constants;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Options;
+using OrchardCore.DisplayManagement;
+using OrchardCore.Mvc.Utilities;
 using OrchardCore.ResourceManagement;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers
 {
     [HtmlTargetElement("vue-component", Attributes = "area,name")]
     public class VueComponentTagHelper : TagHelper
     {
+        private readonly IDisplayHelper _displayHelper;
+        private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
         private readonly IResourceManager _resourceManager;
+        private readonly IShapeFactory _shapeFactory;
 
         [HtmlAttributeName("area")]
         public string Area { get; set; }
@@ -15,9 +24,22 @@ namespace Lombiq.VueJs.TagHelpers
         [HtmlAttributeName("name")]
         public string Name { get; set; }
 
-        public VueComponentTagHelper(IResourceManager resourceManager) => _resourceManager = resourceManager;
+        [HtmlAttributeName("children")]
+        public string Children { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public VueComponentTagHelper(
+            IDisplayHelper displayHelper,
+            IOptions<ResourceManagementOptions> resourceManagementOptions,
+            IResourceManager resourceManager,
+            IShapeFactory shapeFactory)
+        {
+            _displayHelper = displayHelper;
+            _resourceManagementOptions = resourceManagementOptions;
+            _resourceManager = resourceManager;
+            _shapeFactory = shapeFactory;
+        }
+
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             _resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
 
@@ -29,6 +51,54 @@ namespace Lombiq.VueJs.TagHelpers
             _resourceManager.RegisterScript(scriptName).AtFoot();
 
             output.SuppressOutput();
+            foreach (var resourceName in FindResourceNames())
+            {
+                var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
+
+                output.PostContent.AppendHtml(
+                    await _displayHelper.ShapeExecuteAsync(
+                        await _shapeFactory.CreateAsync(shapeType)));
+            }
+        }
+
+        private IEnumerable<string> FindResourceNames()
+        {
+            var resourceNames = (Children?.Split(',') ?? Enumerable.Empty<string>())
+                .SelectWhere(child => child.Trim(), child => !string.IsNullOrEmpty(child))
+                .ToHashSet();
+            resourceNames.Add(Name);
+
+            // The key is the resource name and the value is one of its dependencies.
+            var componentDependencies = _resourceManagementOptions
+                .Value
+                .ResourceManifests
+                .SelectMany(manifest => manifest.GetResources(ResourceTypes.SingleFileComponent))
+                .SelectMany(pair => pair
+                    .Value
+                    .Where(value => value.Dependencies?.Any() == true)
+                    .SelectMany(value => value.Dependencies.Select(dependency => new { pair.Key, Value = dependency })))
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            AddShapesRecursively(resourceNames, resourceNames, componentDependencies);
+
+            return resourceNames;
+        }
+
+        private static void AddShapesRecursively(
+            ISet<string> resourceNames,
+            IEnumerable<string> resourcesToCheck,
+            IDictionary<string, string> componentDependencies)
+        {
+            var newDependencies = resourcesToCheck
+                .SelectWhere(
+                    componentDependencies.GetMaybe,
+                    dependency => dependency != null && !resourceNames.Contains(dependency))
+                .ToHashSet();
+
+            if (!newDependencies.Any()) return;
+
+            resourceNames.AddRange(newDependencies);
+            AddShapesRecursively(resourceNames, newDependencies, componentDependencies);
         }
     }
 }
