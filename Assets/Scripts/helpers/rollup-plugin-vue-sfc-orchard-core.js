@@ -85,7 +85,10 @@ module.exports = function vuePlugin() {
                 code = code.replace('export default {', `window.Vue.component('${componentName}', {`);
 
                 let finalSemicolon = code.length - 1;
-                for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) { }
+                for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) {
+                    // Prevent overshooting if the optional semicolon is not used in the final expression.
+                    if (finalSemicolon > 0 && code[finalSemicolon - 1] === '}') break;
+                }
                 code = code.substring(0, finalSemicolon) + ');';
             }
 
