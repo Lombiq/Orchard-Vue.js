@@ -50,15 +50,16 @@ namespace Lombiq.VueJs.TagHelpers
                 .SetDependencies(ResourceNames.Vue);
             _resourceManager.RegisterScript(scriptName).AtFoot();
 
-            output.SuppressOutput();
             foreach (var resourceName in FindResourceNames())
             {
                 var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
 
-                output.PostContent.AppendHtml(
+                output.PostElement.AppendHtml(
                     await _displayHelper.ShapeExecuteAsync(
                         await _shapeFactory.CreateAsync(shapeType)));
             }
+
+            output.TagName = null;
         }
 
         private IEnumerable<string> FindResourceNames()
