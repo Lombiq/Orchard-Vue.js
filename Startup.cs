@@ -1,13 +1,10 @@
 using Lombiq.VueJs.Services;
 using Lombiq.VueJs.TagHelpers;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.Modules;
 using OrchardCore.ResourceManagement;
-using System;
 
 namespace Lombiq.VueJs
 {
@@ -21,11 +18,6 @@ namespace Lombiq.VueJs
             services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
             services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
             services.AddTagHelpers<VueComponentTagHelper>();
-        }
-
-        public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
-        {
-            // No need for anything here yet.
         }
     }
 }
