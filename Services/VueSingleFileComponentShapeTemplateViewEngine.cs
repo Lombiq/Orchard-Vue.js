@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services
@@ -16,63 +15,71 @@ namespace Lombiq.VueJs.Services
     {
         public const string CachePrefix = nameof(VueSingleFileComponentShapeTemplateViewEngine) + ":";
 
+        private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
         private readonly IMemoryCache _memoryCache;
         private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
         public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
 
         public VueSingleFileComponentShapeTemplateViewEngine(
+            IShapeTemplateFileProviderAccessor fileProviderAccessor,
             IMemoryCache memoryCache,
             IStringLocalizerFactory stringLocalizerFactory)
         {
+            _fileProviderAccessor = fileProviderAccessor;
             _memoryCache = memoryCache;
             _stringLocalizerFactory = stringLocalizerFactory;
         }
 
         public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
         {
-            if (_memoryCache.TryGetValue(CachePrefix + relativePath, out var cached) && cached is string template)
+            var cacheName = CachePrefix + relativePath;
+            if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string template)
             {
                 return new HtmlString(template);
             }
 
-            var rawContent = await File.ReadAllTextAsync(relativePath);
+            var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
 
-            // A Vue SFC is neither real XML nor real HTML so for once RegEx is actually safer within the
-            // constraints of the known SFC outline. Might make a custom parser for it later.
-            var afterStart = rawContent.RegexReplace(
-                @"^.*<\s*template[^>]*>",
-                string.Empty,
-                RegexOptions.IgnoreCase | RegexOptions.Singleline);
-            template = afterStart.RegexReplace(
-                @"<\s*/\s*template[^>]*>.*$",
-                string.Empty,
-                RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            string rawContent;
 
-            var shapeName = displayContext.Value.Id;
-            var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
+            await using (var stream = fileInfo.CreateReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                rawContent = await reader.ReadToEndAsync();
+            }
+
+            var templateStarts = StartOf(rawContent, element: "template");
+            var scriptStarts = StartOf(rawContent, element: "script");
+
+            var templateOuter = rawContent[templateStarts..scriptStarts];
+            template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
 
             var localizationRanges = template
                 .AllIndexesOf("[[")
+                .Where(index => template[(index + 2)..].Contains("]]"))
                 .Select(index => new Range(
                     index,
-                    template.IndexOf(
-                        value: "]]",
-                        startIndex: index + 2,
-                        StringComparison.Ordinal)))
+                    template.IndexOfOrdinal(value: "]]", startIndex: index + 2) + 2))
                 .WithoutOverlappingRanges(isSortedByStart: true);
 
-            foreach (var range in localizationRanges)
+            var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Metadata.Type);
+
+            foreach (var range in localizationRanges.OrderByDescending(range => range.End.Value))
             {
                 var (before, expression, after) = template.Partition(range);
                 var text = expression[2..^2].Trim();
                 template = before + stringLocalizer[text] + after;
             }
 
-            _memoryCache.Set(CachePrefix + relativePath, template);
+            template = FormattableString.Invariant(
+                $"<script type=\"x-template\" class=\"{displayContext.Value.Metadata.Type}\">{template}</script>");
 
-            return new HtmlString(FormattableString.Invariant(
-                $"<script type=\"x-template\" class=\"{shapeName}\">{shapeName}</script>"));
+            _memoryCache.Set(cacheName, template);
+            return new HtmlString(template);
         }
+
+        private static int StartOf(string text, string element) =>
+            text.AllIndexesOf("<").First(index => text[(index + 1)..].TrimStart().StartsWithOrdinalIgnoreCase(element));
     }
 }

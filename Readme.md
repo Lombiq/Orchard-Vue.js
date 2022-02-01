@@ -35,6 +35,13 @@ In these shapes you can use any format you want (e.g. JSX templates) and referen
 
 The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
 
+Before you start, add this to your project file so the _.vue_ files are recognized as embedded views:
+```xml
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
+  </ItemGroup>
+```
+
 What you need to know to write your own _.vue_ file:
 - Your component's script should have a `<template>` and `<script>` element in that order.
 - The script must export the module as an object literal ESM style (`export default { ... }`).
@@ -73,14 +80,15 @@ export default {
 </script>
 ```
 
-You can include the `<vue-component name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `vue-component-my-article` in your app ˙<script>˙ element's `depends-on` to ensure correct load order. 
+You can include the `<vue-component name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
+The Rollup plugin automatically registers each component you include (but not their children) as globally accessible components. So you don't need to list them in your app's `components` property. Indeed the component object isn't exposed as a global variable.
 
 
 ### Advantages of SFCs.
 
+- Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, Go to Definition for custom elements, and all other advantages of static Vue development.
 - The script and template are kept together, which makes understanding the individual component easier.
-- If you have an IDE plugin or similar tooling for Vue.js it will work better.
-- No need for `@@` on events.
+- No need to escape the `@` on events.
 
 
 ### Limitations and Considerations
