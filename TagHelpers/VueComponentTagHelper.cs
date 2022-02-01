@@ -71,14 +71,9 @@ namespace Lombiq.VueJs.TagHelpers
 
             // The key is the resource name and the value is one of its dependencies.
             var componentDependencies = _resourceManagementOptions
-                .Value
-                .ResourceManifests
-                .SelectMany(manifest => manifest.GetResources(ResourceTypes.SingleFileComponent))
-                .SelectMany(pair => pair
                     .Value
-                    .Where(value => value.Dependencies?.Any() == true)
-                    .SelectMany(value => value.Dependencies.Select(dependency => new { pair.Key, Value = dependency })))
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                    .ResourceManifests
+                    .SingleResourceTypeToLookup(ResourceTypes.SingleFileComponent);
 
             AddShapesRecursively(resourceNames, resourceNames, componentDependencies);
 
@@ -88,12 +83,11 @@ namespace Lombiq.VueJs.TagHelpers
         private static void AddShapesRecursively(
             ISet<string> resourceNames,
             IEnumerable<string> resourcesToCheck,
-            IDictionary<string, string> componentDependencies)
+            ILookup<string, string> componentDependencies)
         {
             var newDependencies = resourcesToCheck
-                .SelectWhere(
-                    componentDependencies.GetMaybe,
-                    dependency => dependency != null && !resourceNames.Contains(dependency))
+                .SelectMany(resource => componentDependencies[resource])
+                .Where(dependency => !resourceNames.Contains(dependency))
                 .ToHashSet();
 
             if (!newDependencies.Any()) return;
