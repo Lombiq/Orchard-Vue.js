@@ -86,7 +86,7 @@ The Rollup plugin automatically registers each component you include (but not th
 
 ### Advantages of SFCs.
 
-- Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, Go to Definition for custom elements, and all other advantages of static Vue development.
+- Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, property autocomplete, Go to Definition for custom elements, and all other advantages of static Vue development.
 - The script and template are kept together, which makes understanding the individual component easier.
 - No need to escape the `@` on events.
 
