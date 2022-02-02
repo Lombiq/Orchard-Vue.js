@@ -34,10 +34,13 @@ namespace Lombiq.VueJs.Services
         public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
         {
             var cacheName = CachePrefix + relativePath;
-            if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string template)
+
+#if !DEBUG
+            if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
             {
-                return new HtmlString(template);
+                return new HtmlString(cachedTemplate);
             }
+#endif
 
             var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
 
@@ -53,7 +56,7 @@ namespace Lombiq.VueJs.Services
             var scriptStarts = StartOf(rawContent, element: "script");
 
             var templateOuter = rawContent[templateStarts..scriptStarts];
-            template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
+            var template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
 
             var localizationRanges = template
                 .AllIndexesOf("[[")
