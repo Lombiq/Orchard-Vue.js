@@ -79,7 +79,9 @@ module.exports = function vuePlugin() {
             // Inject name and template properties.
             const pattern = /export\s+default\s*{/;
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
-            code = code.replace(pattern, `export default { name: '${componentName}', template: '.${className}',`);
+            code = code.replace(
+                pattern,
+                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML,`);
 
             if (isEntryComponent) {
                 code = code.replace('export default {', `window.Vue.component('${componentName}', {`);
