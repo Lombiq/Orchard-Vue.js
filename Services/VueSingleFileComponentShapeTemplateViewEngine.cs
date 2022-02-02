@@ -35,12 +35,10 @@ namespace Lombiq.VueJs.Services
         {
             var cacheName = CachePrefix + relativePath;
 
-#if !DEBUG
             if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
             {
                 return new HtmlString(cachedTemplate);
             }
-#endif
 
             var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
 
