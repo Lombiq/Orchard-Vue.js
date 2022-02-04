@@ -6,6 +6,7 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const path = require('path');
 const log = require('fancy-log');
+const del = require('del');
 
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
@@ -56,4 +57,9 @@ function compile(options) {
         (fileName) => fileName.replace(/\.vue$/i, ''));
 }
 
-module.exports = { compile };
+function clean(options) {
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    return del(opts.destinationPath + '**/*.js');
+}
+
+module.exports = { compile, clean };
