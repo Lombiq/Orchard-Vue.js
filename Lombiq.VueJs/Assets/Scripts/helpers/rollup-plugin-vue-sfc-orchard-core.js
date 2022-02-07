@@ -76,15 +76,15 @@ module.exports = function vuePlugin() {
                 .join('');
             const className = 'VueComponent-' + pascalCaseName;
 
-            // Inject name and template properties.
-            const pattern = /export\s+default\s*{/;
+            // Inject name and template properties. The "(?<!\/\/.*)" is a negative lookbehind to ignore comments.
+            const pattern = /(?<!\/\/.*)export\s+default\s*{/;
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
             code = code.replace(
                 pattern,
                 `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML,`);
 
             if (isEntryComponent) {
-                code = code.replace('export default {', `window.Vue.component('${componentName}', {`);
+                code = code.replace(pattern, `window.Vue.component('${componentName}', {`);
 
                 let finalSemicolon = code.length - 1;
                 for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) {
