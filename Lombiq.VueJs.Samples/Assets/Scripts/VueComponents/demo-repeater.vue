@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// Since this doesn't have any child components, its data can be very simple.
 export default {
     props: {
         data: {
@@ -22,5 +21,4 @@ export default {
     }
 }
 
-// NEXT STATION: Assets/Scripts/VueComponents/demo-repeater.vue
 </script>

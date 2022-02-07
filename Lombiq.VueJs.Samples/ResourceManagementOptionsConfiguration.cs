@@ -27,6 +27,9 @@ namespace Lombiq.VueJs.Samples
                 .SetDependencies(DemoRepeater);
 
             // We don't need to define an SFC resource for DemoRepeater since it doesn't have child components.
+
+            // On the other hand make sure your .vue files are embedded during build, e.g. include this in the csproj:
+            // <ItemGroup><EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" /></ItemGroup>
         }
 
         public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
