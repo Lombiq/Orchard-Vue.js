@@ -1,0 +1,31 @@
+@* Here a demo Vue.js application will be created. As we are working with components, they need to be housed in an
+   application. This application should do nothing except deliver initialization data. If your app needs to contain any
+   logic or otherwise facilitate interaction between your components, then we suggest introducing a top level SFC for it
+   and passing the initial data into that. *@
+
+@* Make sure to add "@addTagHelper *, Lombiq.VueJs" to your /Views/_ViewImports.cshtml so this tag helper will work.
+
+   Check out /Constants/ResourceNames.cs, you will see that the resource name uses kebab-case and should be the same as
+   the .vue file's name without the extension. This is used to find and render the template shape.
+
+   This tag helper renders the template as a shape (in this case "demo-sfc" becomes VueComponent-DemoShape) and injects
+   the script which was tanspiled using Rollup and Bublé among others.
+
+   You only need to do this for the top component(s) that you want to use in your app directly. *@
+<vue-component area="@FeatureIds.Area" name="@ResourceNames.DemoSfc" />
+
+@* This is the container of the demo app. Use binding to pass the app data into the components. *@
+<div id="demoApp">
+    <demo-sfc v-model="count"></demo-sfc>
+</div>
+
+@* And finally the initialization. Make sure to always use the "depends-on" attribute and include all the components
+   you've injected above using the <vue-component>. *@
+<script at="Foot" depends-on="@ResourceNames.DemoSfc">
+    new Vue({
+        el: '#demoApp',
+        data: @Json.Serialize(new { Count = 10 })
+    });
+</script>
+
+@* NEXT STATION: Assets/Scripts/ViewComponents/demo-sfc.vue *@

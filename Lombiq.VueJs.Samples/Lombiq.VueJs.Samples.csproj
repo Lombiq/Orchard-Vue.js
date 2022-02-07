@@ -17,10 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Assets\Scripts\VueComponents" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="Assets\Apps\demo\components\demo-component.js" />
       <None Include="Assets\Apps\demo\main.js" />
       <None Include="Assets\Apps\demo\options.js" />
@@ -36,10 +32,18 @@
       <EmbeddedResource Update="Views\_ViewImports.cshtml">
         <CopyToPublishDirectory>Never</CopyToPublishDirectory>
       </EmbeddedResource>
+      <EmbeddedResource Update="Views\VueSfc\Index.cshtml">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Assets\Scripts\VueComponents\demo-repeater.vue" />
+      <Content Include="Assets\Scripts\VueComponents\demo-sfc.vue" />
     </ItemGroup>
 
 </Project>

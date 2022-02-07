@@ -27,4 +27,5 @@ gulp.task('watch', () => {
     watch(assetsBasePath + 'Scripts/VueComponents/**/*.js', { verbose: true }, gulp.series('build:vue-sfc'));
 });
 
-// NEXT STATION:
+// END OF TRAINING SECTION
+// The last two stations were shared. Please return to the Readme to start another section.

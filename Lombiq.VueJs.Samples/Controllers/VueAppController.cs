@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lombiq.VueJs.Samples.Controllers
 {
-    // This controller is for returning a Vue.js application in an MVC view, however, you could use any other ways of
+    // This controller is for returning a Vue.js application in an MVC view. However, you could use any other ways of
     // doing it such as injecting as a shape or using widgets.
     public class VueAppController : Controller
     {

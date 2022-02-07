@@ -1,3 +1,4 @@
+using Lombiq.VueJs.Extensions;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 using static Lombiq.VueJs.Samples.Constants.ResourceNames;
@@ -17,6 +18,15 @@ namespace Lombiq.VueJs.Samples
             _manifest
                 .DefineScript(DemoApp)
                 .SetUrl(Root + "/Apps/demo.min.js", Root + "/Apps/demo.js");
+
+            // This resource is not strictly required, but it tells the <vue-component> tag helper which other shapes it
+            // needs to import. As you can see we don't use SetUrl. Only SetDependencies is used if there are any.
+            _manifest
+                .DefineSingleFileComponent(DemoSfc)
+                // This is resolved recursively so you don't need to add more than the direct child components.
+                .SetDependencies(DemoRepeater);
+
+            // We don't need to define an SFC resource for DemoRepeater since it doesn't have child components.
         }
 
         public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
