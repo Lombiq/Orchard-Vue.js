@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
+      <PackageReference Include="OrchardCore.DisplayManagement" Version="1.2.2" />
+      <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
+      <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Assets\Apps\demo\components\demo-component.js" />
+      <None Include="Assets\Apps\demo\main.js" />
+      <None Include="Assets\Apps\demo\options.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Gulpfile.js">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Update="package.json">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\_ViewImports.cshtml">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj" />
+    </ItemGroup>
+
+</Project>

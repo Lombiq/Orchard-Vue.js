@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "dependencies": {
+  },
+  "scripts": {
+    "dotnet-prebuild": "gulp"
+  }
+}
