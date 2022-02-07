@@ -8,6 +8,8 @@ const path = require('path');
 const log = require('fancy-log');
 const del = require('del');
 
+require('./include-in-path');
+
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core')
