@@ -1,11 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
-    <OrchardCoreLibrariesRoot Condition="Exists('$(SolutionDir)src\OrchardCore')">$(SolutionDir)src\OrchardCore</OrchardCoreLibrariesRoot>
-    <OrchardCoreModulesRoot Condition="Exists('$(SolutionDir)src\OrchardCore.Modules')">$(SolutionDir)src\OrchardCore.Modules</OrchardCoreModulesRoot>
   </PropertyGroup>
 
   <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
@@ -23,16 +21,10 @@
     <None Include="..\Licence.md" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+  <ItemGroup>
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.2.2" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
-    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.DisplayManagement\OrchardCore.DisplayManagement.csproj" />
-    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ResourceManagement\OrchardCore.ResourceManagement.csproj" />
-    <ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Module.Targets\OrchardCore.Module.Targets.csproj" />
   </ItemGroup>
 
   <ItemGroup>
