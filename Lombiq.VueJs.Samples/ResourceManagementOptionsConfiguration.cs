@@ -1,8 +1,8 @@
 using Lombiq.VueJs.Extensions;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
-using static Lombiq.VueJs.Samples.Constants.ResourceNames;
 using static Lombiq.VueJs.Samples.Constants.FeatureIds;
+using static Lombiq.VueJs.Samples.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Samples
 {
