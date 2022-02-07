@@ -2,7 +2,7 @@
     <!-- This is the template of the component. If you have IDE plugin for Vue.js, this format
          affords you first-class Vue.js coding support. -->
     <div class="DemoSfc__wrapper">
-        <select class="DemoSfc__select" @change="$emit('input', $event)">
+        <select class="DemoSfc__select" @change="$emit('input', parseInt($event.target.value))">
             <!-- Note the bound "key" property - it must be unique and you should always include
                  it for performance reasons. -->
             <option v-for="n in max"
@@ -24,7 +24,6 @@
 import DemoRepeater from './demo-repeater.vue';
 
 export default {
-    // You don't actually need to provide the "name" or "template" fields, they are automatically
     // added during compilation.
     // name: "demo-sfc",
 

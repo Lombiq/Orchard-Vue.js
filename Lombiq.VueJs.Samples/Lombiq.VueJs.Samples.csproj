@@ -42,8 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Assets\Scripts\VueComponents\demo-repeater.vue" />
-      <Content Include="Assets\Scripts\VueComponents\demo-sfc.vue" />
+      <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
     </ItemGroup>
 
 </Project>
