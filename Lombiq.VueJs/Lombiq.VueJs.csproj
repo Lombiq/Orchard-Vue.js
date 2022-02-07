@@ -8,10 +8,10 @@
     <OrchardCoreModulesRoot Condition="Exists('$(SolutionDir)src\OrchardCore.Modules')">$(SolutionDir)src\OrchardCore.Modules</OrchardCoreModulesRoot>
   </PropertyGroup>
 
-  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
-  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
-  <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
-  
+  <Import Project="$(SolutionDir)src\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Project="$(SolutionDir)src\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+  <Import Project="$(SolutionDir)src\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
@@ -19,6 +19,8 @@
   <ItemGroup>
     <None Remove="node_modules\**" />
     <EmbeddedResource Remove="Gulpfile.js" />
+    <None Include="..\Readme.md" />
+    <None Include="..\Licence.md" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
@@ -40,8 +42,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
-    <ProjectReference Include="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
