@@ -9,7 +9,7 @@ const watch = require('gulp-watch');
 const vueApp = require('../Lombiq.VueJs/Assets/Scripts/helpers/vue-app-compiler-pipeline');
 
 // This is a helper for generating a Gulp pipeline for harvesting Vue Single File Components from the current project's
-// /Assets/VueComponents folder and compiling them to wwwroot.
+// /Assets/Scripts/VueComponents folder and compiling them to wwwroot.
 const vueSfc = require('../Lombiq.VueJs/Assets/Scripts/helpers/vue-sfc-compiler-pipeline');
 
 // Gulp tasks for harvesting and compiling Vue apps and single file components.
@@ -24,7 +24,7 @@ gulp.task('default', gulp.parallel('build:vue-app', 'build:vue-sfc'));
 const assetsBasePath = './Assets/';
 gulp.task('watch', () => {
     watch(assetsBasePath + 'Apps/**/*.js', { verbose: true }, gulp.series('build:vue-app'));
-    watch(assetsBasePath + 'VueComponents/**/*.js', { verbose: true }, gulp.series('build:vue-sfc'));
+    watch(assetsBasePath + 'Scripts/VueComponents/**/*.js', { verbose: true }, gulp.series('build:vue-sfc'));
 });
 
 // NEXT STATION:

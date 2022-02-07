@@ -9,6 +9,6 @@ using OrchardCore.Modules.Manifest;
     Category = "Vue.js",
     Dependencies = new[]
     {
-        "Lombiq.VueJs",
+        Lombiq.VueJs.Constants.FeatureIds.Area,
     }
 )]

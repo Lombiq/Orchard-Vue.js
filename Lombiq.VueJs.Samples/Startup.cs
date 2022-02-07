@@ -1,4 +1,3 @@
-using Lombiq.TrainingDemo;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OrchardCore.Modules;
