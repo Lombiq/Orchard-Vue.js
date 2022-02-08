@@ -17,8 +17,8 @@ export default {
         data: {
             type: Array,
             required: true,
-        }
-    }
-}
+        },
+    },
+};
 
 </script>

@@ -17,19 +17,17 @@ export default {
         data: {
             type: Array,
             required: true,
-        }
+        },
     },
     computed: {
         rows(self) {
-            return self.data.map((row, rowIndex) => Object.assign(
-                { },
-                row,
-                {
-                    id: 'enhancement-table-body-row-' + rowIndex,
-                    stars: ten
-                        .map((_, index) => index < row.random ? '★' : '✰')
-                        .join(''),
-                }));
+            return self.data.map((row, rowIndex) => ({
+                ...row,
+                id: 'enhancement-table-body-row-' + rowIndex,
+                stars: ten
+                    .map((_, index) => (index < row.random ? '★' : '✰'))
+                    .join(''),
+            }));
         },
     },
 };

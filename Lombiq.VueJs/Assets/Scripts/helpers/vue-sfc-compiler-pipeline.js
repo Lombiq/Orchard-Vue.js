@@ -1,4 +1,3 @@
-const buble = require('rollup-plugin-buble');
 const alias = require('rollup-plugin-alias');
 const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
@@ -51,7 +50,6 @@ function compile(options) {
                 'process.env.BUILD': JSON.stringify('web'),
             }),
             commonjs(),
-            buble(),
         ],
         null,
         (fileName) => fileName.replace(/\.vue$/i, ''));

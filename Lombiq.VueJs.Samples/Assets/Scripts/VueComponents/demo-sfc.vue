@@ -33,12 +33,12 @@ export default {
     props: {
         value: {
             type: Number,
-            required: true
+            required: true,
         },
         max: {
             type: null,
             default: 10,
-        }
+        },
     },
 
     // Computed properties are like getters, but they are cached and reactive. For example this
@@ -53,8 +53,8 @@ export default {
     // You can include multiple child components. During build the exported SFC is registered as
     // a global component, but its children remain private, composed using the components property.
     components: {
-        DemoRepeater
-    }
+        DemoRepeater,
+    },
 };
 
 // NEXT STATION: Assets/Scripts/VueComponents/demo-repeater.vue

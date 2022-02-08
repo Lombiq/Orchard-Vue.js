@@ -123,7 +123,6 @@ module.exports = function vuePlugin() {
             // Run ESLint. We do it here instead of the plugin pipeline to
             eslintPlugin({
                 throwOnError: true,
-                throwOnWarning: true,
                 formatter: (results) => {
                     for (let i = 0; i < results.length; i++) {
                         const result = results[i];
