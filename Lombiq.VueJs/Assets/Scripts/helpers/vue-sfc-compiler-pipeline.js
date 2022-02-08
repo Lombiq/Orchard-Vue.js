@@ -11,6 +11,7 @@ const del = require('del');
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core')
+const { eslint } = require('rollup-plugin-eslint');
 
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
@@ -32,6 +33,7 @@ function compile(options) {
         components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName), })),
         [
             vuePlugin(),
+            eslint(),
             json(),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             alias({

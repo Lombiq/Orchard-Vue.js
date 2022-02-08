@@ -2,6 +2,7 @@ const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
 const log = require('fancy-log');
+const eslint = require('eslint');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++)
@@ -81,7 +82,7 @@ module.exports = function vuePlugin() {
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
             code = code.replace(
                 pattern,
-                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML,`);
+                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML, // eslint-disable-line`);
 
             if (isEntryComponent) {
                 code = code.replace(pattern, `window.Vue.component('${componentName}', {`);
