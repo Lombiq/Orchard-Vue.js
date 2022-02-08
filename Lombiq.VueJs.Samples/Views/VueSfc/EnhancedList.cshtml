@@ -10,7 +10,7 @@
 
 <form id="enhanced-list">
     <fieldset id="controls">
-        <input type="number" name="page" value="@Model.Page" min="1" max="20"/>
+        <input type="number" name="page" value="@Model.Page" min="1" max="10"/>
         <input type="submit" value="@T["Update"]"/>
     </fieldset>
 
@@ -28,7 +28,7 @@
                 <th>@T["Number"]</th>
                 <th>@T["Date"]</th>
                 <th>@T["Day"]</th>
-                <th>@T["Random"]</th>
+                <th>@T["Score"]</th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -50,15 +50,27 @@
 
 @* Here we replace the enhanced elements with vue components using vanilla Javascript. *@
 <script at="Foot" depends-on="@dependencies">
-    document.getElementById('controls').innerHTML = '<enhancement-control v-model="page">';
+    document.getElementById('controls').innerHTML = '<enhancement-control v-model="page" :max="10">';
 
     const tableBody = document.createElement(@ResourceNames.EnhancementTableBody.JsonHtmlContent());
     tableBody.setAttribute(':data', 'data');
     document.getElementById('table-body').replaceWith(tableBody);
 
+    const url = @(Orchard.Action<VueSfcController>(controller => controller.GetList(999)).JsonHtmlContent());
     window.app = new Vue({
         el: '#enhanced-list',
         data: @Json.Serialize(new { Model.Page, Model.Data }),
+        watch: {
+            page: function (page) {
+                const self = this;
+                fetch(url.replace('999', page))
+                    .then((response) => response.json())
+                    .then((data) => {
+                        self.data = data;
+                        history.replaceState(undefined, undefined, '?page=' + page)
+                    });
+            },
+        },
     });
 </script>
 
