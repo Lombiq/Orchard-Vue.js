@@ -3,6 +3,7 @@ const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
 const log = require('fancy-log');
 const eslint = require('eslint');
+const eslintPlugin = require('rollup-plugin-eslint').eslint;
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++)
@@ -29,6 +30,10 @@ function onlyScript(source) {
     }
 }
 
+function lastItem(array) {
+    return array[array.length - 1];
+}
+
 module.exports = function vuePlugin() {
     return {
         name: 'rollup-plugin-vue-sfc-orchard-core',
@@ -47,12 +52,16 @@ module.exports = function vuePlugin() {
 
             // Get and trim the source code.
             const source = await readFile(filePath, 'utf8')
-            let code = onlyScript(source);
+            let code = onlyScript(source).trim();
+
+            // Reappend leading space.
+            const leadingSpace = lastItem(source.substring(0, source.indexOf(code) + 1).split('\n'));
+            if (leadingSpace && leadingSpace.match(/^\s+$/)) code = leadingSpace + code;
 
             // Create mapping information and restore first line's indent.
             const first = source.substring(0, source.indexOf(code) + 1).split('\n');
             const firstRow = first.length;
-            const firstRowColumnOffset = first[first.length - 1].length;
+            const firstRowColumnOffset = lastItem(first);
             for (let i = 1; i < firstRowColumnOffset; i++) code = ' ' +  code;
 
             // Create mapping for the first row.
@@ -82,18 +91,54 @@ module.exports = function vuePlugin() {
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
             code = code.replace(
                 pattern,
-                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML, // eslint-disable-line`);
+                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML,` +
+                // This line is intentionally compressed to simplify the mapping.
+                ' /* eslint-disable-line */' +
+                // We can't verify this rule, because line breaks added by the code will always be LF even on Windows
+                // and it would be needless complexity. If you have linebreak issues they will crop up in your pure JS
+                // files anyway.
+                ' /* eslint-disable linebreak-style */');
 
             if (isEntryComponent) {
                 code = code.replace(pattern, `window.Vue.component('${componentName}', {`);
 
-                let finalSemicolon = code.length - 1;
-                for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) {
-                    // Prevent overshooting if the optional semicolon is not used in the final expression.
-                    if (finalSemicolon > 0 && code[finalSemicolon - 1] === '}') break;
+                if (code[code.length - 1] === '}') {
+                    // If the last character is the closing brace that needs to be treated separately. No semicolon here
+                    // because we want ESLint to know about it not being there in the original source.
+                    code += ')';
                 }
-                code = code.substring(0, finalSemicolon) + ');';
+                else {
+                    let finalSemicolon = code.length - 1;
+                    for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) {
+                        // Prevent overshooting if the optional semicolon is not used in the final expression.
+                        if (finalSemicolon > 0 && code[finalSemicolon - 1] === '}') break;
+                    }
+                    code = code.substring(0, finalSemicolon) + ')' + (code[finalSemicolon] === ';' ? ';' : '');
+                }
             }
+
+            // Add trailing newline. This is not normal for .vue files but expected from .js files.
+            code += '\n';
+
+            // Run ESLint. We do it here instead of the plugin pipeline to
+            eslintPlugin({
+                throwOnError: true,
+                throwOnWarning: true,
+                formatter: (results) => {
+                    for (let i = 0; i < results.length; i++) {
+                        const result = results[i];
+                        for (let j = 0; j < result.messages.length; j++) {
+                            const message = result.messages[j];
+                            message.line += firstRow - 1;
+                        }
+                    }
+
+                    const formatter = eslint.CLIEngine.getFormatter("stylish");
+
+                    //return JSON.stringify(results, undefined, 2);
+                    return formatter(results);
+                },
+            }).transform(code, id);
 
             return { code, map };
         },
