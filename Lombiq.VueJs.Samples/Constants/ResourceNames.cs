@@ -6,5 +6,8 @@
 
         public const string DemoSfc = "demo-sfc";
         public const string DemoRepeater = "demo-repeater";
+
+        public const string EnhancementControl = "enhancement-control";
+        public const string EnhancementTableBody = "enhancement-table-body";
     }
 }

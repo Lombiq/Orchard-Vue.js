@@ -45,4 +45,8 @@
       <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Views\VueSfc\EnhancedList.cshtml" />
+    </ItemGroup>
+
 </Project>
