@@ -1,5 +1,7 @@
 ﻿<template>
     <div class="d-flex justify-content-between">
+        <!-- Use the event modifiers like ".prevent" when working with native events to cut down on
+             event handling boilerplate -->
         <button type="button"
                 class="btn btn-primary"
                 :class="{ disabled: value <= 1 }"
@@ -35,4 +37,6 @@ export default {
         },
     },
 };
+
+// NEXT STATION: Assets/Scripts/VueComponents/enhancement-table-body.vue
 </script>
