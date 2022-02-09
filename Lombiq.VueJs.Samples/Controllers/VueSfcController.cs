@@ -1,4 +1,4 @@
-﻿using Lombiq.VueJs.Samples.ViewModels;
+using Lombiq.VueJs.Samples.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using OrchardCore.Modules;
@@ -43,6 +43,7 @@ namespace Lombiq.VueJs.Samples.Controllers
 
         // What is in this method isn't really important, just some sample data to show change.
         [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "It's not security critical.")]
+        [SuppressMessage("Security", "SCS0005:Weak random number generator.", Justification = "Same.")]
         private IEnumerable<EnhancedListViewModel.EnhancedListViewModelData> GetDataForPage(int page) =>
             Enumerable.Range((page - 1) * 10, 10)
                 .Select(index => new EnhancedListViewModel.EnhancedListViewModelData
