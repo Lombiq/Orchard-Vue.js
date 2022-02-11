@@ -14,7 +14,11 @@ Do you want to quickly try out this project and see it in action? Check it out i
 1. Make sure that you have the latest **14.x** version (it can't be a later one because Gulp [doesn't officially support 14.x even](https://github.com/gulpjs/gulp/discussions/2649), let alone more recent ones) of [Node.js](https://nodejs.org/en/) installed that fits your system architecture (x64 or x86).
 2. Install or update NPM to the latest version using the command: `npm install --global npm@7.9.0`. You may also install [PNPM](https://pnpm.io/) with `npm install --global pnpm`.
 3. Install or update the Gulp CLI globally with this command: `npm install -g gulp-cli`.
-3. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly *C:\Program Files\NodeJS**) to the list and move it to the top.
+4. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly *C:\Program Files\NodeJS**) to the list and move it to the top.
+5. Before you start, add this to your project file so the _.vue_ files are recognized as embedded views:
+```xml
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+```
 
 
 ## Using Vue.js node packages
@@ -34,13 +38,6 @@ In these shapes you can use any format you want (e.g. JSX templates) and referen
 ## Using Vue.js Single File Components
 
 The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
-
-Before you start, add this to your project file so the _.vue_ files are recognized as embedded views:
-```xml
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
-  </ItemGroup>
-```
 
 What you need to know to write your own _.vue_ file:
 - Your component's script should have a `<template>` and `<script>` element in that order.
