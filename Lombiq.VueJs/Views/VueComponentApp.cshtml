@@ -1,0 +1,34 @@
+@using GraphQL
+@using Lombiq.VueJs.Models
+@using OrchardCore.ContentManagement.Utilities
+@{
+    VueComponentApp shapeModel = Model.ShapeModel;
+
+    var dependsOn = "vuejs," + shapeModel.ComponentName;
+    var aspName = shapeModel.ComponentName + "-VueApp";
+
+    var arguments = shapeModel
+        .ViewModel
+        .Properties()
+        .Select(property => property.Name)
+        .Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\"");
+}
+
+<div id="@shapeModel.Id" class="@shapeModel.Class">
+    @Html.Raw($"<{shapeModel.ComponentName} {string.Join(" ", arguments)}></{shapeModel.ComponentName}>")
+</div>
+
+<script at="Foot" depends-on="@dependsOn" asp-name="@aspName">
+const appId = @shapeModel.Id.JsonHtmlContent();
+const componentName = @shapeModel.ComponentName.JsonHtmlContent();
+const data = @Json.Serialize(shapeModel.ViewModel);
+
+if (!('applications' in Vue)) Vue.applications = { };
+if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
+
+data.$appId = appId;
+Vue.applications[componentName].push(new Vue({
+    el: '#' + appId,
+    data: data,
+}));
+</script>
