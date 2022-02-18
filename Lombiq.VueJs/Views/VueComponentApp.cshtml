@@ -26,9 +26,10 @@ const data = @Json.Serialize(shapeModel.ViewModel);
 if (!('applications' in Vue)) Vue.applications = { };
 if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
 
-data.$appId = appId;
-Vue.applications[componentName].push(new Vue({
+const app = new Vue({
     el: '#' + appId,
     data: data,
-}));
+});
+app.$appId = appId;
+Vue.applications[componentName].push(app);
 </script>
