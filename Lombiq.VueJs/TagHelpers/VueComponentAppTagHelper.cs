@@ -1,7 +1,9 @@
 using Lombiq.VueJs.Models;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using OrchardCore.DisplayManagement;
 using OrchardCore.ResourceManagement;
 using System.Threading.Tasks;
@@ -38,7 +40,13 @@ namespace Lombiq.VueJs.TagHelpers
         {
             await base.ProcessAsync(context, output);
 
-            var shapeModel = new VueComponentApp(JObject.FromObject(Model))
+            var jObject = JObject.FromObject(
+                Model,
+                JsonSerializer.Create(new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                }));
+            var shapeModel = new VueComponentApp(jObject)
             {
                 Id = Id,
                 Class = Class,
