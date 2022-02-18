@@ -6,11 +6,12 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using OrchardCore.DisplayManagement;
 using OrchardCore.ResourceManagement;
+using System;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers
 {
-    [HtmlTargetElement("vue-component-app", Attributes = "area,name,id")]
+    [HtmlTargetElement("vue-component-app", Attributes = "area,name")]
     public class VueComponentAppTagHelper : VueComponentTagHelper
     {
         private readonly IDisplayHelper _displayHelper;
@@ -39,6 +40,8 @@ namespace Lombiq.VueJs.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             await base.ProcessAsync(context, output);
+
+            if (string.IsNullOrWhiteSpace(Id)) Id = $"{Name}_{Guid.NewGuid():N}";
 
             var jObject = JObject.FromObject(
                 Model,
