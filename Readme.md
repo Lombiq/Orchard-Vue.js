@@ -83,9 +83,8 @@ The Rollup plugin automatically registers each component you include (but not th
 If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module name="my-article" model="@data" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names, id and class are optional. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
 
 ```html
-<script at="Foot" depends-on="my-article-VueApp">
+<script at="Foot" depends-on="unique-id-VueApp">
     const app = Vue.applications['my-article'].filter((app) => app.$appId === 'unique-id')[0];
-    // Or if there can be only one: const app = Vue.applications['my-article'][0];
 </script>
 ```
 
