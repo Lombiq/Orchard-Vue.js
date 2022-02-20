@@ -1,10 +1,6 @@
 using Lombiq.HelpfulLibraries.Libraries.Mvc;
-using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using Lombiq.VueJs.Samples.Controllers;
-using OpenQA.Selenium;
-using Shouldly;
-using System;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Tests.UI.Extensions
