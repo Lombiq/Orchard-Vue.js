@@ -4,6 +4,7 @@ const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const fs = require('fs');
 const path = require('path');
 
 const rollupPipeline = require('./rollup-pipeline')
@@ -12,13 +13,20 @@ const { getVueApps } = require('./get-vue-files');
 const defaultOptions = {
     rootPath: './Assets/Apps/',
     destinationPath: './wwwroot/apps/',
-    vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
+    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
 };
 
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+
+    if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
+        throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);
+    }
+    if (!fs.lstatSync(opts.vueJsNodeModulesPath).isDirectory()) {
+        throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" is not a directory!`);
+    }
 
     return rollupPipeline(
         opts.destinationPath,

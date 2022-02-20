@@ -3,6 +3,7 @@ const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const fs = require('fs');
 const path = require('path');
 const log = require('fancy-log');
 const del = require('del');
@@ -14,10 +15,11 @@ const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core')
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
     destinationPath: './wwwroot/vue/',
-    vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
+    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
 };
+console.log(defaultOptions.vueJsNodeModulesPath);
 
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
@@ -25,6 +27,13 @@ function compile(options) {
     const components = getVueComponents(opts.rootPath);
 
     log('vue component files: ' + components.join(', '));
+
+    if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
+        throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);
+    }
+    if (!fs.lstatSync(opts.vueJsNodeModulesPath).isDirectory()) {
+        throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" is not a directory!`);
+    }
 
     return rollupPipeline(
         opts.destinationPath,
