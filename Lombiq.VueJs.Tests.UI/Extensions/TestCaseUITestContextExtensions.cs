@@ -1,3 +1,4 @@
+using Atata;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
@@ -12,7 +13,6 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
     {
         public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
         {
-            await context.SignInDirectlyAsync();
 
             await context.TestVueAppAsync();
             await context.TestVueSfcASync();
@@ -90,9 +90,9 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
             VerifyFirstPageFirstRow();
 
             // Check pager behavior.
-            context.Get(byPreviousButton).GetAttribute("hidden").ShouldBe("hidden");
+            context.Get(byPreviousButton).GetAttribute("class").Split().ShouldContain("disabled");
             context.ClickReliablyOn(By.CssSelector("#controls button:last-child"));
-            context.Get(byPreviousButton).GetAttribute("hidden").ShouldBe(expected: null);
+            context.Get(byPreviousButton).GetAttribute("class").Split().ShouldNotContain("disabled");
 
             // Verify page change effect in table.
             var later = today.AddDays(10);
