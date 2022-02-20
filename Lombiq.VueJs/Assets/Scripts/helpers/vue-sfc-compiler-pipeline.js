@@ -41,7 +41,6 @@ function compile(options) {
         [
             vuePlugin(),
             json(),
-            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             alias({
                 vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
                     ? 'vue/dist/vue.common.prod.js'
@@ -54,6 +53,7 @@ function compile(options) {
                 resolve: ['.vue', '.js', '/index.js', '/lib/index.js', '/src/index.js'],
                 ...opts.rollupAlias,
             }),
+            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             replace({
                 'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
                 'process.env.BUILD': JSON.stringify('web'),
