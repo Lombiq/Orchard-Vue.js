@@ -13,7 +13,6 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
     {
         public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
         {
-
             await context.TestVueAppAsync();
             await context.TestVueSfcASync();
             await context.TestVueSfcEnhancedListAsync();
