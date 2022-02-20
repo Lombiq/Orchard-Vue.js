@@ -17,36 +17,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Assets\Apps\demo\components\demo-component.js" />
-      <None Include="Assets\Apps\demo\main.js" />
-      <None Include="Assets\Apps\demo\options.js" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Gulpfile.js">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Update="package.json">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\_ViewImports.cshtml">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\VueSfc\Index.cshtml">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Views\VueSfc\EnhancedList.cshtml" />
     </ItemGroup>
 
 </Project>
