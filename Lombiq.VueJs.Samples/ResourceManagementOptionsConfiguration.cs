@@ -17,7 +17,7 @@ namespace Lombiq.VueJs.Samples
             // This resource will be required for our demo Vue.js application.
             _manifest
                 .DefineScript(DemoApp)
-                .SetUrl(Root + "/Apps/demo.min.js", Root + "/Apps/demo.js");
+                .SetUrl(Root + "/apps/demo.min.js", Root + "/apps/demo.js");
 
             // This resource is not strictly required, but it tells the <vue-component> tag helper which other shapes it
             // needs to import. As you can see we don't use SetUrl. Only SetDependencies is used if there are any.
