@@ -4,10 +4,13 @@
     <div class="DemoSfc__wrapper">
         <select class="DemoSfc__select" @change="$emit('input', parseInt($event.target.value))">
             <!-- Note the bound "key" property - it must be unique and you should always include
-                 it for performance reasons. -->
+                 it for performance reasons. Also the "value" binding is not strictly necessary
+                 but can be useful for communicating value with external libraries, e.g. with
+                 other JS scripts or during UI testing. -->
             <option v-for="n in max"
                     :key="'demo-sfc-' + n"
-                    :selected="value === n">
+                    :selected="value === n"
+                    :value="n">
                 {{ n }}
             </option>
         </select>

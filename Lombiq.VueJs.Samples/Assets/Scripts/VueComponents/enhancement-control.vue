@@ -12,6 +12,7 @@
                 :key="'pager-' + page"
                 class="btn btn-primary"
                 :class="{ disabled: page === value }"
+                type="button"
                 @click.prevent="$emit('input', page)">
             {{ page }}
         </button>
