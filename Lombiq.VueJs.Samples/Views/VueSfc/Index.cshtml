@@ -15,7 +15,7 @@
 <vue-component area="@FeatureIds.Area" name="@ResourceNames.DemoSfc" />
 
 @* This is the container of the demo app. Use binding to pass the app data into the components. *@
-<div id="demoApp">
+<div id="demoApp" data-count="10">
     <demo-sfc v-model="count"></demo-sfc>
 </div>
 
@@ -26,13 +26,14 @@
 <script at="Foot" depends-on="@ResourceNames.DemoSfc">
     window.app = new Vue({
         el: '#demoApp',
-        data: @Json.Serialize(new { Count = 10 })
+        data: @Json.Serialize(new { Count = 10 }),
     });
 
     @* Since the property is bound across the component layers you can edit the top level externally from other JS code
        and it propagates down. *@
     document.getElementById('random').addEventListener('click', function () {
         app.count = Math.floor(Math.random() * 10 + 1);
+        app.$el.setAttribute('data-count', app.count);
     });
 </script>
 

@@ -44,15 +44,19 @@ namespace Lombiq.VueJs.Samples.Controllers
         // What is in this method isn't really important, just some sample data to show change.
         [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "It's not security critical.")]
         [SuppressMessage("Security", "SCS0005:Weak random number generator.", Justification = "Same.")]
-        private IEnumerable<EnhancedListViewModel.EnhancedListViewModelData> GetDataForPage(int page) =>
-            Enumerable.Range((page - 1) * 10, 10)
+        private IEnumerable<EnhancedListViewModel.EnhancedListViewModelData> GetDataForPage(int page)
+        {
+            var today = _clock.UtcNow;
+
+            return Enumerable.Range((page - 1) * 10, 10)
                 .Select(index => new EnhancedListViewModel.EnhancedListViewModelData
                 {
                     Number = index + 1,
-                    Date = T["{0:d}", _clock.UtcNow],
-                    Day = T["{0:dddd}", _clock.UtcNow.AddDays(index)].Value,
+                    Date = T["{0:d}", today.AddDays(index)],
+                    Day = T["{0:dddd}", today.AddDays(index)].Value,
                     Random = new Random(index).Next(10) + 1, // Not actually random, more like deterministic noise.
                 });
+        }
 
         // NEXT STATION: Views/VueSfc/EnhancedList.cshtml
     }
