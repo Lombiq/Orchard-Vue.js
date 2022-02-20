@@ -11,7 +11,7 @@
     <div class="@BlockName">
         <p v-if="showText" class="@(BlockName)__text">{{ text }}</p>
         @* Here is a v-on shorthand for the click event, however, you need to make the Razor compiler to ignore it. *@
-        <button type="button" @@click="showText = !showText" class="@(BlockName)__showHideButton btn">
+        <button type="button" @@click="showText = !showText" class="@(BlockName)__showHideButton btn btn-primary">
             <span v-if="showText">@T["Hide Text"]</span>
             <span v-else>@T["Show Text"]</span>
         </button>

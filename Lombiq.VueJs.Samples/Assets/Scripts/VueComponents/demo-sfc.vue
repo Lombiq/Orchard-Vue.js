@@ -11,6 +11,7 @@
                 {{ n }}
             </option>
         </select>
+        <p>[[ Does localization escape HTML? <span class="not-html" hidden>YES!</span> ]]</p>
         <!-- Here you can see a non-standard expression. The "[[ ... ]]" is unique to this OC
              module: it performs localization via IStringLocalizer at runtime. -->
         <demo-repeater :data="repeaterData">[[ Hello! ]]</demo-repeater>

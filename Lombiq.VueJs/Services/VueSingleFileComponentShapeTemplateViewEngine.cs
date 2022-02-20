@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services
@@ -70,7 +71,7 @@ namespace Lombiq.VueJs.Services
             {
                 var (before, expression, after) = template.Partition(range);
                 var text = expression[2..^2].Trim();
-                template = before + stringLocalizer[text] + after;
+                template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
             }
 
             template = FormattableString.Invariant(
