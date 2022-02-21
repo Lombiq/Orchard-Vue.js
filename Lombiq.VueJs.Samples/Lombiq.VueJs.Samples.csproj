@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
 
   <PropertyGroup>
     <Title>Lombiq Vue.js module for Orchard Core - Samples</Title>
@@ -21,23 +21,23 @@
     <PackageLicenseFile>Licence.md</PackageLicenseFile>
   </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
-      <PackageReference Include="OrchardCore.DisplayManagement" Version="1.2.2" />
-      <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
-      <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2"/>
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.2.2"/>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2"/>
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2"/>
+  </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
-    <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj" />
+    <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj"/>
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.VueJS" Version="1.0.0" />
+    <PackageReference Include="Lombiq.VueJS" Version="1.0.0"/>
   </ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
-    </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue"/>
+  </ItemGroup>
 
 </Project>
