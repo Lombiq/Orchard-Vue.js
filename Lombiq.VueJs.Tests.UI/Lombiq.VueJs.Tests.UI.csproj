@@ -6,14 +6,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Title>UI Test Extensions - Lombiq Vue.js module for Orchard Core</Title>
+    <Title>Lombiq Vue.js module for Orchard Core - UI Test Extensions</Title>
     <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2019, Lombiq Technologies Ltd.</Copyright>
-    <Description>Extensions to aid in UI testing Lombiq Vue.js module for Orchard Core.</Description>
+    <Description>Lombiq Vue.js module for Orchard Core - UI Test Extensions: Extensions to aid in UI testing Lombiq Vue.js module for Orchard Core.</Description>
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/Lombiq.VueJs.Tests.UI/Readme.md</PackageProjectUrl>
     <PackageLicenseFile>Licence.md</PackageLicenseFile>
   </PropertyGroup>
 
@@ -25,6 +25,12 @@
   <ItemGroup>
     <None Include="Licence.md" Pack="true" PackagePath="" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Readme.md">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
