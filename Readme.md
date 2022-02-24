@@ -39,6 +39,8 @@ In these shapes you can use any format you want (e.g. JSX templates) and referen
 
 The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
 
+See a demo video of using Vue.js Single File Components [here](https://www.youtube.com/watch?v=L0qjpQ6THZU).
+
 What you need to know to write your own _.vue_ file:
 - Your component's script should have a `<template>` and `<script>` element in that order.
 - The script must export the module as an object literal ESM style (`export default { ... }`).
