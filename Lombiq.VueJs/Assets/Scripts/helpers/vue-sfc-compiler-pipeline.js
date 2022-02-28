@@ -15,7 +15,7 @@ const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
     destinationPath: './wwwroot/vue/',
-    vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
+    vueJsNodeModulesPath: '../Lombiq.VueJs/Lombiq.VueJs/node_modules',
     rollupAlias: {},
     isProduction: false,
 };

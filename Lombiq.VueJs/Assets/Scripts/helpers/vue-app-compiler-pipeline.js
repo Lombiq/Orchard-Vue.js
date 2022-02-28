@@ -12,7 +12,7 @@ const { getVueApps } = require('./get-vue-files');
 const defaultOptions = {
     rootPath: './Assets/Apps/',
     destinationPath: './wwwroot/apps/',
-    vueJsNodeModulesPath: '../Lombiq.VueJs/node_modules',
+    vueJsNodeModulesPath: '../Lombiq.VueJs/Lombiq.VueJs/node_modules',
     rollupAlias: {},
     isProduction: false,
 };
