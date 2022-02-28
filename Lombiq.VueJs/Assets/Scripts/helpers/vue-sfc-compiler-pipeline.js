@@ -10,7 +10,7 @@ const del = require('del');
 
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
-const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core')
+const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
@@ -29,7 +29,7 @@ function compile(options) {
 
     return rollupPipeline(
         opts.destinationPath,
-        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName), })),
+        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName) })),
         [
             vuePlugin(),
             json(),
