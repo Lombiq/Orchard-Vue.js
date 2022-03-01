@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const log = require('fancy-log');
 
-const rollupPipeline = require('./rollup-pipeline')
+const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
 
 const defaultOptions = {
@@ -32,7 +32,7 @@ function compile(options) {
     return rollupPipeline(
         opts.destinationPath,
         getVueApps(opts.rootPath)
-            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js'), })),
+            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js') })),
         [
             json(),
             alias({
