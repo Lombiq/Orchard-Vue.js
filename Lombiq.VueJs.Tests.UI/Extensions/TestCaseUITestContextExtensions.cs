@@ -1,4 +1,3 @@
-using Atata;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
@@ -27,10 +26,10 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
 
             context.Missing(byText);
 
-            context.ClickReliablyOn(byButton);
+            await context.ClickReliablyOnAsync(byButton);
             context.Exists(byText);
 
-            context.ClickReliablyOn(byButton);
+            await context.ClickReliablyOnAsync(byButton);
             context.Missing(byText);
         }
 
@@ -43,7 +42,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
             // Test the random button.
             for (var i = 0; i < 10; i++)
             {
-                context.ClickReliablyOn(By.Id("random"));
+                await context.ClickReliablyOnAsync(By.Id("random"));
 
                 var count = int.Parse(
                     context.Get(By.Id("demoApp")).GetAttribute("data-count"),
@@ -58,7 +57,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
             // Go through all dropdown options.
             for (var number = (int)Numeric.One; number <= 10; number++)
             {
-                context.SetDropdown("dropdown", (Numeric)number);
+                await context.SetDropdownAsync("dropdown", (Numeric)number);
 
                 context.GetAll(byItem).Count.ShouldBe(number);
             }
@@ -90,7 +89,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
 
             // Check pager behavior.
             context.Get(byPreviousButton).GetAttribute("class").Split().ShouldContain("disabled");
-            context.ClickReliablyOn(By.CssSelector("#controls button:last-child"));
+            await context.ClickReliablyOnAsync(By.CssSelector("#controls button:last-child"));
             context.Get(byPreviousButton).GetAttribute("class").Split().ShouldNotContain("disabled");
 
             // Verify page change effect in table.
@@ -102,7 +101,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
                 string.Format(culture, "{0:dddd}", later),
                 "★★★★★★★★★★");
 
-            context.ClickReliablyOn(byPreviousButton);
+            await context.ClickReliablyOnAsync(byPreviousButton);
             VerifyFirstPageFirstRow();
         }
 
