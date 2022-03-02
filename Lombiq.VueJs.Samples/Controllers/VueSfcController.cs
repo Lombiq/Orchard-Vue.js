@@ -26,6 +26,10 @@ namespace Lombiq.VueJs.Samples.Controllers
         // Open this from under /Lombiq.VueJs.Samples/VueSfc/Index
         public ActionResult Index() => View();
 
+        [HttpGet]
+        // Open this from under /Lombiq.VueJs.Samples/VueSfc/AppTagHelper
+        public ActionResult AppTagHelper() => View();
+
         // NEXT STATION: Views/VueSfc/Index.cshtml
 
         // Here we show off a way of doing progressive enhancement. This first action has everything you need to access
