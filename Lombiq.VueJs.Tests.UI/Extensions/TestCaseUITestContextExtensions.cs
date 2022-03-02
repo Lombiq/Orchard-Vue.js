@@ -13,7 +13,8 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
         public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
         {
             await context.TestVueAppAsync();
-            await context.TestVueSfcASync();
+            await context.TestVueSfcASync(withAppTagHelper: false);
+            await context.TestVueSfcASync(withAppTagHelper: true);
             await context.TestVueSfcEnhancedListAsync();
         }
 
@@ -33,9 +34,9 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
             context.Missing(byText);
         }
 
-        public static async Task TestVueSfcASync(this UITestContext context)
+        public static async Task TestVueSfcASync(this UITestContext context, bool withAppTagHelper)
         {
-            await context.GoToVueSfcAsync();
+            await (withAppTagHelper ? context.GoToVueSfcAppTagHelperAsync() : context.GoToVueSfcAsync());
 
             var byItem = By.ClassName("DemoRepeater__listItem");
 
@@ -45,7 +46,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
                 await context.ClickReliablyOnAsync(By.Id("random"));
 
                 var count = int.Parse(
-                    context.Get(By.Id("demoApp")).GetAttribute("data-count"),
+                    context.Get(By.Id(withAppTagHelper ? "unique-id" : "demoApp")).GetAttribute("data-count"),
                     CultureInfo.InvariantCulture);
 
                 context.GetAll(byItem).Count.ShouldBe(count);

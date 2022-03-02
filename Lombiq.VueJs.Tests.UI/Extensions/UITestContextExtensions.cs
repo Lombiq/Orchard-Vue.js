@@ -13,6 +13,9 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
         public static Task GoToVueSfcAsync(this UITestContext context) =>
             context.GoToAsync<VueSfcController>(controller => controller.Index());
 
+        public static Task GoToVueSfcAppTagHelperAsync(this UITestContext context) =>
+            context.GoToAsync<VueSfcController>(controller => controller.AppTagHelper());
+
         public static Task GoToVueSfcEnhancedListAsync(this UITestContext context, int page = 1) =>
             context.GoToAsync<VueSfcController>(controller => controller.EnhancedList(page));
     }
