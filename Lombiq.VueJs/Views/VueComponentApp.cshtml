@@ -11,25 +11,36 @@
         .ViewModel
         .Properties()
         .Select(property => property.Name)
-        .Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\"");
+        .ToList();
+
+    var vModel = string.Empty;
+    if (arguments.Contains("value"))
+    {
+        vModel = "v-model=\"value\"";
+        arguments.Remove("value");
+    }
+
+    var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));
 }
 
 <div id="@shapeModel.Id" class="@shapeModel.Class">
-    @Html.Raw($"<{shapeModel.ComponentName} {string.Join(" ", arguments)}></{shapeModel.ComponentName}>")
+    @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
 </div>
 
 <script at="Foot" depends-on="@dependsOn" asp-name="@aspName">
-const appId = @shapeModel.Id.JsonHtmlContent();
-const componentName = @shapeModel.ComponentName.JsonHtmlContent();
-const data = @Json.Serialize(shapeModel.ViewModel);
+(function() {
+    const appId = @shapeModel.Id.JsonHtmlContent();
+    const componentName = @shapeModel.ComponentName.JsonHtmlContent();
+    const data = @Json.Serialize(shapeModel.ViewModel);
 
-if (!('applications' in Vue)) Vue.applications = { };
-if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
+    if (!('applications' in Vue)) Vue.applications = { };
+    if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
 
-const app = new Vue({
-    el: '#' + appId,
-    data: data,
-});
-app.$appId = appId;
-Vue.applications[componentName].push(app);
+    const app = new Vue({
+        el: '#' + appId,
+        data: data,
+    });
+    app.$appId = appId;
+    Vue.applications[componentName].push(app);
+})();
 </script>
