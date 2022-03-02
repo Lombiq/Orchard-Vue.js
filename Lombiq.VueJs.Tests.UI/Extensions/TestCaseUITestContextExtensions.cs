@@ -39,7 +39,7 @@ namespace Lombiq.VueJs.Tests.UI.Extensions
 
             var byItem = By.ClassName("DemoRepeater__listItem");
 
-            // Test the random button.
+            // Test the "Pick Random!" button.
             for (var i = 0; i < 10; i++)
             {
                 await context.ClickReliablyOnAsync(By.Id("random"));
