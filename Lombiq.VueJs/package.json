@@ -4,7 +4,7 @@
     "dotnet-prebuild": "gulp"
   },
   "dependencies": {
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "es6-promise": "4.2.6",
     "source-map": "^0.7.3",
     "vue": "2.6.14",
