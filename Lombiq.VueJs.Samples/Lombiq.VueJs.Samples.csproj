@@ -5,6 +5,11 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
+  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+  <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
@@ -34,10 +39,6 @@
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
     <PackageReference Include="Lombiq.VueJS" Version="1.0.0"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue"/>
   </ItemGroup>
 
 </Project>
