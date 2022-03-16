@@ -8,92 +8,91 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lombiq.VueJs.TagHelpers
+namespace Lombiq.VueJs.TagHelpers;
+
+[HtmlTargetElement("vue-component", Attributes = "area,name")]
+public class VueComponentTagHelper : TagHelper
 {
-    [HtmlTargetElement("vue-component", Attributes = "area,name")]
-    public class VueComponentTagHelper : TagHelper
+    private readonly IDisplayHelper _displayHelper;
+    private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
+    private readonly IResourceManager _resourceManager;
+    private readonly IShapeFactory _shapeFactory;
+
+    [HtmlAttributeName("area")]
+    public string Area { get; set; }
+
+    [HtmlAttributeName("name")]
+    public string Name { get; set; }
+
+    [HtmlAttributeName("children")]
+    public string Children { get; set; }
+
+    public VueComponentTagHelper(
+        IDisplayHelper displayHelper,
+        IOptions<ResourceManagementOptions> resourceManagementOptions,
+        IResourceManager resourceManager,
+        IShapeFactory shapeFactory)
     {
-        private readonly IDisplayHelper _displayHelper;
-        private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
-        private readonly IResourceManager _resourceManager;
-        private readonly IShapeFactory _shapeFactory;
+        _displayHelper = displayHelper;
+        _resourceManagementOptions = resourceManagementOptions;
+        _resourceManager = resourceManager;
+        _shapeFactory = shapeFactory;
+    }
 
-        [HtmlAttributeName("area")]
-        public string Area { get; set; }
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        _resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
 
-        [HtmlAttributeName("name")]
-        public string Name { get; set; }
+        var scriptName = "vue-component-" + Name;
+        _resourceManager.InlineManifest
+            .DefineScript(scriptName)
+            .SetUrl($"/{Area}/vue/{Name}.min.js", $"/{Area}/vue/{Name}.js")
+            .SetDependencies(ResourceNames.Vue);
+        _resourceManager.RegisterScript(scriptName).AtFoot();
 
-        [HtmlAttributeName("children")]
-        public string Children { get; set; }
-
-        public VueComponentTagHelper(
-            IDisplayHelper displayHelper,
-            IOptions<ResourceManagementOptions> resourceManagementOptions,
-            IResourceManager resourceManager,
-            IShapeFactory shapeFactory)
+        foreach (var resourceName in FindResourceNames())
         {
-            _displayHelper = displayHelper;
-            _resourceManagementOptions = resourceManagementOptions;
-            _resourceManager = resourceManager;
-            _shapeFactory = shapeFactory;
+            var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
+
+            output.PostElement.AppendHtml(
+                await _displayHelper.ShapeExecuteAsync(
+                    await _shapeFactory.CreateAsync(shapeType)));
         }
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-        {
-            _resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
+        output.TagName = null;
+    }
 
-            var scriptName = "vue-component-" + Name;
-            _resourceManager.InlineManifest
-                .DefineScript(scriptName)
-                .SetUrl($"/{Area}/vue/{Name}.min.js", $"/{Area}/vue/{Name}.js")
-                .SetDependencies(ResourceNames.Vue);
-            _resourceManager.RegisterScript(scriptName).AtFoot();
+    private IEnumerable<string> FindResourceNames()
+    {
+        var resourceNames = (Children?.Split(',') ?? Enumerable.Empty<string>())
+            .SelectWhere(child => child.Trim(), child => !string.IsNullOrEmpty(child))
+            .ToHashSet();
+        resourceNames.Add(Name);
 
-            foreach (var resourceName in FindResourceNames())
-            {
-                var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
+        // The key is the resource name and the value is one of its dependencies.
+        var componentDependencies = _resourceManagementOptions
+                .Value
+                .ResourceManifests
+                .SingleResourceTypeToLookup(ResourceTypes.SingleFileComponent);
 
-                output.PostElement.AppendHtml(
-                    await _displayHelper.ShapeExecuteAsync(
-                        await _shapeFactory.CreateAsync(shapeType)));
-            }
+        AddShapesRecursively(resourceNames, resourceNames, componentDependencies);
 
-            output.TagName = null;
-        }
+        return resourceNames;
+    }
 
-        private IEnumerable<string> FindResourceNames()
-        {
-            var resourceNames = (Children?.Split(',') ?? Enumerable.Empty<string>())
-                .SelectWhere(child => child.Trim(), child => !string.IsNullOrEmpty(child))
-                .ToHashSet();
-            resourceNames.Add(Name);
+    private static void AddShapesRecursively(
+        ISet<string> resourceNames,
+        IEnumerable<string> resourcesToCheck,
+        ILookup<string, string> componentDependencies)
+    {
+        var newDependencies = resourcesToCheck
+            .SelectMany(resource => componentDependencies[resource])
+            .Where(dependency => !resourceNames.Contains(dependency))
+            .ToHashSet();
 
-            // The key is the resource name and the value is one of its dependencies.
-            var componentDependencies = _resourceManagementOptions
-                    .Value
-                    .ResourceManifests
-                    .SingleResourceTypeToLookup(ResourceTypes.SingleFileComponent);
+        if (!newDependencies.Any()) return;
 
-            AddShapesRecursively(resourceNames, resourceNames, componentDependencies);
-
-            return resourceNames;
-        }
-
-        private static void AddShapesRecursively(
-            ISet<string> resourceNames,
-            IEnumerable<string> resourcesToCheck,
-            ILookup<string, string> componentDependencies)
-        {
-            var newDependencies = resourcesToCheck
-                .SelectMany(resource => componentDependencies[resource])
-                .Where(dependency => !resourceNames.Contains(dependency))
-                .ToHashSet();
-
-            if (!newDependencies.Any()) return;
-
-            resourceNames.AddRange(newDependencies);
-            AddShapesRecursively(resourceNames, newDependencies, componentDependencies);
-        }
+        resourceNames.AddRange(newDependencies);
+        AddShapesRecursively(resourceNames, newDependencies, componentDependencies);
     }
 }
