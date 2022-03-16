@@ -134,7 +134,6 @@ module.exports = function vuePlugin() {
 
                     const formatter = eslint.CLIEngine.getFormatter("stylish");
 
-                    //return JSON.stringify(results, undefined, 2);
                     return formatter(results);
                 },
             }).transform(code, id);

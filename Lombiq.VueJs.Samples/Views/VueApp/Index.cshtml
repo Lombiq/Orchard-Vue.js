@@ -21,10 +21,10 @@ you want to localize text only in Orchard Core) and other data like the anti-for
 
 <script at="Foot" depends-on="@ResourceNames.DemoApp">
     window.initDemoApp(@Json.Serialize(new
-                       {
-                           Element = "#demoApp",
-                           Text = T["Hi there!"].Value, // Notice that this text is localized.
-                       }));
+    {
+        Element = "#demoApp",
+        Text = T["Hi there!"].Value, // Notice that this text is localized.
+    }));
 </script>
 
 @*NEXT STATION: Assets/Apps/demo/main.js*@
