@@ -1,7 +1,6 @@
-namespace Lombiq.VueJs.Constants
+namespace Lombiq.VueJs.Constants;
+
+public static class ResourceTypes
 {
-    public static class ResourceTypes
-    {
-        public const string SingleFileComponent = "sfc";
-    }
+    public const string SingleFileComponent = "sfc";
 }

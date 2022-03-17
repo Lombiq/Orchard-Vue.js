@@ -1,14 +1,13 @@
 using Newtonsoft.Json.Linq;
 
-namespace Lombiq.VueJs.Models
-{
-    public class VueComponentApp
-    {
-        public string Id { get; set; }
-        public string Class { get; set; }
-        public string ComponentName { get; set; }
-        public JObject ViewModel { get; }
+namespace Lombiq.VueJs.Models;
 
-        public VueComponentApp(JObject viewModel) => ViewModel = viewModel;
-    }
+public class VueComponentApp
+{
+    public string Id { get; set; }
+    public string Class { get; set; }
+    public string ComponentName { get; set; }
+    public JObject ViewModel { get; }
+
+    public VueComponentApp(JObject viewModel) => ViewModel = viewModel;
 }
