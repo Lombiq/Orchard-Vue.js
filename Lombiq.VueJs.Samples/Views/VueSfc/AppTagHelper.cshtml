@@ -1,0 +1,42 @@
+@* This is the same you've just seen in Index.cshtml, but using the <vue-component-app> tag helper. This is specifically
+   for when your app only has one top level component (sometimes referred to as a "root component" or "app component")
+   and all the app does is JSON serializes a data component and binds it to this app. This way you don't need to create
+   a boilerplate container HTML or script. If you want to add additional logic it's still possible but the basic data
+   holder app is automatically created for you. This is all done via the VueComponentApp shape so don't override that
+   unless you are absolutely sure of what you are doing. *@
+
+@* The first 2 arguments are required and they behave identically to <vue-component>. The rest are optional.
+
+   The "id" will be the wrapper element's ID used by the "el" property in "new Vue({ el })". If not provided one is
+   generated from the root component name and a random GUID. This is also used as the "asp-name" of initializer script
+   so make sure to include $"{id}-VueApp" in any following script's "depends-on" argument.
+
+   The "class" are just passed to the wrapper element as regular HTML "class" attribute.
+
+   The "model" is turned into JSON and becomes the "data" property in "new Vue({ data })". It's immediate properties are
+   also bound to the top root component's properties so only include what it needs. The serialization uses the camelCase
+   naming strategy. If your model contains a "value", that is two-way bound using "v-model" instead. *@
+<vue-component-app area="@FeatureIds.Area"
+                   name="@ResourceNames.DemoSfc"
+                   id="unique-id"
+                   class="additional-class-for-styling"
+                   model="@(new { Value = 10 })" />
+
+<button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
+
+<script at="Foot" depends-on="DemoSfcRootComponent-VueApp">
+    @* The initializer script automatically creates the "Vue.applications" object, and adds an Array type property with
+       the name of the root component (i.e. 'demo-sfc'). It contains any components of that type in the current page, in
+       case you need only one. Each app created with <vue-component-app> receives a special "$appId" property with the
+       value of the "id" so if you plan to use it from dependent scripts like here make sure to set that attribute. *@
+    const componentName = @ResourceNames.DemoSfc.JsonHtmlContent();
+    const app = Vue.applications[componentName].filter((app) => app.$appId === 'unique-id')[0];
+
+    @* This is the same as before except we call it "value" instead of "count". *@
+    document.getElementById('random').addEventListener('click', function () {
+        app.value = Math.floor(Math.random() * 10 + 1);
+        app.$el.setAttribute('data-count', app.value);
+    });
+</script>
+
+@* NEXT STATION: Assets/Scripts/ViewComponents/demo-sfc.vue *@

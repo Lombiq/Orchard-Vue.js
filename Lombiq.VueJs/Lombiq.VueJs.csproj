@@ -14,11 +14,24 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <Title>Lombiq Vue.js module for Orchard Core</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2019, Lombiq Technologies Ltd.</Copyright>
+    <Description>Lombiq Vue.js module for Orchard Core: Orchard Core module that contains Vue.js and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js</PackageProjectUrl>
+    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="..\Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Remove="node_modules\**" />
     <EmbeddedResource Remove="Gulpfile.js" />
-    <None Include="..\Readme.md" />
-    <None Include="..\Licence.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,9 +46,13 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
     <ProjectReference Include="..\..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.HelpfulLibraries" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+  <Import Project="..\..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
+  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Title>Lombiq Vue.js module for Orchard Core - Samples</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2019, Lombiq Technologies Ltd.</Copyright>
+    <Description>Lombiq Vue.js module for Orchard Core - Samples: Sample content that demonstrates the features of Lombiq Vue.js module for Orchard Core.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/Lombiq.VueJs.Samples/Readme.md</PackageProjectUrl>
+    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.3.0"/>
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.3.0"/>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.3.0"/>
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.3.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj"/>
+  </ItemGroup>
+
+</Project>
