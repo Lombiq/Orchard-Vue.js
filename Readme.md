@@ -21,6 +21,11 @@ Do you want to quickly try out this project and see it in action? Check it out i
 ```
 
 
+## Sample project
+
+If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md).
+
+
 ## Using Vue.js node packages
 
 The packages will be automatically installed on build (i.e. `dotnet build`) or you can trigger it using the `npm install` command.
@@ -91,7 +96,7 @@ If your Vue app is just going to include one top level component and bind to tha
 ```
 
 
-### Advantages of SFCs.
+### Advantages of SFCs
 
 - Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, property autocomplete, Go to Definition for custom elements, and all other advantages of static Vue development.
 - The script and template are kept together, which makes understanding the individual component easier.
