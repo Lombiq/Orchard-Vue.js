@@ -5,7 +5,7 @@
 <script>
 export default {
     props: {
-        date: { type: Date, required: true },
+        date: { required: true },
         culture: { type: String, default: () => window.Vue.$orchardCore.dateTime.culture },
         timeZone: { type: String, default: () => window.Vue.$orchardCore.dateTime.timeZone },
         options: {
@@ -19,7 +19,7 @@ export default {
     },
     computed: {
         serialized(self) {
-            return JSON.parse(JSON.stringify(self.date));
+            return typeof self.date === 'string' ? self.date : JSON.parse(JSON.stringify(self.date));
         },
         formatted(self) {
             const formatter = new Intl.DateTimeFormat(
@@ -34,7 +34,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-
-</style>
