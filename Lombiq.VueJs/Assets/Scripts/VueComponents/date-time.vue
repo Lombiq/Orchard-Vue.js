@@ -10,14 +10,12 @@ export default {
         timeZone: { type: String, default: () => window.Vue.$orchardCore.dateTime.timeZone },
         options: {
             // Defaults to "short date" format if this property is not passed.
-            default: () => {
-                return {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                };
-            }
-        }
+            default: () => ({
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            }),
+        },
     },
     computed: {
         serialized(self) {
@@ -31,10 +29,10 @@ export default {
             const date = typeof self.date === 'string'
                 ? new Date(self.date)
                 : self.date;
-            return  formatter.format(date);
-        }
-    }
-}
+            return formatter.format(date);
+        },
+    },
+};
 </script>
 
 <style scoped>

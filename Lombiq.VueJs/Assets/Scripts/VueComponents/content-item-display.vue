@@ -24,6 +24,6 @@ export default {
                 ? self.contentItem.displayText
                 : self.displayText;
         },
-    }
-}
+    },
+};
 </script>
