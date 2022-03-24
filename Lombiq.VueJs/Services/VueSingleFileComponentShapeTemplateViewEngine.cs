@@ -19,17 +19,20 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
     private readonly IMemoryCache _memoryCache;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
 
     public VueSingleFileComponentShapeTemplateViewEngine(
         IShapeTemplateFileProviderAccessor fileProviderAccessor,
         IMemoryCache memoryCache,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        IEnumerable<IVueSingleFileComponentShapeAmender> amenders)
     {
         _fileProviderAccessor = fileProviderAccessor;
         _memoryCache = memoryCache;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _amenders = amenders;
     }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
@@ -65,7 +68,8 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
                 template.IndexOfOrdinal(value: "]]", startIndex: index + 2) + 2))
             .WithoutOverlappingRanges(isSortedByStart: true);
 
-        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Metadata.Type);
+        var shapeName = displayContext.Value.Metadata.Type;
+        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
 
         foreach (var range in localizationRanges.OrderByDescending(range => range.End.Value))
         {
@@ -75,10 +79,16 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         }
 
         template = FormattableString.Invariant(
-            $"<script type=\"x-template\" class=\"{displayContext.Value.Metadata.Type}\">{template}</script>");
+            $"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
 
         _memoryCache.Set(cacheName, template);
-        return new HtmlString(template);
+
+        var entries = new List<object>();
+        foreach (var amender in _amenders) entries.AddRange(await amender.PrependAsync(shapeName));
+        entries.Add(new HtmlString(template));
+        foreach (var amender in _amenders) entries.AddRange(await amender.AppendAsync(shapeName));
+
+        return new HtmlContentBuilder(entries);
     }
 
     private static int StartOf(string text, string element) =>
