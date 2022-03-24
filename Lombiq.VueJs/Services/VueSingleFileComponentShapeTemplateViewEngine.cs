@@ -37,28 +37,7 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
     {
-        var cacheName = CachePrefix + relativePath;
-
-        if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
-        {
-            return new HtmlString(cachedTemplate);
-        }
-
-        var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
-
-        string rawContent;
-
-        await using (var stream = fileInfo.CreateReadStream())
-        using (var reader = new StreamReader(stream))
-        {
-            rawContent = await reader.ReadToEndAsync();
-        }
-
-        var templateStarts = StartOf(rawContent, element: "template");
-        var scriptStarts = StartOf(rawContent, element: "script");
-
-        var templateOuter = rawContent[templateStarts..scriptStarts];
-        var template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
+        var template = await GetTemplateAsync(relativePath);
 
         var localizationRanges = template
             .AllIndexesOf("[[")
@@ -81,14 +60,41 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         template = FormattableString.Invariant(
             $"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
 
-        _memoryCache.Set(cacheName, template);
-
         var entries = new List<object>();
         foreach (var amender in _amenders) entries.AddRange(await amender.PrependAsync(shapeName));
         entries.Add(new HtmlString(template));
         foreach (var amender in _amenders) entries.AddRange(await amender.AppendAsync(shapeName));
 
         return new HtmlContentBuilder(entries);
+    }
+
+    private async Task<string> GetTemplateAsync(string relativePath)
+    {
+        var cacheName = CachePrefix + relativePath;
+
+        if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
+        {
+            return cachedTemplate;
+        }
+
+        var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
+
+        string rawContent;
+
+        await using (var stream = fileInfo.CreateReadStream())
+        using (var reader = new StreamReader(stream))
+        {
+            rawContent = await reader.ReadToEndAsync();
+        }
+
+        var templateStarts = StartOf(rawContent, element: "template");
+        var scriptStarts = StartOf(rawContent, element: "script");
+
+        var templateOuter = rawContent[templateStarts..scriptStarts];
+        var template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
+
+        _memoryCache.Set(cacheName, template);
+        return template;
     }
 
     private static int StartOf(string text, string element) =>
