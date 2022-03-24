@@ -40,7 +40,9 @@ module.exports = function vuePlugin() {
         async resolveId(source, importer) {
             if (!source.toLowerCase().endsWith('.vue')) return null;
 
-            return (source.startsWith('./') && importer)
+            const isRelativePath = source.startsWith('./') || source.startsWith('../');
+
+            return (isRelativePath && importer)
                 ? `${path.join(path.dirname(importer.replace(/\?vue-sfc/, '')), source)}?vue-sfc`
                 : `${source}?vue-sfc-entry`;
         },
