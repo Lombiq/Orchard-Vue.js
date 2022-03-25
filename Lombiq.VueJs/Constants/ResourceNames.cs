@@ -9,5 +9,6 @@ public static class ResourceNames
     {
         public const string ContentItemDisplay = "content-item-display";
         public const string DateTime = "date-time";
+        public const string ListFetcher = "list-fetcher";
     }
 }
