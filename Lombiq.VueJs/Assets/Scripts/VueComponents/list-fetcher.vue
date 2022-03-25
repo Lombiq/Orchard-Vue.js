@@ -16,7 +16,7 @@ export default {
             const self = this;
             if (!self.query) return;
 
-            const url = new URL(self.url);
+            const url = new URL(self.url, window.location.href);
             Object.entries(self.query)
                 .forEach((pair) => url.searchParams.set(pair[0], pair[1]));
 
