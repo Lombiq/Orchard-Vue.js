@@ -35,13 +35,13 @@ export default {
                         alert(data.data ? data.data : data.error);
 
                         self.$emit('items', []);
-                        self.$emit('maxPage', 0);
+                        self.$emit('max-page', 0);
 
                         return;
                     }
 
                     self.$emit('items', data.items);
-                    self.$emit('maxPage', data.pageCount - 1);
+                    self.$emit('max-page', data.pageCount - 1);
                 });
         },
     },
