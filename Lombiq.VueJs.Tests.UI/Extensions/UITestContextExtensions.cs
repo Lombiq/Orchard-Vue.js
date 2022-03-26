@@ -1,4 +1,4 @@
-using Lombiq.HelpfulLibraries.Libraries.Mvc;
+using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Lombiq.Tests.UI.Services;
 using Lombiq.VueJs.Samples.Controllers;
 using System.Threading.Tasks;
