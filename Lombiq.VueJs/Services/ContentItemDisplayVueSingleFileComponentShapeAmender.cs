@@ -28,7 +28,7 @@ public class ContentItemDisplayVueSingleFileComponentShapeAmender : ServerSideVa
 
         return new(new
         {
-            Prefix = link?.Split(dummyContentItemId)[0] ?? "/Contents/ContentItems/",
+            BaseUrl = link?.Split(dummyContentItemId)[0] ?? "/Contents/ContentItems/",
         });
     }
 }

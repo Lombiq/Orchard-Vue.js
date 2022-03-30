@@ -1,5 +1,5 @@
 <template>
-    <a :href="prefix + id">
+    <a :href="baseUrl + id">
         {{ title }}
         <slot></slot>
     </a>
@@ -8,7 +8,7 @@
 <script>
 export default {
     props: {
-        prefix: { default: window.Vue.$orchardCore.contentItemDisplay.prefix },
+        baseUrl: { default: window.Vue.$orchardCore.contentItemDisplay.baseUrl },
         contentItem: { },
         contentItemId: { },
         displayText: { },
