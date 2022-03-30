@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace YesSql;
 
-public static class ControllerExtensions
+public static class QueryExtensions
 {
     public static async Task<object> GetPageFromQueryAsync<T>(
         this IQuery<T> query,
