@@ -1,3 +1,4 @@
+using Lombiq.VueJs.Models;
 using OrchardCore.Settings;
 using System;
 using System.Linq;
@@ -7,7 +8,7 @@ namespace YesSql;
 
 public static class QueryExtensions
 {
-    public static async Task<object> GetPageFromQueryAsync<T>(
+    public static async Task<GetPageFromQueryResult> GetPageFromQueryAsync<T>(
         this IQuery<T> query,
         ISiteService siteService,
         int page,
@@ -16,11 +17,11 @@ public static class QueryExtensions
     {
         var total = await query.CountAsync();
         var (pageSize, pageCount) = await siteService.GetPaginationInfoAsync(total);
-        return new
+        return new GetPageFromQueryResult
         {
-            items = (await query.PaginateAsync(page, pageSize)).Select(select),
-            pageSize,
-            pageCount,
+            Items = (await query.PaginateAsync(page, pageSize)).Select(select),
+            PageSize = pageSize,
+            PageCount = pageCount,
         };
     }
 }
