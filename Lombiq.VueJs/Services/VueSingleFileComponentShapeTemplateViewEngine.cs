@@ -19,26 +19,62 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
     private readonly IMemoryCache _memoryCache;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
 
     public VueSingleFileComponentShapeTemplateViewEngine(
         IShapeTemplateFileProviderAccessor fileProviderAccessor,
         IMemoryCache memoryCache,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        IEnumerable<IVueSingleFileComponentShapeAmender> amenders)
     {
         _fileProviderAccessor = fileProviderAccessor;
         _memoryCache = memoryCache;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _amenders = amenders;
     }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
+    {
+        var template = await GetTemplateAsync(relativePath);
+
+        var localizationRanges = template
+            .AllIndexesOf("[[")
+            .Where(index => template[(index + 2)..].Contains("]]"))
+            .Select(index => new Range(
+                index,
+                template.IndexOfOrdinal(value: "]]", startIndex: index + 2) + 2))
+            .WithoutOverlappingRanges(isSortedByStart: true);
+
+        var shapeName = displayContext.Value.Metadata.Type;
+        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
+
+        foreach (var range in localizationRanges.OrderByDescending(range => range.End.Value))
+        {
+            var (before, expression, after) = template.Partition(range);
+            var text = expression[2..^2].Trim();
+            template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
+        }
+
+        template = FormattableString.Invariant(
+            $"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
+
+        var entries = new List<object>();
+        foreach (var amender in _amenders) entries.AddRange(await amender.PrependAsync(shapeName));
+        entries.Add(new HtmlString(template));
+        foreach (var amender in _amenders) entries.AddRange(await amender.AppendAsync(shapeName));
+
+        return new HtmlContentBuilder(entries);
+    }
+
+    private async Task<string> GetTemplateAsync(string relativePath)
     {
         var cacheName = CachePrefix + relativePath;
 
         if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
         {
-            return new HtmlString(cachedTemplate);
+            return cachedTemplate;
         }
 
         var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
@@ -57,28 +93,8 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         var templateOuter = rawContent[templateStarts..scriptStarts];
         var template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
 
-        var localizationRanges = template
-            .AllIndexesOf("[[")
-            .Where(index => template[(index + 2)..].Contains("]]"))
-            .Select(index => new Range(
-                index,
-                template.IndexOfOrdinal(value: "]]", startIndex: index + 2) + 2))
-            .WithoutOverlappingRanges(isSortedByStart: true);
-
-        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Metadata.Type);
-
-        foreach (var range in localizationRanges.OrderByDescending(range => range.End.Value))
-        {
-            var (before, expression, after) = template.Partition(range);
-            var text = expression[2..^2].Trim();
-            template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
-        }
-
-        template = FormattableString.Invariant(
-            $"<script type=\"x-template\" class=\"{displayContext.Value.Metadata.Type}\">{template}</script>");
-
         _memoryCache.Set(cacheName, template);
-        return new HtmlString(template);
+        return template;
     }
 
     private static int StartOf(string text, string element) =>

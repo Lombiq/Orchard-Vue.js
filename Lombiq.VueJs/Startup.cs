@@ -18,5 +18,8 @@ public class Startup : StartupBase
         services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
         services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
         services.AddTagHelpers<VueComponentTagHelper>();
+
+        services.AddScoped<IVueSingleFileComponentShapeAmender, ContentItemDisplayVueSingleFileComponentShapeAmender>();
+        services.AddScoped<IVueSingleFileComponentShapeAmender, DateTimeVueSingleFileComponentShapeAmender>();
     }
 }
