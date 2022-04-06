@@ -1,7 +1,15 @@
 <template>
     <div class="btn-group">
-        <button type="button" :class="buttonClass">Action</button>
-        <button type="button" class="dropdown-toggle dropdown-toggle-split" :class="buttonClass" data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button"
+                :class="buttonClass"
+                @click="location.href='options[0].url'">
+            {{ text ? text : options[0].text }}
+        </button>
+        <button type="button"
+                class="dropdown-toggle dropdown-toggle-split"
+                :class="buttonClass"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
             <span class="visually-hidden">[[ Toggle Dropdown ]]</span>
         </button>
         <ul class="dropdown-menu">
@@ -9,7 +17,7 @@
                 <a v-if="option.text && option.text.trim && option.text.trim().startsWith('---')">
                     <hr class="dropdown-divider">
                 </a>
-                <a v-else :href="option.href" class="dropdown-item">
+                <a v-else :href="option.url" class="dropdown-item">
                     {{ option.text }}
                 </a>
             </li>
