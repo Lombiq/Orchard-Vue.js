@@ -1,8 +1,6 @@
 <template>
     <div class="btn-group">
-        <button type="button"
-                :class="buttonClass"
-                @click="location.href='options[0].url'">
+        <button type="button" :class="buttonClass" @click="mainAction">
             {{ text ? text : options[0].text }}
         </button>
         <button type="button"
@@ -29,11 +27,16 @@
 export default {
     props: {
         type: { type: String, default: 'primary' },
-        text: { default: null, },
+        text: { default: () => null },
         options: { type: Array, required: true }, // { text: String, href: String }[]
     },
     computed: {
         buttonClass(self) { return 'btn btn-' + self.type; },
-    }
-}
+    },
+    methods: {
+        mainAction() {
+            window.location.href = this.options[0].url;
+        },
+    },
+};
 </script>
