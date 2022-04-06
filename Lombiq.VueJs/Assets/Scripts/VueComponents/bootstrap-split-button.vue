@@ -6,11 +6,11 @@
         <button type="button"
                 class="dropdown-toggle dropdown-toggle-split"
                 :class="buttonClass"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
+                :aria-expanded="open.toString()"
+                @click="open = !open">
             <span class="visually-hidden">[[ Toggle Dropdown ]]</span>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu" :class="{ show: open }" :style="`margin-top: ${marginTop}px`">
             <li v-for="option in options" :key="option.text">
                 <a v-if="option.text && option.text.trim && option.text.trim().startsWith('---')">
                     <hr class="dropdown-divider">
@@ -30,12 +30,21 @@ export default {
         text: { default: () => null },
         options: { type: Array, required: true }, // { text: String, href: String }[]
     },
+    data: () => ({
+        open: false,
+        marginTop: 0,
+    }),
     computed: {
         buttonClass(self) { return 'btn btn-' + self.type; },
     },
     methods: {
         mainAction() {
             window.location.href = this.options[0].url;
+        },
+    },
+    watch: {
+        open(value) {
+            if (value) this.marginTop = this.$el.querySelector('.dropdown-toggle-split').offsetHeight;
         },
     },
 };
