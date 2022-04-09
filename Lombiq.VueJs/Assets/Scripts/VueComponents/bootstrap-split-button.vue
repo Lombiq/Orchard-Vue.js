@@ -1,17 +1,21 @@
 <template>
-    <div class="btn-group">
-        <button type="button" :class="`btn btn-${type} ${buttonClasses}`" @click="mainAction">
+    <div class="btn-group bootstrapSplitButton">
+        <button type="button"
+                :class="`bootstrapSplitButton__main btn btn-${type} ${buttonClasses}`"
+                @click="mainAction">
             {{ text ? text : options[0].text }}
         </button>
         <button type="button"
                 class="dropdown-toggle dropdown-toggle-split"
-                :class="`btn btn-${type} ${toggleClasses}`"
+                :class="`bootstrapSplitButton__dropdownButton btn btn-${type} ${toggleClasses}`"
                 :aria-expanded="open.toString()"
                 @click="open = !open">
             <span class="visually-hidden">[[ Toggle Dropdown ]]</span>
         </button>
         <div v-if="open" class="w-100 h-100 fixed-bottom" style="z-index: auto" @click="open = false"></div>
-        <ul class="dropdown-menu" :class="`${dropdownClasses} ${open ? 'show' : ''}`" :style="`margin-top: ${marginTop}px`">
+        <ul class="bootstrapSplitButton__dropdownMenu dropdown-menu"
+            :class="`${dropdownClasses} ${open ? 'show' : ''}`"
+            :style="`margin-top: ${marginTop}px`">
             <li v-for="option in options" :key="option.text">
                 <a v-if="option.text && option.text.trim && option.text.trim().startsWith('---')">
                     <hr class="dropdown-divider">
