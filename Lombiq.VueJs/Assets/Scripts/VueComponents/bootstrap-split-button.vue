@@ -2,12 +2,14 @@
     <div class="btn-group bootstrapSplitButton">
         <button type="button"
                 :class="`bootstrapSplitButton__main btn btn-${type} ${buttonClasses}`"
+                :disabled="self.options.length === 0"
                 @click="mainAction">
             {{ text ? text : options[0].text }}
         </button>
         <button type="button"
                 class="dropdown-toggle dropdown-toggle-split"
                 :class="`bootstrapSplitButton__dropdownButton btn btn-${type} ${toggleClasses}`"
+                :disabled="self.options.length === 0"
                 :aria-expanded="open.toString()"
                 @click="open = !open">
             <span class="visually-hidden">[[ Toggle Dropdown ]]</span>
