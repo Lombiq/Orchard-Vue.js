@@ -14,10 +14,10 @@
         .ToList();
 
     var vModel = string.Empty;
-    if (arguments.Contains("value"))
+    if (arguments.Contains(shapeModel.ModelProperty))
     {
-        vModel = "v-model=\"value\"";
-        arguments.Remove("value");
+        vModel = $"v-model=\"{shapeModel.ModelProperty}\"";
+        arguments.Remove(shapeModel.ModelProperty);
     }
 
     var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));

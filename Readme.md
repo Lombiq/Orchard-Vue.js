@@ -85,9 +85,10 @@ export default {
 ```
 
 You can include the `<vue-component area="My.Module name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
+
 The Rollup plugin automatically registers each component you include (but not their children) as globally accessible components. So you don't need to list them in your app's `components` property. Indeed the component object isn't exposed as a global variable.
 
-If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module name="my-article" model="@data" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names, id and class are optional. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
+If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module name="my-article" model="@data" model-property="value" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names. The model-property, id and class are optional. If you don't specify a model-property it defaults to "value". If you have set custom `model.prop` in your component, set this to the same value to indicate that the property is to be set up with two-way binding via `v-model`. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
 
 ```html
 <script at="Foot" depends-on="unique-id-VueApp">
