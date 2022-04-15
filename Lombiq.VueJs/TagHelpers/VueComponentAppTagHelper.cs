@@ -23,6 +23,9 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     [HtmlAttributeName("class")]
     public string Class { get; set; }
 
+    [HtmlAttributeName("model-property")]
+    public string ModelProperty { get; set; } = "value";
+
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
 
@@ -53,6 +56,7 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
         {
             Id = Id,
             Class = Class,
+            ModelProperty = ModelProperty,
             ComponentName = Name,
         };
 
