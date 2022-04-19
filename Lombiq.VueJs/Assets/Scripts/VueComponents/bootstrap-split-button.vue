@@ -18,7 +18,7 @@
         <ul class="bootstrapSplitButton__dropdownMenu dropdown-menu"
             :class="`${dropdownClasses} ${open ? 'show' : ''}`"
             :style="`margin-top: ${marginTop}px`">
-            <li v-for="option in options" :key="option.text">
+            <li v-for="option in options" :key="option.text" class="bootstrapSplitButton__dropdownMenuItem">
                 <a v-if="option.text && option.text.trim && option.text.trim().startsWith('---')">
                     <hr class="dropdown-divider">
                 </a>
