@@ -51,7 +51,10 @@ export default {
     },
     watch: {
         open(value) {
-            if (value) this.marginTop = this.$el.querySelector('.dropdown-toggle-split').offsetHeight;
+            if (!value) return;
+            const shadowOffset = this.type === 'transparent' ? 0 : 8;
+            this.marginTop =
+                shadowOffset + this.$el.querySelector('.dropdown-toggle-split').offsetHeight;
         },
     },
 };
