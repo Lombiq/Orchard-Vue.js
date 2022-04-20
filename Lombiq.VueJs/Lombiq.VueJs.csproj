@@ -24,11 +24,11 @@
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js</PackageProjectUrl>
-    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="License.md" Pack="true" PackagePath="" />
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Remove="node_modules\**" />
