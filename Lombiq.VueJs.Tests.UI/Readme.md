@@ -1,16 +1,12 @@
 # Lombiq Vue.js module for Orchard Core - UI Test Extensions
 
-
 [![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
 
-
 ## About
-
 
 Extension methods that test various features in Lombiq Vue.js module for Orchard Core.
 
 Call these from a UI test project that also references _Lombiq.VueJs.Samples_ to verify the module's basic features; as seen in [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions).
-
 
 ## Contributing and support
 
