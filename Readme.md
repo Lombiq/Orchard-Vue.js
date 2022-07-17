@@ -30,7 +30,9 @@ The packages will be automatically installed on build (i.e. `dotnet build`) or y
 
 Place your template files (.cshtml or .liquid) to the *Views/VueComponents* folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
 
+```cshtml
     <shape type="VueComponent-App_UserProfile"></shape>
+```
 
 In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component JavaScript code.
 
