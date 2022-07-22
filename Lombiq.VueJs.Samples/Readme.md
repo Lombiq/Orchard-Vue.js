@@ -14,9 +14,9 @@ If you'd like to learn by example, check out our [Open-Source Orchard Core Exten
 
 You can start with either top level sections. Indented sections assume you've already read through their parents.  
 
-* [Writing Vue.js applications in Orchard Core modules](Controllers/VueAppController.cs)
-* [Writing Vue.js Single File Components in Orchard Core modules](Controllers/VueSfcController.cs)
-  * [Progressive enhancement with SFCs](Controllers/VueSfcController.cs#L31)
+- [Writing Vue.js applications in Orchard Core modules](Controllers/VueAppController.cs)
+- [Writing Vue.js Single File Components in Orchard Core modules](Controllers/VueSfcController.cs)
+  - [Progressive enhancement with SFCs](Controllers/VueSfcController.cs#L31)
 
 ## Miscellaneous Notes
 
