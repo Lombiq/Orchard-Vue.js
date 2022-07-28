@@ -1,44 +1,40 @@
 # Lombiq Vue.js module for Orchard Core
 
-
-
 ## About
 
 [Orchard Core](http://orchardproject.net/) module that contains [Vue.js](https://vuejs.org/) and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.
 
 Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 
-
 ## Prerequisites
 
 1. Make sure that you have the latest **14.x** version (it can't be a later one because Gulp [doesn't officially support 14.x even](https://github.com/gulpjs/gulp/discussions/2649), let alone more recent ones) of [Node.js](https://nodejs.org/en/) installed that fits your system architecture (x64 or x86).
 2. Install or update NPM to the latest version using the command: `npm install --global npm@7.9.0`. You may also install [PNPM](https://pnpm.io/) with `npm install --global pnpm`.
 3. Install or update the Gulp CLI globally with this command: `npm install -g gulp-cli`.
-4. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly *C:\Program Files\NodeJS**) to the list and move it to the top.
+4. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly _C:\Program Files\NodeJS_*) to the list and move it to the top.
 5. Before you start, add this to your project file so the _.vue_ files are recognized as embedded views:
+
 ```xml
   <Import Project="..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
 ```
-
 
 ## Sample project
 
 If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md).
 
-
 ## Using Vue.js node packages
 
 The packages will be automatically installed on build (i.e. `dotnet build`) or you can trigger it using the `npm install` command.
 
-
 ## Adding Vue.js component templates
 
-Place your template files (.cshtml or .liquid) to the *Views/VueComponents* folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
+Place your template files (.cshtml or .liquid) to the _Views/VueComponents_ folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
 
+```cshtml
     <shape type="VueComponent-App_UserProfile"></shape>
+```
 
 In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component JavaScript code.
-
 
 ## Using Vue.js Single File Components
 
@@ -47,12 +43,14 @@ The module identifies Single File Components in the _Assets/Scripts/VueComponent
 See a demo video of using Vue.js Single File Components [here](https://www.youtube.com/watch?v=L0qjpQ6THZU).
 
 What you need to know to write your own _.vue_ file:
+
 - Your component's script should have a `<template>` and `<script>` element in that order.
 - The script must export the module as an object literal ESM style (`export default { ... }`).
   - You don't need to specify the `name` and `template` properties, as these are automatically provided during compilation.
-- If your component has child components, include the _.vue_ extension when importing them. 
+- If your component has child components, include the _.vue_ extension when importing them.
 
 For example if you have the file _My.Module/Assets/Scripts/VueComponents/my-article.vue_:
+
 ```vue
 <template>
     <article>
@@ -96,32 +94,28 @@ If your Vue app is just going to include one top level component and bind to tha
 </script>
 ```
 
-
 ### Advantages of SFCs
 
 - Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, property autocomplete, Go to Definition for custom elements, and all other advantages of static Vue development.
 - The script and template are kept together, which makes understanding the individual component easier.
 - No need to escape the `@` on events.
 
-
 ### Limitations and Considerations
 
 - No other Razor features including string localizer with arguments.
 - Including a script element in your template will break it. Although you shouldn't do that anyway.
-- As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue. 
+- As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue.
 
 Regarding the points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. For example pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
 
-
 ## Other resources
 
-Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the *node_modules* folder to *wwwroot* using Gulp when building the project (or you can trigger it with the `gulp` command).
+Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the _node_modules_ folder to _wwwroot_ using Gulp when building the project (or you can trigger it with the `gulp` command).
 
 - [ES6-Promise](https://www.npmjs.com/package/es6-promise): Use this if you want to use ES6 Promises (or an ES6 module that uses them e.g. `axios`) include this resource so it will work in IE as well.
 
-
 ## Contributing and support
 
-Bug reports, feature requests, comments, questions, code contributions, and love letters are warmly welcome, please do so via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
+Bug reports, feature requests, comments, questions, code contributions and love letters are warmly welcome. You can send them to us via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
 
 This project is developed by [Lombiq Technologies](https://lombiq.com/). Commercial-grade support is available through Lombiq.
