@@ -5,7 +5,6 @@ using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -58,8 +57,7 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
         }
 
-        template = string.Create(
-            CultureInfo.InvariantCulture,
+        template = FormattableString.Invariant(
             $"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
 
         var entries = new List<object>();
