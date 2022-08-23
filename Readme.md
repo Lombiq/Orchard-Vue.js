@@ -1,5 +1,7 @@
 # Lombiq Vue.js module for Orchard Core
 
+[![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
+
 ## About
 
 [Orchard Core](http://orchardproject.net/) module that contains [Vue.js](https://vuejs.org/) and commonly used Vue.js components to be used in other Vue.js apps as dependencies. Provides extensibility to create Vue.js component templates as Orchard Core shapes making them able to override in themes or modules.
