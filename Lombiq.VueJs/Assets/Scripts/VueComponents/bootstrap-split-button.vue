@@ -53,8 +53,8 @@ export default {
         open(value) {
             if (!value) return;
             const shadowOffset = this.type === 'transparent' ? 0 : 8;
-            this.marginTop =
-                shadowOffset + this.$el.querySelector('.dropdown-toggle-split').offsetHeight;
+            this.marginTop = shadowOffset +
+                this.$el.querySelector('.dropdown-toggle-split').offsetHeight;
         },
     },
 };
