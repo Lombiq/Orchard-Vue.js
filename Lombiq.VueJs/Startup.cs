@@ -13,7 +13,6 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IShapeTemplateHarvester, VueComponentTemplateHarvester>();
-        services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
 
         services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
         services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();

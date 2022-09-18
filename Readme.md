@@ -110,12 +110,6 @@ If your Vue app is just going to include one top level component and bind to tha
 
 Regarding the points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. For example pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
 
-## Other resources
-
-Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the _node_modules_ folder to _wwwroot_ using Gulp when building the project (or you can trigger it with the `gulp` command).
-
-- [ES6-Promise](https://www.npmjs.com/package/es6-promise): Use this if you want to use ES6 Promises (or an ES6 module that uses them e.g. `axios`) include this resource so it will work in IE as well.
-
 ## Contributing and support
 
 Bug reports, feature requests, comments, questions, code contributions and love letters are warmly welcome. You can send them to us via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
