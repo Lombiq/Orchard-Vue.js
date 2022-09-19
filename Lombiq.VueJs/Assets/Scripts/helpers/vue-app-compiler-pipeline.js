@@ -6,7 +6,6 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const fs = require('fs');
 const path = require('path');
-const log = require('fancy-log');
 
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');

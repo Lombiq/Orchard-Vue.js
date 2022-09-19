@@ -1,7 +1,6 @@
-const gulp = require('gulp');
-const all = require('gulp-all');
-const rename = require('gulp-rename');
+const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 
 const { getVueApps } = require('./get-vue-files');
 
@@ -13,16 +12,29 @@ const defaultOptions = {
     rollupAlias: {},
 };
 
+function globPromise(path) {
+    return new Promise((resolve, reject) =>
+        glob(path, (err, matches) =>
+            err ? reject(err) : resolve(matches)));
+}
+
 const compileCss = (options) => {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    return all(getVueApps(opts.rootPath)
-        .map((appName) => {
-            const entryPath = path.join(opts.rootPath, appName, opts.stylesPath, '/*.css');
+    return Promise.all(getVueApps(opts.rootPath)
+        .map(async (appName) => {
+            const paths = await globPromise(path.join(
+                opts.rootPath,
+                appName,
+                opts.stylesPath,
+                '*.css'));
 
-            return gulp.src(entryPath)
-                .pipe(rename({ dirname: '' }))
-                .pipe(gulp.dest(opts.destinationPath));
+            for (let i = 0; i < paths.length; i++) {
+                await fs.promises.copyFile(
+                    paths[i],
+                    path.join(opts.destinationPath, path.basename(paths[i]))
+                )
+            }
         }));
 };
 
