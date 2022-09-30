@@ -31,9 +31,6 @@ export default {
             // eslint-disable-next-line
             console.log(window.Vue.$orchardCore.dateTime.culture);
 
-            if (self.culture === "")
-                self.culture = "en-US"
-
             const formatter = new Intl.DateTimeFormat(
                 self.culture,
                 { ...self.options, timeZone: self.timeZone });
