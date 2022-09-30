@@ -26,10 +26,10 @@ export default {
             console.log(self.culture);
             // eslint-disable-next-line
             console.log(JSON.stringify(window.Vue.$orchardCore));
-            // eslint-disable-next-line
-            console.log(JSON.stringify(window.Vue.$orchardCore.dateTime));
-            // eslint-disable-next-line
-            console.log(JSON.stringify(window.Vue.$orchardCore.dateTime.culture));
+
+            if (self.culture === '') {
+                self.culture = 'en-US';
+            }
 
             const formatter = new Intl.DateTimeFormat(
                 self.culture,
