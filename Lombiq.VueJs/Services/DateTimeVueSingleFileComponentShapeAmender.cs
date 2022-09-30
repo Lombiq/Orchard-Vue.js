@@ -1,6 +1,5 @@
 using OrchardCore.Localization;
 using OrchardCore.Modules;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
