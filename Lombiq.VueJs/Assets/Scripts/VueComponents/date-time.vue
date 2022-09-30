@@ -30,7 +30,7 @@ export default {
             console.log(JSON.stringify(window.Vue.$orchardCore.dateTime));
             // eslint-disable-next-line
             console.log(JSON.stringify(window.Vue.$orchardCore.dateTime.culture));
-            
+
             const formatter = new Intl.DateTimeFormat(
                 self.culture,
                 { ...self.options, timeZone: self.timeZone });

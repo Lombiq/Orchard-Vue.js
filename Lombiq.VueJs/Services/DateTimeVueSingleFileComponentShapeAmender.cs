@@ -17,6 +17,6 @@ public class DateTimeVueSingleFileComponentShapeAmender : ServerSideValuesVueSin
         new
         {
             TimeZone = (await _localClock.GetLocalTimeZoneAsync()).TimeZoneId,
-            Culture = CultureInfo.CurrentUICulture.Name, // Same as "@Orchard.CultureName()".
+            Culture = CultureInfo.CurrentCulture.Name, // Same as "@Orchard.CultureName()".
         };
 }
