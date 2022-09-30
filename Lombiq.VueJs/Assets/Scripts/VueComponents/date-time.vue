@@ -25,12 +25,12 @@ export default {
             // eslint-disable-next-line
             console.log(self.culture);
             // eslint-disable-next-line
-            console.log(window.Vue.$orchardCore);
+            console.log(JSON.stringify(window.Vue.$orchardCore));
             // eslint-disable-next-line
-            console.log(window.Vue.$orchardCore.dateTime);
+            console.log(JSON.stringify(window.Vue.$orchardCore.dateTime));
             // eslint-disable-next-line
-            console.log(window.Vue.$orchardCore.dateTime.culture);
-
+            console.log(JSON.stringify(window.Vue.$orchardCore.dateTime.culture));
+            
             const formatter = new Intl.DateTimeFormat(
                 self.culture,
                 { ...self.options, timeZone: self.timeZone });
