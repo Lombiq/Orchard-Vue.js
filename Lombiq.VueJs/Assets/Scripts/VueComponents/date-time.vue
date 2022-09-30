@@ -27,12 +27,10 @@ export default {
             // eslint-disable-next-line
             console.log(JSON.stringify(window.Vue.$orchardCore));
 
-            if (self.culture === '') {
-                self.culture = 'en-US';
-            }
-
             const formatter = new Intl.DateTimeFormat(
-                self.culture,
+                self.culture === ''
+                    ? 'en-US'
+                    : self.culture,
                 { ...self.options, timeZone: self.timeZone });
 
             const date = typeof self.date === 'string'
