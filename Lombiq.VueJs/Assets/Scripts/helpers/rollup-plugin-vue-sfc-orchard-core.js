@@ -1,7 +1,6 @@
 const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
-const log = require('fancy-log');
 const eslint = require('eslint');
 const eslintPlugin = require('rollup-plugin-eslint').eslint;
 
@@ -10,7 +9,7 @@ function onlyScript(source) {
     {
         if (source[i] !== '<') continue;
 
-        let script =    source.substring(i + 1).trim();
+        let script = source.substring(i + 1).trim();
         if (!script.startsWith('script')) continue;
 
         script = script.substring(script.indexOf('>') + 1);

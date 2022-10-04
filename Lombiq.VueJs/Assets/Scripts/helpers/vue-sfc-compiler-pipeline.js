@@ -1,8 +1,8 @@
-const alias = require('rollup-plugin-alias');
-const commonjs = require('rollup-plugin-commonjs');
-const replace = require('rollup-plugin-replace');
-const json = require('rollup-plugin-json');
-const nodeResolve = require('rollup-plugin-node-resolve');
+const alias = require('@rollup/plugin-alias');
+const commonjs = require('@rollup/plugin-commonjs');
+const replace = require('@rollup/plugin-replace');
+const json = require('@rollup/plugin-json');
+const nodeResolve = require('@rollup/plugin-node-resolve');
 const fs = require('fs');
 const path = require('path');
 const log = require('fancy-log');
@@ -21,7 +21,7 @@ const defaultOptions = {
 };
 console.log(defaultOptions.vueJsNodeModulesPath);
 
-function compile(options) {
+async function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     const components = getVueComponents(opts.rootPath);
@@ -35,7 +35,7 @@ function compile(options) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" is not a directory!`);
     }
 
-    return rollupPipeline(
+    const results = await rollupPipeline(
         opts.destinationPath,
         components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName) })),
         [
@@ -62,6 +62,12 @@ function compile(options) {
         ],
         null,
         (fileName) => fileName.replace(/\.vue$/i, ''));
+
+    if (results.length > 0)
+    {
+        for (error of result) console.log(error);
+        process.exit(1);
+    }
 }
 
 function clean(options) {
