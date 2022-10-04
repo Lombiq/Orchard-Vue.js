@@ -1,11 +1,11 @@
-const buble = require('@rollup/plugin-buble');
 const alias = require('@rollup/plugin-alias');
+const buble = require('@rollup/plugin-buble');
 const commonjs = require('@rollup/plugin-commonjs');
-const replace = require('@rollup/plugin-replace');
-const json = require('@rollup/plugin-json');
-const nodeResolve = require('@rollup/plugin-node-resolve');
 const fs = require('fs');
+const json = require('@rollup/plugin-json');
 const path = require('path');
+const replace = require('@rollup/plugin-replace');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');

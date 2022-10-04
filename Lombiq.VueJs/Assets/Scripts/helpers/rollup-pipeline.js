@@ -1,6 +1,6 @@
 const path = require('path');
-const rollup = require('rollup');
 const { minify } = require("terser");
+const { rollup } = require('rollup');
 
 module.exports = function rollupPipeline(
     destinationPath,

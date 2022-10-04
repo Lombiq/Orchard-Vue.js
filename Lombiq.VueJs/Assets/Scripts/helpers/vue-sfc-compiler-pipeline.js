@@ -1,12 +1,12 @@
 const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
-const replace = require('@rollup/plugin-replace');
-const json = require('@rollup/plugin-json');
-const nodeResolve = require('@rollup/plugin-node-resolve');
-const fs = require('fs');
-const path = require('path');
-const log = require('fancy-log');
 const del = require('del');
+const fs = require('fs');
+const json = require('@rollup/plugin-json');
+const log = require('fancy-log');
+const path = require('path');
+const replace = require('@rollup/plugin-replace');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
@@ -65,7 +65,7 @@ async function compile(options) {
 
     if (results.length > 0)
     {
-        for (error of result) console.log(error);
+        for (error of results) console.log(error);
         process.exit(1);
     }
 }
