@@ -15,11 +15,10 @@ const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
     destinationPath: './wwwroot/vue/',
-    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
+    vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
 };
-console.log(defaultOptions.vueJsNodeModulesPath);
 
 async function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
@@ -68,7 +67,7 @@ async function compile(options) {
 
     if (results.length > 0)
     {
-        for (error of results) console.log(error);
+        for (error of results) console.log(error); // TODO replace "console.log" uses with
         process.exit(1);
     }
 }
