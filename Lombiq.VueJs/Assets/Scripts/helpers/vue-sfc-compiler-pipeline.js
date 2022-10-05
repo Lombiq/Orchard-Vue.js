@@ -55,8 +55,11 @@ async function compile(options) {
             }),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             replace({
-                'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
-                'process.env.BUILD': JSON.stringify('web'),
+                values: {
+                    'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
+                    'process.env.BUILD': JSON.stringify('web'),
+                },
+                preventAssignment: true,
             }),
             commonjs(),
         ],
