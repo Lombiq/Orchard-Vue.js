@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.2.29",
+    "eslint": "^8.17.0",
     "fancy-log": "^2.0.0",
     "fs": "0.0.1-security",
     "glob": "8.0.3",
