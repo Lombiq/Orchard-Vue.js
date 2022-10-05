@@ -64,7 +64,7 @@ async function compile(options) {
             commonjs(),
         ],
         null,
-        (fileName) => fileName.replace(/\.vue$/i, ''));
+        (fileName) => fileName.split('.')[0]);
 
     if (results.length > 0)
     {

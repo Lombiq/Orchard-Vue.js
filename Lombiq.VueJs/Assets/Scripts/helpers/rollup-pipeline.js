@@ -48,7 +48,7 @@ module.exports = function rollupPipeline(
                 console.log(bundle.watchFiles);
 
                 const { output } = await bundle.generate(outputOptions);
-                for (const item in output) {
+                for (const item of output) {
                     if (item.type === 'asset') {
                         throw new Error(`Why is this an asset? (${ JSON.stringify(item) })`)
                     }
