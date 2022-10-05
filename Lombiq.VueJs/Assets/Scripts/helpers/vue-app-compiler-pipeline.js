@@ -1,5 +1,4 @@
 const alias = require('@rollup/plugin-alias');
-const buble = require('@rollup/plugin-buble');
 const commonjs = require('@rollup/plugin-commonjs');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
@@ -55,7 +54,6 @@ function compile(options) {
                 preventAssignment: true,
             }),
             commonjs(),
-            buble(),
         ]
     );
 }
