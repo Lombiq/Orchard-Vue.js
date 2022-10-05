@@ -1,8 +1,7 @@
 const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
-const eslint = require('eslint');
-const eslintPlugin = require('rollup-plugin-eslint').eslint;
+const { ESLint } = require('eslint');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++)
@@ -31,6 +30,24 @@ function onlyScript(source) {
 
 function lastItem(array) {
     return array[array.length - 1];
+}
+
+async function lintScript(code, id, firstRow) {
+    const eslint = new ESLint({ errorOnUnmatchedPattern: false });
+    const results = await eslint.lintText(code, { filePath: id });
+
+    if (!Array.isArray(results) || results.length === 0) return;
+
+    for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        for (let j = 0; j < result.messages.length; j++) {
+            const message = result.messages[j];
+            message.line += firstRow - 1;
+        }
+    }
+
+    const formatter = await eslint.loadFormatter("stylish");
+    console.log(formatter.format(results));
 }
 
 module.exports = function vuePlugin() {
@@ -121,23 +138,8 @@ module.exports = function vuePlugin() {
             // Add trailing newline. This is not normal for .vue files but expected from .js files.
             code += '\n';
 
-            // Run ESLint. We do it here instead of the plugin pipeline to
-            eslintPlugin({
-                throwOnError: true,
-                formatter: (results) => {
-                    for (let i = 0; i < results.length; i++) {
-                        const result = results[i];
-                        for (let j = 0; j < result.messages.length; j++) {
-                            const message = result.messages[j];
-                            message.line += firstRow - 1;
-                        }
-                    }
-
-                    const formatter = eslint.CLIEngine.getFormatter("stylish");
-
-                    return formatter(results);
-                },
-            }).transform(code, id);
+            // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
+            await lintScript(code, id, firstRow);
 
             return { code, map };
         },

@@ -2,6 +2,10 @@ const path = require('path');
 const { minify } = require("terser");
 const { rollup } = require('rollup');
 
+function createDirectory(path) {
+    return fs.existsSync(path) ? Promise.resolve() : fs.promises.mkdir(path);
+}
+
 module.exports = function rollupPipeline(
     destinationPath,
     filesAndEntryPaths,
@@ -45,26 +49,24 @@ module.exports = function rollupPipeline(
                 const outputOptions = { format: 'cjs' };
 
                 bundle = await rollup(options);
-                console.log(bundle.watchFiles);
-
                 const { output } = await bundle.generate(outputOptions);
+
                 for (const item of output) {
                     if (item.type === 'asset') {
-                        throw new Error(`Why is this an asset? (${ JSON.stringify(item) })`)
+                        throw new Error(`Why is this an asset? (${ JSON.stringify(item) })`);
                     }
 
                     const outputFileName = (typeof outputFileNameTransform === 'function')
                         ? outputFileNameTransform(item.fileName)
                         : item.fileName;
                     const outputPath = path.join(destinationPath, outputFileName + '.js');
-                    console.log(outputPath);
-                    console.log(JSON.stringify(item));
+                    await createDirectory(path.dirname(outputPath));
+                    await fs.promises.writeFile(outputPath, item.code);
 
-                    const minifyResult = await minify(item.code, { sourceMap: true });
-                    const minified = { ...item, code: minifyResult.code, map: minifyResult.map };
+                    const minified = await minify(item.code, { sourceMap: true });
                     const minifiedPath = outputPath.replace(/\.js$/, '.min.js')
-                    console.log(minifiedPath);
-                    console.log(JSON.stringify(minified));
+                    await fs.promises.writeFile(minifiedPath, minified.code);
+                    await fs.promises.writeFile(minifiedPath + '.map', minified.map);
                 }
             }
             catch (error) {
