@@ -4,28 +4,28 @@ const readFile = require('fs').promises.readFile;
 const { ESLint } = require('eslint');
 
 function onlyScript(source) {
-    for (let i = 0; i < source.length; i++)
-    {
-        if (source[i] !== '<') continue;
+    for (let i = 0; i < source.length; i++) {
+        if (source[i] === '<') {
+            let script = source.substring(i + 1).trim();
 
-        let script = source.substring(i + 1).trim();
-        if (!script.startsWith('script')) continue;
+            if (script.startsWith('script')) {
+                script = script.substring(script.indexOf('>') + 1);
 
-        script = script.substring(script.indexOf('>') + 1);
-        for (let j = script.length - 2; j >= 0; j--)
-        {
-            if (script[j] !== '<' ||
-                script[j + 1] !== '/' ||
-                !script.substring(j + 2).trim().startsWith('script')) {
-                continue;
+                for (let j = script.length - 2; j >= 0; j--) {
+                    if (!(script[j] !== '<' ||
+                        script[j + 1] !== '/' ||
+                        !script.substring(j + 2).trim().startsWith('script'))) {
+                        let inner = script.substring(0, j);
+                        while (inner.startsWith('\n')) inner = inner.substring(1);
+
+                        return inner;
+                    }
+                }
             }
-
-            let inner = script.substring(0, j);
-            while (inner.startsWith('\n')) inner = inner.substring(1);
-
-            return inner;
         }
     }
+
+    throw new Error("Couldn't find the <script> block.");
 }
 
 function lastItem(array) {
@@ -46,14 +46,14 @@ async function lintScript(code, id, firstRow) {
         }
     }
 
-    const formatter = await eslint.loadFormatter("stylish");
-    console.log(formatter.format(results));
+    const formatter = await eslint.loadFormatter('stylish');
+    formatter.format(results);
 }
 
 module.exports = function vuePlugin() {
     return {
         name: 'rollup-plugin-vue-sfc-orchard-core',
-        async resolveId(source, importer) {
+        resolveId: async function (source, importer) {
             if (!source.toLowerCase().endsWith('.vue')) return null;
 
             const isRelativePath = source.startsWith('./') || source.startsWith('../');
@@ -62,14 +62,14 @@ module.exports = function vuePlugin() {
                 ? `${path.join(path.dirname(importer.replace(/\?vue-sfc/, '')), source)}?vue-sfc`
                 : `${source}?vue-sfc-entry`;
         },
-        async load (id) {
+        load: async function (id) {
             const isEntryComponent = id.endsWith('?vue-sfc-entry');
             if (!isEntryComponent && !id.endsWith('?vue-sfc')) return null;
 
             const filePath = id.replace(/\?vue-sfc(-entry)?$/, '');
 
             // Get and trim the source code.
-            const source = await readFile(filePath, 'utf8')
+            const source = await readFile(filePath, 'utf8');
             let code = onlyScript(source).trim();
 
             // Reappend leading space.
@@ -80,24 +80,24 @@ module.exports = function vuePlugin() {
             const first = source.substring(0, source.indexOf(code) + 1).split('\n');
             const firstRow = first.length;
             const firstRowColumnOffset = lastItem(first);
-            for (let i = 1; i < firstRowColumnOffset; i++) code = ' ' +  code;
+            for (let i = 1; i < firstRowColumnOffset; i++) code = ' ' + code;
 
             // Create mapping for the first row.
             const map = new sourceMap.SourceMapGenerator();
             map.addMapping({
                 generated: {
                     line: 1,
-                    column: 1
+                    column: 1,
                 },
                 source: filePath,
                 original: {
                     line: firstRow,
-                    column: 1
-                }
+                    column: 1,
+                },
             });
 
             const filePathParts = filePath.split(/[\\/]/);
-            const componentName = filePathParts[filePathParts.length -1].replace(/\.vue$/i, '');
+            const componentName = filePathParts[filePathParts.length - 1].replace(/\.vue$/i, '');
             const pascalCaseName = componentName
                 .split('-')
                 .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
@@ -144,4 +144,4 @@ module.exports = function vuePlugin() {
             return { code, map };
         },
     };
-}
+};

@@ -65,9 +65,9 @@ async function compile(options) {
         null,
         (fileName) => fileName.split('.')[0]);
 
-    if (results.length > 0)
-    {
-        for (error of results) console.log(error); // TODO replace "console.log" uses with
+    if (results.length > 0) {
+        // TODO replace "console.log" uses with MSBuild error.
+        results.forEach((error) => process.stdout.write(error + '\n'));
         process.exit(1);
     }
 }

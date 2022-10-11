@@ -1,10 +1,14 @@
+const fs = require('fs');
 const path = require('path');
-const { minify } = require("terser");
+const { minify } = require('terser');
 const { rollup } = require('rollup');
 
-function createDirectory(path) {
-    return fs.existsSync(path) ? Promise.resolve() : fs.promises.mkdir(path);
+function createDirectory(directoryPath) {
+    return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath);
 }
+
+// Used for setting defaults and preventing it would be needlessly complicated.
+/* eslint-disable no-param-reassign */
 
 module.exports = function rollupPipeline(
     destinationPath,
@@ -12,8 +16,7 @@ module.exports = function rollupPipeline(
     rollupPlugins,
     rollupOptions = null,
     outputFileNameTransform = null) {
-
-    function configure(entryPath) {
+    function configure(fileName, entryPath) {
         const defaultRollupOptions = {
             onwarn: (warning, next) => {
                 if (warning.code === 'THIS_IS_UNDEFINED') return;
@@ -29,7 +32,7 @@ module.exports = function rollupPipeline(
 
         if (Array.isArray(rollupPlugins)) {
             if (Array.isArray(options.plugins)) {
-                rollupPlugins.forEach(plugin => options.plugins.push(plugin));
+                rollupPlugins.forEach((plugin) => options.plugins.push(plugin));
             }
             else {
                 options.plugins = rollupPlugins;
@@ -45,15 +48,15 @@ module.exports = function rollupPipeline(
 
             let bundle;
             try {
-                const options = configure(entryPath);
+                const options = configure(fileName, entryPath);
                 const outputOptions = { format: 'cjs' };
 
                 bundle = await rollup(options);
                 const { output } = await bundle.generate(outputOptions);
 
-                for (const item of output) {
+                await Promise.All(output.map(async (item) => {
                     if (item.type === 'asset') {
-                        throw new Error(`Why is this an asset? (${ JSON.stringify(item) })`);
+                        throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
                     }
 
                     const outputFileName = (typeof outputFileNameTransform === 'function')
@@ -64,10 +67,10 @@ module.exports = function rollupPipeline(
                     await fs.promises.writeFile(outputPath, item.code);
 
                     const minified = await minify(item.code, { sourceMap: true });
-                    const minifiedPath = outputPath.replace(/\.js$/, '.min.js')
+                    const minifiedPath = outputPath.replace(/\.js$/, '.min.js');
                     await fs.promises.writeFile(minifiedPath, minified.code);
                     await fs.promises.writeFile(minifiedPath + '.map', minified.map);
-                }
+                }));
             }
             catch (error) {
                 return error;
@@ -75,6 +78,8 @@ module.exports = function rollupPipeline(
             finally {
                 if (bundle) await bundle.close();
             }
+
+            return null;
         }))
-        .then((array) => array.filter(item => item !== undefined));
+        .then((array) => array.filter((item) => item !== null));
 };

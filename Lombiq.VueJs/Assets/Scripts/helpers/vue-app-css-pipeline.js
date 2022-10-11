@@ -12,10 +12,10 @@ const defaultOptions = {
     rollupAlias: {},
 };
 
-function globPromise(path) {
-    return new Promise((resolve, reject) =>
-        glob(path, (err, matches) =>
-            err ? reject(err) : resolve(matches)));
+function globPromise(basePath) {
+    return new Promise((resolve, reject) => {
+        glob(basePath, (err, matches) => (err ? reject(err) : resolve(matches)));
+    });
 }
 
 const compileCss = (options) => {
@@ -29,12 +29,10 @@ const compileCss = (options) => {
                 opts.stylesPath,
                 '*.css'));
 
-            for (let i = 0; i < paths.length; i++) {
-                await fs.promises.copyFile(
-                    paths[i],
-                    path.join(opts.destinationPath, path.basename(paths[i]))
-                )
-            }
+            await Promise.all(paths.map((filePath) => fs.promises.copyFile(
+                filePath,
+                path.join(opts.destinationPath, path.basename(filePath)),
+            )));
         }));
 };
 
