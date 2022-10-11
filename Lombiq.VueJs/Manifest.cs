@@ -4,7 +4,7 @@ using OrchardCore.Modules.Manifest;
     Name = "Lombiq Vue.js",
     Author = "Lombiq Technologies",
     Website = "https://github.com/Lombiq/Orchard-Vue.js",
-    Version = "0.0.1",
+    Version = "0.0.2",
     Description = "Adds Vue.js to Orchard Core.",
     Category = "Vue.js"
 )]

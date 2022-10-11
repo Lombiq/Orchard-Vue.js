@@ -4,4 +4,8 @@
     <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NodeJsExtensionsNpmPackageSourcePath>./node_modules/.lv</NodeJsExtensionsNpmPackageSourcePath>
+  </PropertyGroup>
+
 </Project>
