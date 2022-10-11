@@ -34,6 +34,7 @@
     <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj"/>
   </ItemGroup>
 
+  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
 
 </Project>

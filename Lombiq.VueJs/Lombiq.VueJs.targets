@@ -1,2 +1,11 @@
 <Project>
+  <Target Name="InstallLombiqVueJsPackage"
+          AfterTargets="BeforeResolveReferences">
+
+    <MSBuild Projects="$(LombiqVueJsTargetsPath)"
+             Properties="NodeJsExtensionsNpmPackageSourcePath=$(LombiqVueJsNpmPackageSourcePath);"
+             Targets="AddNodeJsExtensionsAsNpmPackage">
+    </MSBuild>
+
+  </Target>
 </Project>

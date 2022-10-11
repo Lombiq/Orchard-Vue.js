@@ -1,11 +1,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <PropertyGroup>
+    <LombiqVueJsNpmPackageSourcePath>./node_modules/.lv</LombiqVueJsNpmPackageSourcePath>
+    <LombiqVueJsTargetsPath>E:\aux_c\repositories\orchard-core\Open-Source-Orchard-Core-Extensions\src\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets</LombiqVueJsTargetsPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <NodeJsExtensionsNpmPackageSourcePath>./node_modules/.lv</NodeJsExtensionsNpmPackageSourcePath>
-  </PropertyGroup>
 
 </Project>
