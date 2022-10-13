@@ -22,11 +22,6 @@ export default {
             return typeof self.date === 'string' ? self.date : JSON.parse(JSON.stringify(self.date));
         },
         formatted(self) {
-            // eslint-disable-next-line
-            console.log(self.culture);
-            // eslint-disable-next-line
-            console.log(JSON.stringify(window.Vue.$orchardCore));
-
             const formatter = new Intl.DateTimeFormat(
                 self.culture,
                 { ...self.options, timeZone: self.timeZone });
