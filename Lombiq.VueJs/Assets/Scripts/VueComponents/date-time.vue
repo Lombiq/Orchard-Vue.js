@@ -28,7 +28,7 @@ export default {
             console.log(JSON.stringify(window.Vue.$orchardCore));
 
             const formatter = new Intl.DateTimeFormat(
-                self.culture || 'en-US',
+                self.culture,
                 { ...self.options, timeZone: self.timeZone });
 
             const date = typeof self.date === 'string'
