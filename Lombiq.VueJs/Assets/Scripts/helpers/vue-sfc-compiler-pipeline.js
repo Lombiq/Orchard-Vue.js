@@ -73,9 +73,10 @@ async function compile(options) {
     }
 }
 
-function clean(options) {
+async function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    return del(opts.destinationPath + '**/*.js');
+    await del(opts.destinationPath + '**/*.js');
+    await del(opts.destinationPath + '**/*.js.map');
 }
 
 module.exports = { compile, clean };
