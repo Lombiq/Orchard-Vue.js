@@ -14,6 +14,8 @@ const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 
 const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
 
+const args = process.argv.splice(2);
+
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
     destinationPath: './wwwroot/vue/',
@@ -77,6 +79,12 @@ async function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
     await del(opts.destinationPath + '**/*.js');
     await del(opts.destinationPath + '**/*.js.map');
+}
+
+const consoleOptions = args.length >= 2 ? JSON.parse(args[1]) : undefined;
+switch (args[0]) {
+    case 'compile': compile(consoleOptions); break;
+    case 'clean': clean(consoleOptions); break;
 }
 
 module.exports = { compile, clean };
