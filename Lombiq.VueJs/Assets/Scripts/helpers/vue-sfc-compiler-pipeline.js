@@ -12,6 +12,8 @@ const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 
+const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+
 const defaultOptions = {
     rootPath: './Assets/Scripts/VueComponents/',
     destinationPath: './wwwroot/vue/',
@@ -66,8 +68,7 @@ async function compile(options) {
         (fileName) => fileName.split('.')[0]);
 
     if (results.length > 0) {
-        // TODO replace "console.log" uses with MSBuild error.
-        results.forEach((error) => process.stdout.write(error + '\n'));
+        results.forEach(handleErrorMessage);
         process.exit(1);
     }
 }

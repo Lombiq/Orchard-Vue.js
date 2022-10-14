@@ -3,6 +3,8 @@ const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
 const { ESLint } = require('eslint');
 
+const formatMSBuild = require('nodejs-extensions/scripts/eslint-msbuild-formatter');
+
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
         if (source[i] === '<') {
@@ -40,14 +42,16 @@ async function lintScript(code, id, firstRow) {
 
     for (let i = 0; i < results.length; i++) {
         const result = results[i];
+
+        result.filePath = result.filePath.replace(/\.vue\?vue-sfc-entry$/, '.vue');
+
         for (let j = 0; j < result.messages.length; j++) {
             const message = result.messages[j];
             message.line += firstRow - 1;
         }
     }
 
-    const formatter = await eslint.loadFormatter('stylish');
-    formatter.format(results);
+    formatMSBuild(results);
 }
 
 module.exports = function vuePlugin() {

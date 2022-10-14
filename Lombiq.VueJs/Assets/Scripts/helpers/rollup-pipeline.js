@@ -54,8 +54,9 @@ module.exports = function rollupPipeline(
                 bundle = await rollup(options);
                 const { output } = await bundle.generate(outputOptions);
 
-                await Promise.All(output.map(async (item) => {
+                await Promise.all(output.map(async (item) => {
                     if (item.type === 'asset') {
+                        // This branch shouldn't ever be reached.
                         throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
                     }
 
