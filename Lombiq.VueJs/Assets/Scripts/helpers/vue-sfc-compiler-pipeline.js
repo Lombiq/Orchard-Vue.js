@@ -11,10 +11,7 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
-
-const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
-
-const args = process.argv.splice(2);
+const argsExecute = require('./args-execute');
 
 const defaultOptions = {
     rootPath: path.resolve('..', '..', 'Assets', 'Scripts', 'VueComponents'),
@@ -81,10 +78,5 @@ async function clean(options) {
     await del(opts.destinationPath + '**/*.js.map');
 }
 
-const consoleOptions = args.length >= 2 ? JSON.parse(args[1]) : undefined;
-switch (args[0]) {
-    case 'compile': compile(consoleOptions); break;
-    case 'clean': clean(consoleOptions); break;
-}
-
 module.exports = { compile, clean };
+argsExecute(module.exports);
