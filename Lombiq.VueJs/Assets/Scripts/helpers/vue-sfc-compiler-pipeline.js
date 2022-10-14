@@ -8,6 +8,8 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
+const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+
 const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
@@ -74,8 +76,7 @@ async function compile(options) {
 
 async function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    await del(opts.destinationPath + '**/*.js');
-    await del(opts.destinationPath + '**/*.js.map');
+    return del(opts.destinationPath, { force: true });
 }
 
 module.exports = { compile, clean };
