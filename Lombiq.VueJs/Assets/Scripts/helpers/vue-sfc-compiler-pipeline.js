@@ -17,8 +17,8 @@ const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error')
 const args = process.argv.splice(2);
 
 const defaultOptions = {
-    rootPath: './Assets/Scripts/VueComponents/',
-    destinationPath: './wwwroot/vue/',
+    rootPath: path.resolve('..', '..', 'Assets', 'Scripts', 'VueComponents'),
+    destinationPath: path.resolve('..', '..', 'wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
