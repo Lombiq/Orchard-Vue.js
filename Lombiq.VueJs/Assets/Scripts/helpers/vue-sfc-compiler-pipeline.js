@@ -3,7 +3,6 @@ const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
-const log = require('fancy-log');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
@@ -28,7 +27,7 @@ async function compile(options) {
 
     const components = getVueComponents(opts.rootPath);
 
-    log('vue component files: ' + components.join(', '));
+    process.stdout.write(`vue component files: ${components.join(', ')}\n`);
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);

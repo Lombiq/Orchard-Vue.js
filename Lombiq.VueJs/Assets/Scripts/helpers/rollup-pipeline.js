@@ -60,9 +60,10 @@ module.exports = function rollupPipeline(
                         throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
                     }
 
+                    const itemFileName = fs.existsSync(item.facadeModuleId) ? item.facadeModuleId : item.fileName;
                     const outputFileName = (typeof outputFileNameTransform === 'function')
-                        ? outputFileNameTransform(item.fileName)
-                        : item.fileName;
+                        ? outputFileNameTransform(itemFileName)
+                        : itemFileName;
                     const outputPath = path.join(destinationPath, outputFileName + '.js');
                     await createDirectory(path.dirname(outputPath));
                     await fs.promises.writeFile(outputPath, item.code);

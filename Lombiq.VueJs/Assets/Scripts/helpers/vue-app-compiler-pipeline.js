@@ -58,8 +58,9 @@ function compileApp(options) {
                 preventAssignment: true,
             }),
             commonjs(),
-        ]
-    );
+        ],
+        null,
+        (fileName) => path.basename(path.dirname(fileName)));
 }
 
 function globPromise(basePath) {
