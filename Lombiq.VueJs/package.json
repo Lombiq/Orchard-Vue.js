@@ -34,6 +34,9 @@
     "watch": "true",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
     "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
-    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean"
+    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean",
+    "--": "------------------------------------------------- VUE APP -------------------------------------------------",
+    "build:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' compile",
+    "clean:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' clean"
   }
 }

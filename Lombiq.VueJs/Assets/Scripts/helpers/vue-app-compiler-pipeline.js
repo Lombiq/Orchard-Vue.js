@@ -1,23 +1,27 @@
 const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
+const del = require('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
+const glob = require('glob');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
+const argsExecute = require('./args-execute');
 
 const defaultOptions = {
-    rootPath: './Assets/Apps/',
-    destinationPath: './wwwroot/apps/',
-    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
+    rootPath: path.resolve('..', '..', 'Assets', 'Apps'),
+    destinationPath: path.resolve('..', '..', 'wwwroot', 'apps'),
+    vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+    stylesPath: 'styles',
     rollupAlias: {},
     isProduction: false,
 };
 
-function compile(options) {
+function compileApp(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
@@ -58,4 +62,38 @@ function compile(options) {
     );
 }
 
-module.exports = { compile };
+function globPromise(basePath) {
+    return new Promise((resolve, reject) => {
+        glob(basePath, (err, matches) => (err ? reject(err) : resolve(matches)));
+    });
+}
+
+function compileCss(options) {
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+
+    return Promise.all(getVueApps(opts.rootPath)
+        .map(async (appName) => {
+            const paths = await globPromise(path.join(
+                opts.rootPath,
+                appName,
+                opts.stylesPath,
+                '*.css'));
+
+            await Promise.all(paths.map((filePath) => fs.promises.copyFile(
+                filePath,
+                path.join(opts.destinationPath, path.basename(filePath)))));
+        }));
+}
+
+function compile(options) {
+    compileApp(options);
+    compileCss(options);
+}
+
+function clean(options) {
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    return del(opts.destinationPath, { force: true });
+}
+
+module.exports = { compile, clean };
+argsExecute(module.exports);
