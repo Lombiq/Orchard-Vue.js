@@ -1,4 +1,4 @@
-lockfileVersion: 5.4
+lockfileVersion: 5.3
 
 specifiers:
   '@rollup/plugin-alias': 3.1.9
@@ -28,7 +28,7 @@ dependencies:
   source-map: 0.7.3
   vue: 2.6.14
   vue-axios: 2.1.4_vue@2.6.14
-  vue-router: 3.0.6_vue@2.6.14
+  vue-router: 3.0.6
   vuelidate: 0.7.4
 
 devDependencies:
@@ -2210,12 +2210,8 @@ packages:
       vue: 2.6.14
     dev: false
 
-  /vue-router/3.0.6_vue@2.6.14:
+  /vue-router/3.0.6:
     resolution: {integrity: sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==}
-    peerDependencies:
-      vue: ^2
-    dependencies:
-      vue: 2.6.14
     dev: false
 
   /vue/2.6.14:
