@@ -9,10 +9,11 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
 
-const { getVueComponents } = require('./get-vue-files');
+const argsExecute = require('./args-execute');
+const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
-const argsExecute = require('./args-execute');
+const { getVueComponents } = require('./get-vue-files');
 
 const defaultOptions = {
     rootPath: path.resolve('..', '..', 'Assets', 'Scripts', 'VueComponents'),
@@ -42,18 +43,7 @@ async function compile(options) {
         [
             vuePlugin(),
             json(),
-            alias({
-                vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
-                    ? 'vue/dist/vue.common.prod.js'
-                    : 'vue/dist/vue.esm.browser.js')),
-                vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
-                'vue-router': path.resolve(path.join(
-                    opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
-                'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
-                axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
-                resolve: ['.vue', '.js', '/index.js', '/lib/index.js', '/src/index.js'],
-                ...opts.rollupAlias,
-            }),
+            configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             replace({
                 values: {
