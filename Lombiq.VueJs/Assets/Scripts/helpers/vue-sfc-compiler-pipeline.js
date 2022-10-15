@@ -1,4 +1,3 @@
-const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');

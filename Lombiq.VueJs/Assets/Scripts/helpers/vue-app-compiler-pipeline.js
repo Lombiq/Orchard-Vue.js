@@ -1,9 +1,8 @@
-const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');
-const json = require('@rollup/plugin-json');
 const glob = require('glob');
+const json = require('@rollup/plugin-json');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
