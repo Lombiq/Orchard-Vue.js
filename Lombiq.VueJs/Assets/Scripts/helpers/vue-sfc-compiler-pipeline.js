@@ -15,8 +15,8 @@ const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const { getVueComponents } = require('./get-vue-files');
 
 const defaultOptions = {
-    rootPath: path.resolve('..', '..', 'Assets', 'Scripts', 'VueComponents'),
-    destinationPath: path.resolve('..', '..', 'wwwroot', 'vue'),
+    sfcRootPath: path.resolve('Assets', 'Scripts', 'VueComponents'),
+    sfcDestinationPath: path.resolve('wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
@@ -24,8 +24,9 @@ const defaultOptions = {
 
 async function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    if (!fs.existsSync(opts.sfcRootPath)) return;
 
-    const components = getVueComponents(opts.rootPath);
+    const components = getVueComponents(opts.sfcRootPath);
 
     process.stdout.write(`vue component files: ${components.join(', ')}\n`);
 
@@ -37,8 +38,8 @@ async function compile(options) {
     }
 
     const results = await rollupPipeline(
-        opts.destinationPath,
-        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName) })),
+        opts.sfcDestinationPath,
+        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.sfcRootPath, appName) })),
         [
             vuePlugin(),
             json(),
@@ -64,7 +65,7 @@ async function compile(options) {
 
 async function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    return del(opts.destinationPath, { force: true });
+    return del(opts.sfcDestinationPath, { force: true });
 }
 
 module.exports = { compile, clean };

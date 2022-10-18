@@ -13,10 +13,10 @@ const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
 
 const defaultOptions = {
-    rootPath: path.resolve('..', '..', 'Assets', 'Apps'),
-    destinationPath: path.resolve('..', '..', 'wwwroot', 'apps'),
+    appRootPath: path.resolve('Assets', 'Apps'),
+    appDestinationPath: path.resolve('wwwroot', 'apps'),
+    appStylesPath: 'styles',
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
-    stylesPath: 'styles',
     rollupAlias: {},
     isProduction: false,
 };
@@ -32,9 +32,9 @@ function compileApp(options) {
     }
 
     return rollupPipeline(
-        opts.destinationPath,
-        getVueApps(opts.rootPath)
-            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js') })),
+        opts.appDestinationPath,
+        getVueApps(opts.appRootPath)
+            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.appRootPath, appName, '/main.js') })),
         [
             json(),
             configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
@@ -61,28 +61,31 @@ function globPromise(basePath) {
 function compileCss(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    return Promise.all(getVueApps(opts.rootPath)
+    return Promise.all(getVueApps(opts.appRootPath)
         .map(async (appName) => {
             const paths = await globPromise(path.join(
-                opts.rootPath,
+                opts.appRootPath,
                 appName,
-                opts.stylesPath,
+                opts.appStylesPath,
                 '*.css'));
 
             await Promise.all(paths.map((filePath) => fs.promises.copyFile(
                 filePath,
-                path.join(opts.destinationPath, path.basename(filePath)))));
+                path.join(opts.appDestinationPath, path.basename(filePath)))));
         }));
 }
 
 function compile(options) {
+    const appRootPath = options?.appRootPath ? options.appRootPath : defaultOptions.appRootPath;
+    if (!fs.existsSync(appRootPath)) return;
+
     compileApp(options);
     compileCss(options);
 }
 
 function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    return del(opts.destinationPath, { force: true });
+    return del(opts.appDestinationPath, { force: true });
 }
 
 module.exports = { compile, clean };
