@@ -13,6 +13,7 @@ Do you want to quickly try out this project and see it in action? Check it out i
 1. This project relies on [Lombiq Node.js Extensions](https://github.com/Lombiq/NodeJs-Extensions/), please see its pre-requisites [here](https://github.com/Lombiq/NodeJs-Extensions/#pre-requisites).
 2. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly _C:\Program Files\NodeJS_*) to the list and move it to the top.
 3. If you are importing this project as a submodule, include the following at the beginning and end of your csproj file. If you are using the NuGet package this is not necessary.
+
     ```xml
     <Project Sdk="Microsoft.NET.Sdk.Razor">
       <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
@@ -24,7 +25,9 @@ Do you want to quickly try out this project and see it in action? Check it out i
       <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
     </Project>
     ```
+
 4. Create a _package.json_ file with the following content.
+
     ```json
     {
       "private": true,
