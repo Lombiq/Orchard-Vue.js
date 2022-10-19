@@ -6,8 +6,6 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
-const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
-
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
@@ -24,7 +22,7 @@ const defaultOptions = {
     isProduction: false,
 };
 
-async function compile(options) {
+function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.sfcRootPath)) return;
@@ -40,7 +38,7 @@ async function compile(options) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" is not a directory!`);
     }
 
-    const results = await rollupPipeline(
+    return rollupPipeline(
         opts.sfcDestinationPath,
         components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.sfcRootPath, appName) })),
         [
@@ -58,12 +56,8 @@ async function compile(options) {
             commonjs(),
         ],
         null,
-        (fileName) => fileName.split('.')[0]);
-
-    if (results.length > 0) {
-        results.forEach(handleErrorMessage);
-        process.exit(1);
-    }
+        (fileName) => fileName.split('.')[0])
+        .catch(() => process.exit(1));
 }
 
 async function clean(options) {

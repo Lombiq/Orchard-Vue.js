@@ -51,7 +51,8 @@ function compileApp(options) {
             commonjs(),
         ],
         null,
-        (fileName) => path.basename(path.dirname(fileName)));
+        (fileName) => path.basename(path.dirname(fileName)))
+        .catch(() => process.exit(1));
 }
 
 function globPromise(basePath) {

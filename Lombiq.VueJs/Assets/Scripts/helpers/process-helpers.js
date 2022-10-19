@@ -4,7 +4,7 @@ const path = require('path');
 const args = process.argv.splice(2);
 const argumentOptions = args.length >= 2 ? JSON.parse(args[1]) : undefined;
 
-function argsExecute(functions) {
+async function argsExecute(functions) {
     if (!args[0]) return;
 
     try {
@@ -13,7 +13,10 @@ function argsExecute(functions) {
             .entries(functions)
             .filter((pair) => pair[0].toLowerCase() === argument)[0];
 
-        if (target) target[1](argumentOptions);
+        if (target) {
+            const task = target[1](argumentOptions);
+            if (task && task.then) await task;
+        }
     }
     catch (error) {
         handleErrorMessage(error);

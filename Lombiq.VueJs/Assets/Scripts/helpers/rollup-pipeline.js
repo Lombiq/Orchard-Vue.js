@@ -3,6 +3,8 @@ const path = require('path');
 const { minify } = require('terser');
 const { rollup } = require('rollup');
 
+const { handleErrorObject, handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+
 function createDirectory(directoryPath) {
     return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath);
 }
@@ -46,7 +48,9 @@ module.exports = function rollupPipeline(
         .map(async (pair) => {
             const { fileName, entryPath } = pair;
 
+            let success = true;
             let bundle;
+
             try {
                 const options = configure(fileName, entryPath);
                 const outputOptions = { format: 'cjs' };
@@ -55,33 +59,49 @@ module.exports = function rollupPipeline(
                 const { output } = await bundle.generate(outputOptions);
 
                 await Promise.all(output.map(async (item) => {
-                    if (item.type === 'asset') {
-                        // This branch shouldn't ever be reached.
-                        throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
+                    try {
+                        if (item.type === 'asset') {
+                            // This branch shouldn't ever be reached.
+                            throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
+                        }
+
+                        const itemFileName = fs.existsSync(item.facadeModuleId) ? item.facadeModuleId : item.fileName;
+                        const outputFileName = (typeof outputFileNameTransform === 'function')
+                            ? outputFileNameTransform(itemFileName)
+                            : itemFileName;
+                        const outputPath = path.join(destinationPath, outputFileName + '.js');
+                        await createDirectory(path.dirname(outputPath));
+                        await fs.promises.writeFile(outputPath, item.code);
+
+                        const minified = await minify(item.code, { sourceMap: true });
+                        const minifiedPath = outputPath.replace(/\.js$/, '.min.js');
+                        await fs.promises.writeFile(minifiedPath, minified.code);
+                        await fs.promises.writeFile(minifiedPath + '.map', minified.map);
                     }
+                    catch (innerError) {
+                        const stack = innerError?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
+                        const extensionRegex = /\.(js|vue):(\d+)(:(\d+))?.*/;
+                        const pathLine = stack
+                            .filter(line => line.match(extensionRegex))
+                            .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
+                        const lineMatch = pathLine?.match(extensionRegex) ?? [];
 
-                    const itemFileName = fs.existsSync(item.facadeModuleId) ? item.facadeModuleId : item.fileName;
-                    const outputFileName = (typeof outputFileNameTransform === 'function')
-                        ? outputFileNameTransform(itemFileName)
-                        : itemFileName;
-                    const outputPath = path.join(destinationPath, outputFileName + '.js');
-                    await createDirectory(path.dirname(outputPath));
-                    await fs.promises.writeFile(outputPath, item.code);
+                        handleErrorObject({
+                            code: 'ROLLUP',
+                            path: pathLine?.replace(extensionRegex, '.js'),
+                            line: lineMatch ? lineMatch[2] : undefined,
+                            column: lineMatch ? lineMatch[4] : undefined,
+                            message: innerError,
+                        });
 
-                    const minified = await minify(item.code, { sourceMap: true });
-                    const minifiedPath = outputPath.replace(/\.js$/, '.min.js');
-                    await fs.promises.writeFile(minifiedPath, minified.code);
-                    await fs.promises.writeFile(minifiedPath + '.map', minified.map);
+                        success = false;
+                    }
                 }));
-            }
-            catch (error) {
-                return error;
             }
             finally {
                 if (bundle) await bundle.close();
             }
 
-            return null;
-        }))
-        .then((array) => array.filter((item) => item !== null));
+            if (!success) throw new Error("rollupPipeline failed!");
+        }));
 };

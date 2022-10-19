@@ -28,9 +28,9 @@
     "npm-run-all": "^4.1.5"
   },
   "scripts": {
-    "build": "run-p --print-label --continue-on-error \"build:*\"",
-    "compile": "run-p --print-label --continue-on-error \"build:*\"",
-    "clean": "run-p --print-label --continue-on-error \"clean:*\"",
+    "build": "run-p --print-name --continue-on-error \"build:*\"",
+    "compile": "run-p --print-name --continue-on-error \"build:*\"",
+    "clean": "run-p --print-name --continue-on-error \"clean:*\"",
     "watch": "true",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
     "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
