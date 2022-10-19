@@ -8,11 +8,13 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
 
-const argsExecute = require('./args-execute');
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const { getVueComponents } = require('./get-vue-files');
+const { argsExecute, leaveNodeModule } = require('./process-helpers');
+
+leaveNodeModule();
 
 const defaultOptions = {
     sfcRootPath: path.resolve('Assets', 'Scripts', 'VueComponents'),
@@ -24,9 +26,10 @@ const defaultOptions = {
 
 async function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    if (!fs.existsSync(opts.sfcRootPath)) return;
 
+    if (!fs.existsSync(opts.sfcRootPath)) return;
     const components = getVueComponents(opts.sfcRootPath);
+    if (components.length === 0) return;
 
     process.stdout.write(`vue component files: ${components.join(', ')}\n`);
 

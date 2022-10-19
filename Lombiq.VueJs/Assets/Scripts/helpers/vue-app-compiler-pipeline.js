@@ -7,10 +7,12 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
-const argsExecute = require('./args-execute');
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
+const { argsExecute, leaveNodeModule } = require('./process-helpers');
+
+leaveNodeModule();
 
 const defaultOptions = {
     appRootPath: path.resolve('Assets', 'Apps'),
