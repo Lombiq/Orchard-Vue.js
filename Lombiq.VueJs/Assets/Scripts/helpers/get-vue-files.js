@@ -1,12 +1,12 @@
 const { readdirSync } = require('fs');
 
-const asDirect = { withFileTypes: true };
+const asDirent = { withFileTypes: true };
 
-function readDirectoryFunction(filter) {
-    return (rootPath) => readdirSync(rootPath, asDirect).filter(filter).map((direct) => direct.name);
+function readdirentoryFunction(filter) {
+    return (rootPath) => readdirSync(rootPath, asDirent).filter(filter).map((dirent) => dirent.name);
 }
 
 module.exports = {
-    getVueApps: readDirectoryFunction((direct) => direct.isDirectory()),
-    getVueComponents: readDirectoryFunction((direct) => direct.name.endsWith('.vue') && direct.isFile()),
+    getVueApps: readdirentoryFunction((dirent) => dirent.isdirentory()),
+    getVueComponents: readdirentoryFunction((dirent) => dirent.name.endsWith('.vue') && dirent.isFile()),
 };
