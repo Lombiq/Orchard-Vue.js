@@ -3,7 +3,7 @@ const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
 const { ESLint } = require('eslint');
 
-const formatter = require('nodejs-extensions/scripts/eslint-msbuild-formatter');
+const { formatter } = require('nodejs-extensions/scripts/eslint-msbuild-formatter');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
@@ -51,7 +51,7 @@ async function lintScript(code, id, firstRow) {
         }
     }
 
-    formatter(results);
+    formatMSBuild(results);
 }
 
 module.exports = function vuePlugin() {
