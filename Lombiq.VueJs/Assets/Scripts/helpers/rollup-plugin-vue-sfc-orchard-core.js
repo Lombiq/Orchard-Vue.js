@@ -51,7 +51,7 @@ async function lintScript(code, id, firstRow) {
         }
     }
 
-    formatMSBuild(results);
+    formatter(results);
 }
 
 module.exports = function vuePlugin() {
