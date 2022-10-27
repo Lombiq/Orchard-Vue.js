@@ -55,7 +55,7 @@ function compileApp(options) {
         null,
         (fileName) => path.basename(path.dirname(fileName)))
         .catch((error) => {
-            if (error) handleErrorObject(error)
+            if (error) handleErrorObject(error);
             process.exit(1);
         });
 }

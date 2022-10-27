@@ -27,9 +27,9 @@ const defaultOptions = {
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    if (!fs.existsSync(opts.sfcRootPath)) return;
+    if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
     const components = getVueComponents(opts.sfcRootPath);
-    if (components.length === 0) return;
+    if (components.length === 0) return Promise.resolve([]);
 
     process.stdout.write(`vue component files: ${components.join(', ')}\n`);
 
@@ -60,7 +60,7 @@ function compile(options) {
         null,
         (fileName) => fileName.split('.')[0])
         .catch((error) => {
-            if (error) handleErrorObject(error)
+            if (error) handleErrorObject(error);
             process.exit(1);
         });
 }

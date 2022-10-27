@@ -13,7 +13,7 @@ function handleRollupError(error) {
     const stack = error?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
     const extensionRegex = /\.(js|vue):(\d+)(:(\d+))?.*/;
     const pathLine = stack
-        .filter(line => line.match(extensionRegex))
+        .filter((line) => line.match(extensionRegex))
         .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
     const lineMatch = pathLine?.match(extensionRegex) ?? [];
 
@@ -106,6 +106,6 @@ module.exports = function rollupPipeline(
                 if (bundle) await bundle.close();
             }
 
-            if (!success) throw new Error("rollupPipeline failed!");
+            if (!success) throw new Error('rollupPipeline failed!');
         }));
 };
