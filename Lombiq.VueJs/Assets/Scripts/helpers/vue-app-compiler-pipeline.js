@@ -7,6 +7,8 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
+const { handleErrorObject } = require('nodejs-extensions/scripts/handle-error');
+
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
@@ -52,7 +54,10 @@ function compileApp(options) {
         ],
         null,
         (fileName) => path.basename(path.dirname(fileName)))
-        .catch(() => process.exit(1));
+        .catch((error) => {
+            if (error) handleErrorObject(error)
+            process.exit(1);
+        });
 }
 
 function globPromise(basePath) {

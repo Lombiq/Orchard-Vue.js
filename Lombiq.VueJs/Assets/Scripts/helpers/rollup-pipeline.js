@@ -3,10 +3,27 @@ const path = require('path');
 const { minify } = require('terser');
 const { rollup } = require('rollup');
 
-const { handleErrorObject, handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+const { handleErrorObject } = require('nodejs-extensions/scripts/handle-error');
 
 function createDirectory(directoryPath) {
     return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath);
+}
+
+function handleRollupError(error) {
+    const stack = error?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
+    const extensionRegex = /\.(js|vue):(\d+)(:(\d+))?.*/;
+    const pathLine = stack
+        .filter(line => line.match(extensionRegex))
+        .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
+    const lineMatch = pathLine?.match(extensionRegex) ?? [];
+
+    handleErrorObject({
+        code: 'ROLLUP',
+        path: pathLine?.replace(extensionRegex, '.js'),
+        line: lineMatch ? lineMatch[2] : undefined,
+        column: lineMatch ? lineMatch[4] : undefined,
+        message: error,
+    });
 }
 
 // Used for setting defaults and preventing it would be needlessly complicated.
@@ -78,22 +95,9 @@ module.exports = function rollupPipeline(
                         await fs.promises.writeFile(minifiedPath, minified.code);
                         await fs.promises.writeFile(minifiedPath + '.map', minified.map);
                     }
-                    catch (innerError) {
-                        const stack = innerError?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
-                        const extensionRegex = /\.(js|vue):(\d+)(:(\d+))?.*/;
-                        const pathLine = stack
-                            .filter(line => line.match(extensionRegex))
-                            .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
-                        const lineMatch = pathLine?.match(extensionRegex) ?? [];
-
-                        handleErrorObject({
-                            code: 'ROLLUP',
-                            path: pathLine?.replace(extensionRegex, '.js'),
-                            line: lineMatch ? lineMatch[2] : undefined,
-                            column: lineMatch ? lineMatch[4] : undefined,
-                            message: innerError,
-                        });
-
+                    catch (error) {
+                        try { handleRollupError(error); }
+                        catch (innerError) { handleErrorObject(innerError); }
                         success = false;
                     }
                 }));
