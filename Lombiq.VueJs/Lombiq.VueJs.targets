@@ -15,7 +15,6 @@
     <Exec Command="pnpm link $(LombiqVueJsNpmPackageSourcePath)" />
   </Target>
 
-
   <Target Name="DeleteLombiqVueJsNpmPackage" AfterTargets="DeleteNodeJsExtensionsNpmPackage">
     <ItemGroup>
       <LombiqVueJsNpmPackageFoldersToDelete Condition="!Exists($(LombiqVueJsNpmPackageSourcePath))" />
