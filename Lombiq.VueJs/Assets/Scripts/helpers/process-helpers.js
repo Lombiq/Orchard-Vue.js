@@ -26,7 +26,7 @@ async function argsExecute(functions) {
 
 function leaveNodeModule() {
     const location = process.cwd().split(path.sep).slice(-2).join('/');
-    // Need to check both because Windows and Linux resolves the directory symlink between the two differently.
+    // Need to check both because Windows and Linux resolve the directory symlink between the two differently.
     if (location === 'node_modules/lombiq-vuejs' || location === 'node_modules/.lv') {
         process.chdir(path.resolve('..', '..'));
     }
