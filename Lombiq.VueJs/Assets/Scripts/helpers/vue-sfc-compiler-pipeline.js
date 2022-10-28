@@ -12,7 +12,7 @@ const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const { getVueComponents } = require('./get-vue-files');
-const { argsExecute, leaveNodeModule } = require('./process-helpers');
+const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
 
 leaveNodeModule();
 
@@ -71,4 +71,4 @@ async function clean(options) {
 }
 
 module.exports = { compile, clean };
-argsExecute(module.exports);
+executeFunctionByCommandLineArgument(module.exports);

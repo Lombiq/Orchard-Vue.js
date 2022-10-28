@@ -11,23 +11,20 @@ function createDirectory(directoryPath) {
 
 function handleRollupError(error) {
     const stack = error?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
-    const extensionRegex = /\.(js|vue):(\d+)(:(\d+))?.*/;
-    const pathLine = stack
-        .filter((line) => line.match(extensionRegex))
+    const errorLineRegex = /\.(js|vue):(?<line>\d+)(:(?<column>\d+))?.*/;
+    const lineWithFilePath = stack
+        .filter((line) => line.match(errorLineRegex))
         .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
-    const lineMatch = pathLine?.match(extensionRegex) ?? [];
+    const lineMatch = lineWithFilePath?.match(errorLineRegex)?.groups ?? {};
 
     handleErrorObject({
         code: 'ROLLUP',
-        path: pathLine?.replace(extensionRegex, '.js'),
-        line: lineMatch ? lineMatch[2] : undefined,
-        column: lineMatch ? lineMatch[4] : undefined,
+        path: lineWithFilePath,
+        line: lineMatch ? lineMatch.line : undefined,
+        column: lineMatch ? lineMatch.column : undefined,
         message: error,
     });
 }
-
-// Used for setting defaults and preventing it would be needlessly complicated.
-/* eslint-disable no-param-reassign */
 
 module.exports = function rollupPipeline(
     destinationPath,
@@ -43,18 +40,22 @@ module.exports = function rollupPipeline(
             },
         };
 
-        if (typeof rollupOptions === 'function') rollupOptions = rollupOptions(fileName, entryPath);
-        if (typeof rollupPlugins === 'function') rollupPlugins = rollupPlugins(fileName, entryPath);
+        let customRollupPlugins = rollupPlugins;
+        let customRollupOptions = rollupOptions;
 
-        const options = rollupOptions ? { ...defaultRollupOptions, ...rollupOptions } : defaultRollupOptions;
+        if (typeof customRollupPlugins === 'function') customRollupPlugins = customRollupPlugins(fileName, entryPath);
+        if (typeof customRollupOptions === 'function') customRollupOptions = customRollupOptions(fileName, entryPath);
+
+        const options = customRollupOptions ? { ...defaultRollupOptions, ...customRollupOptions } : defaultRollupOptions;
         options.input = entryPath;
 
-        if (Array.isArray(rollupPlugins)) {
+        // Safely copy the provided plugins to the options.
+        if (Array.isArray(customRollupPlugins)) {
             if (Array.isArray(options.plugins)) {
-                rollupPlugins.forEach((plugin) => options.plugins.push(plugin));
+                customRollupPlugins.forEach((plugin) => options.plugins.push(plugin));
             }
             else {
-                options.plugins = rollupPlugins;
+                options.plugins = customRollupPlugins;
             }
         }
 
@@ -62,9 +63,7 @@ module.exports = function rollupPipeline(
     }
 
     return Promise.all(filesAndEntryPaths
-        .map(async (pair) => {
-            const { fileName, entryPath } = pair;
-
+        .map(async ({ fileName, entryPath }) => {
             let success = true;
             let bundle;
 
@@ -83,7 +82,7 @@ module.exports = function rollupPipeline(
                         }
 
                         const itemFileName = fs.existsSync(item.facadeModuleId) ? item.facadeModuleId : item.fileName;
-                        const outputFileName = (typeof outputFileNameTransform === 'function')
+                        const outputFileName = typeof outputFileNameTransform === 'function'
                             ? outputFileNameTransform(itemFileName)
                             : itemFileName;
                         const outputPath = path.join(destinationPath, outputFileName + '.js');

@@ -33,10 +33,6 @@
     <None Include="*.targets" Pack="true" PackagePath="" />
 
     <None Remove="node_modules\**" />
-
-    <None Update="Lombiq.VueJs.targets">
-      <PackagePath>build/</PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

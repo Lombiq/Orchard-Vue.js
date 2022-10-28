@@ -12,7 +12,7 @@ const { handleErrorObject } = require('nodejs-extensions/scripts/handle-error');
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
-const { argsExecute, leaveNodeModule } = require('./process-helpers');
+const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
 
 leaveNodeModule();
 
@@ -97,4 +97,4 @@ function clean(options) {
 }
 
 module.exports = { compile, clean };
-argsExecute(module.exports);
+executeFunctionByCommandLineArgument(module.exports);

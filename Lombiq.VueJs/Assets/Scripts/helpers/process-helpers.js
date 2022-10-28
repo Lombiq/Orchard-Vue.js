@@ -4,7 +4,7 @@ const path = require('path');
 const args = process.argv.splice(2);
 const argumentOptions = args.length >= 2 ? JSON.parse(args[1]) : undefined;
 
-async function argsExecute(functions) {
+async function executeFunctionByCommandLineArgument(functions) {
     if (!args[0]) return;
 
     try {
@@ -33,6 +33,6 @@ function leaveNodeModule() {
 }
 
 module.exports = {
-    argsExecute,
+    executeFunctionByCommandLineArgument,
     leaveNodeModule,
 };
