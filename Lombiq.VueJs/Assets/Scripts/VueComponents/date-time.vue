@@ -23,7 +23,7 @@ export default {
         },
         formatted(self) {
             const formatter = new Intl.DateTimeFormat(
-                self.culture,
+                self.culture || window.navigator.language,
                 { ...self.options, timeZone: self.timeZone });
 
             const date = typeof self.date === 'string'
