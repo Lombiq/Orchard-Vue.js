@@ -3,7 +3,7 @@ const path = require('path');
 const { minify } = require('terser');
 const { rollup } = require('rollup');
 
-const { handleErrorObject } = require('nodejs-extensions/scripts/handle-error');
+const { handleErrorObject, handlePromiseRejectionAsError } = require('nodejs-extensions/scripts/handle-error');
 
 function createDirectory(directoryPath) {
     return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath);
@@ -31,7 +31,8 @@ module.exports = function rollupPipeline(
     filesAndEntryPaths,
     rollupPlugins,
     rollupOptions = null,
-    outputFileNameTransform = null) {
+    outputFileNameTransform = null,
+    panicOnFailure = true) {
     function configure(fileName, entryPath) {
         const defaultRollupOptions = {
             onwarn: (warning, next) => {
@@ -62,7 +63,7 @@ module.exports = function rollupPipeline(
         return options;
     }
 
-    return Promise.all(filesAndEntryPaths
+    const pipelinePromise = Promise.all(filesAndEntryPaths
         .map(async ({ fileName, entryPath }) => {
             let success = true;
             let bundle;
@@ -107,4 +108,6 @@ module.exports = function rollupPipeline(
 
             if (!success) throw new Error('rollupPipeline failed!');
         }));
+
+    return handlePromiseRejectionAsError(pipelinePromise, panicOnFailure);
 };

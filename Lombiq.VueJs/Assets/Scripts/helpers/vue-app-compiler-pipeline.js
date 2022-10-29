@@ -54,11 +54,7 @@ function compileApp(options) {
             commonjs(),
         ],
         null,
-        (fileName) => path.basename(path.dirname(fileName)))
-        .catch((error) => {
-            if (error) handleErrorObject(error);
-            process.exit(1);
-        });
+        (fileName) => path.basename(path.dirname(fileName)));
 }
 
 function globPromise(basePath) {

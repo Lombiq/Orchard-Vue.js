@@ -59,11 +59,7 @@ function compile(options) {
             commonjs(),
         ],
         null,
-        (fileName) => fileName.split('.')[0])
-        .catch((error) => {
-            if (error) handleErrorObject(error);
-            process.exit(1);
-        });
+        (fileName) => fileName.split('.')[0]);
 }
 
 async function clean(options) {
