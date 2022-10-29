@@ -6,7 +6,7 @@ const { rollup } = require('rollup');
 const { handleErrorObject, handlePromiseRejectionAsError } = require('nodejs-extensions/scripts/handle-error');
 
 function createDirectory(directoryPath) {
-    return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath);
+    return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath, { recursive: true });
 }
 
 function handleRollupError(error) {
