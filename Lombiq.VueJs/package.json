@@ -31,7 +31,7 @@
     "build": "run-p --print-name --continue-on-error \"build:*\"",
     "compile": "run-p --print-name --continue-on-error \"build:*\"",
     "clean": "run-p --print-name --continue-on-error \"clean:*\"",
-    "watch": "true",
+    "watch": "echo \"Watch is currently not supported (see https://github.com/Lombiq/Orchard-Vue.js/issues/64 for progress).\"",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
     "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
     "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean",
