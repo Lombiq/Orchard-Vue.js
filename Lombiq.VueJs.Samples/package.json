@@ -1,7 +1,9 @@
 {
   "private": true,
   "scripts": {
-  },
-  "dependencies": {
+    "build": "npm explore nodejs-extensions -- pnpm build && npm explore lombiq-vuejs -- pnpm build",
+    "compile": "npm explore nodejs-extensions -- pnpm compile && npm explore lombiq-vuejs -- pnpm compile",
+    "clean": "npm explore nodejs-extensions -- pnpm clean && npm explore lombiq-vuejs -- pnpm clean",
+    "watch": "npm explore nodejs-extensions -- pnpm watch && npm explore lombiq-vuejs -- pnpm watch"
   }
 }

@@ -10,15 +10,35 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 ## Prerequisites
 
-1. Make sure that you have the latest **14.x** version (it can't be a later one because Gulp [doesn't officially support 14.x even](https://github.com/gulpjs/gulp/discussions/2649), let alone more recent ones) of [Node.js](https://nodejs.org/en/) installed that fits your system architecture (x64 or x86).
-2. Install or update NPM to the latest version using the command: `npm install --global npm@7.9.0`. You may also install [PNPM](https://pnpm.io/) with `npm install --global pnpm`.
-3. Install or update the Gulp CLI globally with this command: `npm install -g gulp-cli`.
-4. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly _C:\Program Files\NodeJS_*) to the list and move it to the top.
-5. Before you start, add this to your project file so the _.vue_ files are recognized as embedded views:
+1. This project relies on [Lombiq Node.js Extensions](https://github.com/Lombiq/NodeJs-Extensions/), please see its pre-requisites [here](https://github.com/Lombiq/NodeJs-Extensions/#pre-requisites).
+2. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly _C:\Program Files\NodeJS_*) to the list and move it to the top.
+3. If you are importing this project as a submodule, include the following at the beginning and end of your csproj file. If you are using the NuGet package this is not necessary.
 
-```xml
-  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
-```
+    ```xml
+    <Project Sdk="Microsoft.NET.Sdk.Razor">
+      <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
+      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+        
+      <!-- Everything else goes here. -->
+    
+      <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
+      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
+    </Project>
+    ```
+
+4. Create a _package.json_ file with the following content.
+
+    ```json
+    {
+      "private": true,
+      "scripts": {
+        "build": "npm explore nodejs-extensions -- pnpm build && npm explore lombiq-vuejs -- pnpm build",
+        "compile": "npm explore nodejs-extensions -- pnpm compile && npm explore lombiq-vuejs -- pnpm compile",
+        "clean": "npm explore nodejs-extensions -- pnpm clean && npm explore lombiq-vuejs -- pnpm clean",
+        "watch": "npm explore nodejs-extensions -- pnpm watch && npm explore lombiq-vuejs -- pnpm watch"
+      }
+    }
+    ```
 
 ## Sample project
 
@@ -109,12 +129,6 @@ If your Vue app is just going to include one top level component and bind to tha
 - As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue.
 
 Regarding the points: if you need anything more complicated, first reconsider you application design to see if your goals can be achieved in a more Vue.js logic. For example pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
-
-## Other resources
-
-Some resources are registered in the resource manifest so you can add these as dependencies to your Vue.js app's resource. These resources are automatically copied from the _node_modules_ folder to _wwwroot_ using Gulp when building the project (or you can trigger it with the `gulp` command).
-
-- [ES6-Promise](https://www.npmjs.com/package/es6-promise): Use this if you want to use ES6 Promises (or an ES6 module that uses them e.g. `axios`) include this resource so it will work in IE as well.
 
 ## Contributing and support
 
