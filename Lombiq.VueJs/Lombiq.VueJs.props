@@ -1,18 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-    <LombiqVueJsNpmPackageSourcePath>./node_modules/.lv</LombiqVueJsNpmPackageSourcePath>
-    <LombiqVueJsInstallationPath>$(MSBuildThisFileDirectory.TrimEnd('/\'))</LombiqVueJsInstallationPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
-
-    <LombiqVueJsNpmPackageFiles Include="$(LombiqVueJsInstallationPath)/.npmrc" />
-    <LombiqVueJsNpmPackageFiles Include="$(LombiqVueJsInstallationPath)/package.json" />
-    <!-- The ** is necessary so that the whole directory is copied over, not just the contained files. -->
-    <LombiqVueJsNpmPackageFiles Include="$(LombiqVueJsInstallationPath)/**/Assets/Scripts/**/*.*" />
-    <LombiqVueJsNpmPackageFiles Remove="$(LombiqVueJsInstallationPath)/node_modules/**" />
   </ItemGroup>
 
 </Project>

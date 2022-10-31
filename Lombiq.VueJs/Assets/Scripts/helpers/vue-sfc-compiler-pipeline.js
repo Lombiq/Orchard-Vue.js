@@ -1,36 +1,32 @@
-const commonjs = require('@rollup/plugin-commonjs');
-const del = require('del');
+const alias = require('rollup-plugin-alias');
+const commonjs = require('rollup-plugin-commonjs');
+const replace = require('rollup-plugin-replace');
+const json = require('rollup-plugin-json');
+const nodeResolve = require('rollup-plugin-node-resolve');
 const fs = require('fs');
-const json = require('@rollup/plugin-json');
 const path = require('path');
-const replace = require('@rollup/plugin-replace');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const log = require('fancy-log');
+const del = require('del');
 
-const configureRollupAlias = require('./configure-rollup-alias');
+const { getVueComponents } = require('./get-vue-files');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
-const { getVueComponents } = require('./get-vue-files');
-const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
-
-// If this script is invoked from "npm explore lombiq-vuejs" then we have to navigate back to the current project root.
-leaveNodeModule();
 
 const defaultOptions = {
-    sfcRootPath: path.resolve('Assets', 'Scripts', 'VueComponents'),
-    sfcDestinationPath: path.resolve('wwwroot', 'vue'),
-    vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+    rootPath: './Assets/Scripts/VueComponents/',
+    destinationPath: './wwwroot/vue/',
+    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
 };
+console.log(defaultOptions.vueJsNodeModulesPath);
 
 function compile(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
-    const components = getVueComponents(opts.sfcRootPath);
-    if (components.length === 0) return Promise.resolve([]);
+    const components = getVueComponents(opts.rootPath);
 
-    process.stdout.write(`vue component files: ${components.join(', ')}\n`);
+    log('vue component files: ' + components.join(', '));
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);
@@ -40,30 +36,37 @@ function compile(options) {
     }
 
     return rollupPipeline(
-        opts.sfcDestinationPath,
-        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.sfcRootPath, appName) })),
+        opts.destinationPath,
+        components.map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName) })),
         [
             vuePlugin(),
             json(),
-            configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
+            alias({
+                vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
+                    ? 'vue/dist/vue.common.prod.js'
+                    : 'vue/dist/vue.esm.browser.js')),
+                vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
+                'vue-router': path.resolve(path.join(
+                    opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
+                'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
+                axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
+                resolve: ['.vue', '.js', '/index.js', '/lib/index.js', '/src/index.js'],
+                ...opts.rollupAlias,
+            }),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             replace({
-                values: {
-                    'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
-                    'process.env.BUILD': JSON.stringify('web'),
-                },
-                preventAssignment: true,
+                'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
+                'process.env.BUILD': JSON.stringify('web'),
             }),
             commonjs(),
         ],
         null,
-        (fileName) => fileName.split('.')[0]);
+        (fileName) => fileName.replace(/\.vue$/i, ''));
 }
 
-async function clean(options) {
+function clean(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    return del(opts.sfcDestinationPath, { force: true });
+    return del(opts.destinationPath + '**/*.js');
 }
 
 module.exports = { compile, clean };
-executeFunctionByCommandLineArgument(module.exports);
