@@ -5,7 +5,7 @@ async function executeFunctionByCommandLineArgument(functions) {
     const [functionName, argumentOptionsJson] = process.argv.splice(2);
     const argumentOptions = argumentOptionsJson ? JSON.parse(argumentOptionsJson) : undefined;
 
-    // Informs the consumer of correct usage and exits if something is missing..
+    // Informs the consumer of correct usage and exits if something is missing.
     function helpAndExit(message) {
         handleErrorMessage(message + ' (USAGE: node <script-file> <compile|clean> [options-json])');
         process.exit(1);
