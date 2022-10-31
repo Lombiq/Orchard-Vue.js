@@ -20,8 +20,8 @@ function handleRollupError(error) {
     handleErrorObject({
         code: 'ROLLUP',
         path: lineWithFilePath,
-        line: lineMatch ? lineMatch.line : undefined,
-        column: lineMatch ? lineMatch.column : undefined,
+        line: lineMatch.line,
+        column: lineMatch.column,
         message: error,
     });
 }
