@@ -1,25 +1,30 @@
-const buble = require('rollup-plugin-buble');
-const alias = require('rollup-plugin-alias');
-const commonjs = require('rollup-plugin-commonjs');
-const replace = require('rollup-plugin-replace');
-const json = require('rollup-plugin-json');
-const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
+const del = require('del');
 const fs = require('fs');
+const glob = require('glob');
+const json = require('@rollup/plugin-json');
 const path = require('path');
-const log = require('fancy-log');
+const replace = require('@rollup/plugin-replace');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
+const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
+const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
+
+// If this script is invoked from "npm explore lombiq-vuejs" then we have to navigate back to the current project root.
+leaveNodeModule();
 
 const defaultOptions = {
-    rootPath: './Assets/Apps/',
-    destinationPath: './wwwroot/apps/',
-    vueJsNodeModulesPath: path.join(__dirname, '..', '..', '..', 'node_modules'),
+    appRootPath: path.resolve('Assets', 'Apps'),
+    appDestinationPath: path.resolve('wwwroot', 'apps'),
+    appStylesPath: 'styles',
+    vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,
 };
 
-function compile(options) {
+function compileApp(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
@@ -30,32 +35,61 @@ function compile(options) {
     }
 
     return rollupPipeline(
-        opts.destinationPath,
-        getVueApps(opts.rootPath)
-            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.rootPath, appName, '/main.js') })),
+        opts.appDestinationPath,
+        getVueApps(opts.appRootPath)
+            .map((appName) => ({ fileName: appName, entryPath: path.join(opts.appRootPath, appName, '/main.js') })),
         [
             json(),
-            alias({
-                vue: path.resolve(path.join(opts.vueJsNodeModulesPath, opts.isProduction
-                    ? 'vue/dist/vue.common.prod.js'
-                    : 'vue/dist/vue.esm.browser.js')),
-                vuelidate: path.resolve(path.join(opts.vueJsNodeModulesPath, 'vuelidate/')),
-                'vue-router': path.resolve(path.join(
-                    opts.vueJsNodeModulesPath, 'vue-router/dist/vue-router.common.js')),
-                'vue-axios': path.resolve(path.join(opts.vueJsNodeModulesPath, 'vue-axios/')),
-                axios: path.resolve(path.join(opts.vueJsNodeModulesPath, 'axios/')),
-                resolve: ['.js', '/index.js', '/lib/index.js', '/src/index.js'],
-                ...opts.rollupAlias,
-            }),
+            configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
             replace({
-                'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
-                'process.env.BUILD': JSON.stringify('web'),
+                values: {
+                    'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
+                    'process.env.BUILD': JSON.stringify('web'),
+                },
+                preventAssignment: true,
             }),
             commonjs(),
-            buble(),
-        ]
-    );
+        ],
+        null,
+        (fileName) => path.basename(path.dirname(fileName)));
 }
 
-module.exports = { compile };
+function globPromise(basePath) {
+    return new Promise((resolve, reject) => {
+        glob(basePath, (err, matches) => (err ? reject(err) : resolve(matches)));
+    });
+}
+
+function compileCss(options) {
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+
+    return Promise.all(getVueApps(opts.appRootPath)
+        .map(async (appName) => {
+            const paths = await globPromise(path.join(
+                opts.appRootPath,
+                appName,
+                opts.appStylesPath,
+                '*.css'));
+
+            await Promise.all(paths.map((filePath) => fs.promises.copyFile(
+                filePath,
+                path.join(opts.appDestinationPath, path.basename(filePath)))));
+        }));
+}
+
+function compile(options) {
+    const appRootPath = options?.appRootPath ? options.appRootPath : defaultOptions.appRootPath;
+    if (!fs.existsSync(appRootPath)) return;
+
+    compileApp(options);
+    compileCss(options);
+}
+
+function clean(options) {
+    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    return del(opts.appDestinationPath, { force: true });
+}
+
+module.exports = { compile, clean };
+executeFunctionByCommandLineArgument(module.exports);
