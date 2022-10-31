@@ -1,31 +1,40 @@
-const { handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+const { handleErrorObject, handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
 const path = require('path');
 
-const args = process.argv.splice(2);
-const argumentOptions = args.length >= 2 ? JSON.parse(args[1]) : undefined;
-
 async function executeFunctionByCommandLineArgument(functions) {
-    if (!args[0]) return;
+    const [functionName, argumentOptionsJson] = process.argv.splice(2);
+    const argumentOptions = argumentOptionsJson ? JSON.parse(argumentOptionsJson) : undefined;
+
+    // Informs the consumer of correct usage and exits if something is missing..
+    function helpAndExit(message) {
+        handleErrorMessage(message + ' (USAGE: node <script-file> <compile|clean> [options-json])');
+        process.exit(1);
+    }
+
+    if (!functionName) helpAndExit('Command line argument is expected.');
 
     try {
-        const argument = args[0].toLowerCase();
+        // Look for the target function by property key (case-insensitive).
         const target = Object
             .entries(functions)
-            .filter((pair) => pair[0].toLowerCase() === argument)[0];
+            .filter(([key]) => key.toLowerCase() === functionName)[0];
 
-        if (target) {
-            const task = target[1](argumentOptions);
-            if (task && task.then) await task;
-        }
+        if (!target) helpAndExit(`Couldn't find the function "${functionName}".`);
+
+        // Execute the function with the provided options object, if any. If it's a thenable object (e.g. Promise), then
+        // it's also awaited.
+        const task = target[1](argumentOptions);
+        if (task && task.then) await task;
     }
     catch (error) {
-        handleErrorMessage(error);
+        handleErrorObject(error);
         process.exit(1);
     }
 }
 
 function leaveNodeModule() {
     const location = process.cwd().split(path.sep).slice(-2).join('/');
+
     // Need to check both because Windows and Linux resolve the directory symlink between the two differently.
     if (location === 'node_modules/lombiq-vuejs' || location === 'node_modules/.lv') {
         process.chdir(path.resolve('..', '..'));

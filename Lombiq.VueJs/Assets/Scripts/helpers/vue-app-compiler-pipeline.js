@@ -7,8 +7,6 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
-const { handleErrorObject } = require('nodejs-extensions/scripts/handle-error');
-
 const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
