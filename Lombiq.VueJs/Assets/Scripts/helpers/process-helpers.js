@@ -1,4 +1,4 @@
-const { handleErrorObject, handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
+const { handleErrorObject, handleErrorMessage } = require('.nx/scripts/handle-error');
 const path = require('path');
 
 async function executeFunctionByCommandLineArgument(functions) {
