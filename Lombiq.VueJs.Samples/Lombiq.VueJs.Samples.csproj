@@ -22,7 +22,7 @@
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/Lombiq.VueJs.Samples/Readme.md</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/blob/dev/Lombiq.VueJs.Samples/Readme.md</PackageProjectUrl>
     <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
