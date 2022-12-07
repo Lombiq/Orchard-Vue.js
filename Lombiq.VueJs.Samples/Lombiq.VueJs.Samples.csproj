@@ -20,14 +20,14 @@
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/Lombiq.VueJs.Samples/Readme.md</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/blob/dev/Lombiq.VueJs.Samples/Readme.md</PackageProjectUrl>
     <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.4.0"/>
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.4.0"/>
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.4.0"/>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0"/>
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.5.0"/>
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.5.0"/>
   </ItemGroup>
 
   <ItemGroup>
