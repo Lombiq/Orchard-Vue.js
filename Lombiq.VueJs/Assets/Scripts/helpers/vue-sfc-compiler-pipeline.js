@@ -53,7 +53,7 @@ function compile(options) {
                 resolve: ['.vue', '.js', '/index.js', '/lib/index.js', '/src/index.js'],
                 ...opts.rollupAlias,
             }),
-            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }),
+            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }), // #spell-check-ignore-line
             replace({
                 'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
                 'process.env.BUILD': JSON.stringify('web'),
