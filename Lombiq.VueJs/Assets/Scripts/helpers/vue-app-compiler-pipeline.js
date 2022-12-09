@@ -25,7 +25,7 @@ function compile(options) {
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);
     }
-    if (!fs.lstatSync(opts.vueJsNodeModulesPath).isDirectory()) {
+    if (!fs.lstatSync(opts.vueJsNodeModulesPath).isDirectory()) { // #spell-check-ignore-line
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" is not a directory!`);
     }
 
