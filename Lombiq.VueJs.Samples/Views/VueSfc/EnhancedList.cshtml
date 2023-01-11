@@ -1,11 +1,7 @@
-﻿@model Lombiq.VueJs.Samples.ViewModels.EnhancedListViewModel
+@model Lombiq.VueJs.Samples.ViewModels.EnhancedListViewModel
 
 @{
-    var dependencies = string.Join(", ", new string[]
-    {
-        ResourceNames.EnhancementControl,
-        ResourceNames.EnhancementTableBody,
-    });
+    var dependencies = string.Join(", ", ResourceNames.EnhancementControl, ResourceNames.EnhancementTableBody);
 }
 
 <form id="enhanced-list">
