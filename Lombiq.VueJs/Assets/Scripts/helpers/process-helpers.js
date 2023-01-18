@@ -21,8 +21,8 @@ async function executeFunctionByCommandLineArgument(functions) {
 
         if (!target) helpAndExit(`Couldn't find the function "${functionName}".`);
 
-        // Execute the function with the provided options object, if any. If it's a thenable object (e.g. Promise), then
-        // it's also awaited.
+        // #spell-check-ignore-line: Execute the function with the provided options object, if any. If it's a thenable
+        // object (e.g. Promise), then it's also awaited.
         const task = target[1](argumentOptions);
         if (task && task.then) await task;
     }
