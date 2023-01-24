@@ -1,6 +1,6 @@
 <Project>
   <Target Name="InstallLombiqVueJsPackage"
-          AfterTargets="AddNodeJsExtensionsAsNpmPackage">
+          AfterTargets="InstallNodeJsExtensionsNpmPackage">
     <Message
       Text="Copying Lombiq.VueJs files to $(LombiqVueJsNpmPackageSourcePath):%0a - @(LombiqVueJsNpmPackageFiles,'%0a - ')"
       Importance="$(_Importance)" />
@@ -15,7 +15,7 @@
     <Exec Command="pnpm link $(LombiqVueJsNpmPackageSourcePath)" />
   </Target>
 
-  <Target Name="DeleteLombiqVueJsNpmPackage" AfterTargets="DeleteNodeJsExtensionsNpmPackage">
+  <Target Name="DeleteLombiqVueJsNpmPackage" AfterTargets="CleanNodeJsExtensionsNpmPackage">
     <ItemGroup>
       <LombiqVueJsNpmPackageFoldersToDelete Condition="!Exists($(LombiqVueJsNpmPackageSourcePath))" />
       <LombiqVueJsNpmPackageFoldersToDelete

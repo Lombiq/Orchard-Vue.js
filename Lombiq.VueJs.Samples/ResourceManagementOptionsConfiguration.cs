@@ -35,4 +35,4 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
 }
 
-// NEXT STATION: Gulpfile.js
+// NEXT STATION: package.json
