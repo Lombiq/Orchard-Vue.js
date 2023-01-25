@@ -1,72 +1,113 @@
-const all = require('gulp-all');
+const fs = require('fs');
 const path = require('path');
-const gulp = require('gulp');
-const plumber = require('gulp-plumber');
-const rollup = require('gulp-rollup');
-const rename = require('gulp-rename');
-const uglify = require('gulp-uglify');
-const log = require('fancy-log');
+const { minify } = require('terser');
+const { rollup } = require('rollup');
+
+const { handleErrorObject, handlePromiseRejectionAsError } = require('.nx/scripts/handle-error');
+
+function createDirectory(directoryPath) {
+    return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath, { recursive: true });
+}
+
+function handleRollupError(error) {
+    const stack = error?.stack?.split(/[\n\r]+/).map((line) => line.trim()) ?? [];
+    const errorLineRegex = /\.(js|vue):(?<line>\d+)(:(?<column>\d+))?.*/;
+    const lineWithFilePath = stack
+        .filter((line) => line.match(errorLineRegex))
+        .map((line) => line.replace(/^\s*at\s+/, '').trim())[0];
+    const lineMatch = lineWithFilePath?.match(errorLineRegex)?.groups ?? {};
+
+    handleErrorObject({
+        code: 'ROLLUP',
+        path: lineWithFilePath,
+        line: lineMatch.line,
+        column: lineMatch.column,
+        message: error,
+    });
+}
 
 module.exports = function rollupPipeline(
     destinationPath,
     filesAndEntryPaths,
     rollupPlugins,
     rollupOptions = null,
-    outputFileNameTransform = null) {
-    return all(filesAndEntryPaths
-        .map((pair) => {
-            const fileName = pair.fileName;
-            const entryPath = pair.entryPath;
-            const outputFileName = outputFileNameTransform ? outputFileNameTransform(fileName) : fileName;
+    outputFileNameTransform = null,
+    panicOnFailure = true) {
+    function configure(fileName, entryPath) {
+        const defaultRollupOptions = {
+            onwarn: (warning, next) => {
+                if (warning.code === 'THIS_IS_UNDEFINED') return;
+                next(warning);
+            },
+        };
 
-            const defaultRollupOptions = {
-                allowRealFiles: true,
-                input: path.join(entryPath),
-                output: {
-                    format: 'cjs',
-                },
-                onwarn: (warning, next) => {
-                    if (warning.code === 'THIS_IS_UNDEFINED') return;
-                    next(warning);
-                },
-            };
+        let customRollupPlugins = rollupPlugins;
+        let customRollupOptions = rollupOptions;
 
-            if (typeof rollupOptions === 'function') rollupOptions = rollupOptions(fileName, entryPath);
-            if (typeof rollupPlugins === 'function') rollupPlugins = rollupPlugins(fileName, entryPath);
+        if (typeof customRollupPlugins === 'function') customRollupPlugins = customRollupPlugins(fileName, entryPath);
+        if (typeof customRollupOptions === 'function') customRollupOptions = customRollupOptions(fileName, entryPath);
 
-            const options = rollupOptions ? { ...defaultRollupOptions, ...rollupOptions } : defaultRollupOptions;
+        const options = customRollupOptions ? { ...defaultRollupOptions, ...customRollupOptions } : defaultRollupOptions;
+        options.input = entryPath;
 
-            if (Array.isArray(rollupPlugins)) {
-                if (Array.isArray(options.plugins)) {
-                    rollupPlugins.forEach(plugin => options.plugins.push(plugin));
-                }
-                else {
-                    options.plugins = rollupPlugins;
-                }
+        // Safely copy the provided plugins to the options.
+        if (Array.isArray(customRollupPlugins)) {
+            if (Array.isArray(options.plugins)) {
+                customRollupPlugins.forEach((plugin) => options.plugins.push(plugin));
+            }
+            else {
+                options.plugins = customRollupPlugins;
+            }
+        }
+
+        return options;
+    }
+
+    const pipelinePromise = Promise.all(filesAndEntryPaths
+        .map(async ({ fileName, entryPath }) => {
+            let success = true;
+            let bundle;
+
+            try {
+                const options = configure(fileName, entryPath);
+                const outputOptions = { format: 'cjs' };
+
+                bundle = await rollup(options);
+                const { output } = await bundle.generate(outputOptions);
+
+                await Promise.all(output.map(async (item) => {
+                    try {
+                        if (item.type === 'asset') {
+                            // This branch shouldn't ever be reached.
+                            throw new Error(`Why is this an asset? (${JSON.stringify(item)})`);
+                        }
+
+                        const itemFileName = fs.existsSync(item.facadeModuleId) ? item.facadeModuleId : item.fileName;
+                        const outputFileName = typeof outputFileNameTransform === 'function'
+                            ? outputFileNameTransform(itemFileName)
+                            : itemFileName;
+                        const outputPath = path.join(destinationPath, outputFileName + '.js');
+                        await createDirectory(path.dirname(outputPath));
+                        await fs.promises.writeFile(outputPath, item.code);
+
+                        const minified = await minify(item.code, { sourceMap: true });
+                        const minifiedPath = outputPath.replace(/\.js$/, '.min.js');
+                        await fs.promises.writeFile(minifiedPath, minified.code);
+                        await fs.promises.writeFile(minifiedPath + '.map', minified.map);
+                    }
+                    catch (error) {
+                        try { handleRollupError(error); }
+                        catch (innerError) { handleErrorObject(innerError); }
+                        success = false;
+                    }
+                }));
+            }
+            finally {
+                if (bundle) await bundle.close();
             }
 
-            return gulp.src(entryPath)
-                .pipe(plumber({
-                    errorHandler: function errorHandler(error) {
-                        // Necessary because the regular error.toString() is a bit broken.
-                        const details = Object.entries(error)
-                            .map((pair) => ({
-                                name: pair[0],
-                                value: ('' + pair[1]) === '[object Object]' ? JSON.stringify(pair[1]) :  ('' + pair[1]),
-                            }))
-                            .filter((pair) => pair.name !== 'plugin' && pair.name !== 'message')
-                            .map((pair) => `    ${pair.name}: ${pair.value}`.replace(/\n/g, '\n    '))
-                            .join('\n')
-
-                        log(`Plumber has found an unhandled error:\nError in plugin "${error.plugin}"\nMessage:\n` +
-                            `    ${error.message}\nDetails:\n${details}`);
-                    }
-                }))
-                .pipe(rollup(options))
-                .pipe(rename(outputFileName + '.js'))
-                .pipe(gulp.dest(destinationPath))
-                .pipe(uglify())
-                .pipe(rename(outputFileName + '.min.js'))
-                .pipe(gulp.dest(destinationPath));
+            if (!success) throw new Error('rollupPipeline failed!');
         }));
+
+    return handlePromiseRejectionAsError(pipelinePromise, panicOnFailure);
 };

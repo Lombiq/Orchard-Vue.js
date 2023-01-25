@@ -1,11 +1,9 @@
 {
+  "name": "lombiq-vuejs",
+  "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "dotnet-prebuild": "gulp"
-  },
   "dependencies": {
     "axios": "0.21.2",
-    "es6-promise": "4.2.6",
     "source-map": "^0.7.3",
     "vue": "2.6.14",
     "vue-axios": "2.1.4",
@@ -13,24 +11,32 @@
     "vuelidate": "0.7.4"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "@vue/compiler-sfc": "^3.2.29",
+    "del": "^6.0.0",
+    "eslint": "^8.17.0",
     "fancy-log": "^2.0.0",
-    "fs": "0.0.1-security",
-    "gulp": "4.0.2",
-    "gulp-all": "1.1.0",
-    "gulp-clean-css": "4.3.0",
-    "gulp-plumber": "1.2.1",
-    "gulp-rename": "2.0.0",
-    "gulp-rollup": "2.17.0",
-    "gulp-sass": "5.1.0",
-    "gulp-uglify": "3.0.2",
-    "rollup-plugin-alias": "1.5.1",
-    "rollup-plugin-buble": "0.19.6",
-    "rollup-plugin-commonjs": "8.4.1",
-    "rollup-plugin-eslint": "7.0.0",
-    "rollup-plugin-json": "4.0.0",
-    "rollup-plugin-node-resolve": "4.1.0",
-    "rollup-plugin-replace": "2.2.0",
-    "del": "6.0.0"
+    "fs": "^0.0.1-security",
+    "glob": "^8.0.3",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.79.1",
+    "rollup-plugin-eslint": "^7.0.0",
+    "terser": "^5.15.0"
+  },
+  "scripts": {
+    "build": "run-p --print-name --continue-on-error \"build:*\"",
+    "compile": "run-p --print-name --continue-on-error \"build:*\"",
+    "clean": "run-p --print-name --continue-on-error \"clean:*\"",
+    "watch": "echo \"Watch is currently not supported (see https://github.com/Lombiq/Orchard-Vue.js/issues/64 for progress).\"",
+    "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
+    "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
+    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean",
+    "--": "------------------------------------------------- VUE APP -------------------------------------------------",
+    "build:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' compile",
+    "clean:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' clean"
   }
 }
