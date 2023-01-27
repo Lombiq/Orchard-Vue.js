@@ -10,7 +10,7 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 ## Prerequisites
 
-1. This project relies on [Lombiq Node.js Extensions](https://github.com/Lombiq/NodeJs-Extensions/), please see its pre-requisites [here](https://github.com/Lombiq/NodeJs-Extensions/#pre-requisites).
+1. This project relies on [Lombiq Node.js Extensions](https://github.com/Lombiq/NodeJs-Extensions/), please see its prerequisites [here](https://github.com/Lombiq/NodeJs-Extensions/#prerequisites).
 2. If you're using Visual Studio, then under ["External Web Tools"](https://devblogs.microsoft.com/dotnet/customize-external-web-tools-in-visual-studio-2015/) add the installation path of Node.js (most possibly _C:\Program Files\NodeJS_*) to the list and move it to the top.
 3. If you are importing this project as a submodule, include the following at the beginning and end of your csproj file. If you are using the NuGet package this is not necessary.
 
@@ -46,21 +46,21 @@ If you just want to see the whole thing in action, check out the [Samples projec
 
 ## Using Vue.js node packages
 
-The packages will be automatically installed on build (i.e. `dotnet build`) or you can trigger it using the `npm install` command.
+The packages will be automatically installed on build (i.e. `dotnet build`). You can also trigger the installation manually using the `pnpm install` command.
 
 ## Adding Vue.js component templates
 
-Place your template files (.cshtml or .liquid) to the _Views/VueComponents_ folder. The shape template harvester will harvest these templates and the generated shape type will be as it would be normally generated but with `VueComponent-` prefix. Eg.:
+Place your template files (.cshtml or .liquid) in the _Views/VueComponents_ folder. The shape template harvester will harvest these templates, and the generated shape type will be as it would be normally generated, but with a `VueComponent-` prefix. Eg.:
 
 ```cshtml
     <shape type="VueComponent-App_UserProfile"></shape>
 ```
 
-In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component JavaScript code.
+In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component's JavaScript code.
 
 ## Using Vue.js Single File Components
 
-The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that it's pure Vue, yet you can still make use of shape overriding if needed.
+The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that, it's pure Vue, yet you can still make use of shape overriding if needed.
 
 See a demo video of using Vue.js Single File Components [here](https://www.youtube.com/watch?v=L0qjpQ6THZU).
 
@@ -104,11 +104,11 @@ export default {
 </script>
 ```
 
-You can include the `<vue-component area="My.Module name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
+You can include the `<vue-component area="My.Module" name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
 
 The Rollup plugin automatically registers each component you include (but not their children) as globally accessible components. So you don't need to list them in your app's `components` property. Indeed the component object isn't exposed as a global variable.
 
-If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module name="my-article" model="@data" model-property="value" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names. The model-property, id and class are optional. If you don't specify a model-property it defaults to "value". If you have set custom `model.prop` in your component, set this to the same value to indicate that the property is to be set up with two-way binding via `v-model`. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
+If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module" name="my-article" model="@data" model-property="value" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names. The model-property, id and class are optional. If you don't specify a model-property it defaults to "value". If you have set custom `model.prop` in your component, set this to the same value to indicate that the property is to be set up with two-way binding via `v-model`. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
 
 ```html
 <script at="Foot" depends-on="unique-id-VueApp">
