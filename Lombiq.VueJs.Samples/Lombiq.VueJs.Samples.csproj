@@ -48,6 +48,6 @@
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
-  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.targets" />
 
 </Project>

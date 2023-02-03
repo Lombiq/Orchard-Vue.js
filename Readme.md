@@ -17,12 +17,12 @@ Do you want to quickly try out this project and see it in action? Check it out i
     ```xml
     <Project Sdk="Microsoft.NET.Sdk.Razor">
       <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
-      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+      <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.props" />
         
       <!-- Everything else goes here. -->
     
       <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
-      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
+      <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.targets" />
     </Project>
     ```
 
