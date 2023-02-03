@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.VueJs", "Lombiq.VueJs\Lombiq.VueJs.csproj", "{924BC028-FE68-41BC-B0F3-0932B092EB32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.VueJs.Samples", "Lombiq.VueJs.Samples\Lombiq.VueJs.Samples.csproj", "{49C23954-3F9E-4CDB-A8DE-685DFB5E3A34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.VueJs.Tests.UI", "Lombiq.VueJs.Tests.UI\Lombiq.VueJs.Tests.UI.csproj", "{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{924BC028-FE68-41BC-B0F3-0932B092EB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{924BC028-FE68-41BC-B0F3-0932B092EB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{924BC028-FE68-41BC-B0F3-0932B092EB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{924BC028-FE68-41BC-B0F3-0932B092EB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49C23954-3F9E-4CDB-A8DE-685DFB5E3A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49C23954-3F9E-4CDB-A8DE-685DFB5E3A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49C23954-3F9E-4CDB-A8DE-685DFB5E3A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49C23954-3F9E-4CDB-A8DE-685DFB5E3A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
