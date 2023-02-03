@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
-  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.props" />
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
