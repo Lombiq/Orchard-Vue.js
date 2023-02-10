@@ -30,8 +30,9 @@
     <None Include="package.json" Pack="true" PackagePath="" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="build/**" Pack="true" PackagePath="build/" />
-    <None Include="*.props" Pack="true" PackagePath="" />
-    <None Include="*.targets" Pack="true" PackagePath="" />
+    <None Include="Lombiq.VueJs.props" Pack="true" PackagePath="" />
+    <None Include="Lombiq.VueJs.targets" Pack="true" PackagePath="" />
+    <None Include="Package.Build.props" Pack="true" PackagePath="" />
     <None Include=".npmrc" Pack="true" PackagePath="" />
     <None Include="Assets/**" Pack="true" PackagePath="Assets/" />
     <None Remove="node_modules/**" />
