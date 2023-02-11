@@ -34,6 +34,7 @@
     <None Include="*.targets" Pack="true" PackagePath="" />
     <None Include=".npmrc" Pack="true" PackagePath="" />
     <None Include="Assets/**" Pack="true" PackagePath="Assets/" />
+    <None Remove="$(NuGetPackageRoot)orchardcore.module.targets\1.5.0\build\Package.Build.props" />
     <None Remove="node_modules/**" />
   </ItemGroup>
 
