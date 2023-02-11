@@ -13,4 +13,3 @@ jobs:
     with:
       # Necessary to avoid this error: https://github.com/Lombiq/Orchard-Vue.js/actions/runs/4146253609
       dotnet-pack-ignore-warning: NU0
-      verbosity: detailed
