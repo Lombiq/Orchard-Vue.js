@@ -10,6 +10,3 @@ jobs:
     uses: Lombiq/GitHub-Actions/.github/workflows/publish-nuget.yml@dev
     secrets:
       API_KEY: ${{ secrets.DEFAULT_NUGET_PUBLISH_API_KEY }}
-    with:
-      # Necessary to avoid this error: https://github.com/Lombiq/Orchard-Vue.js/actions/runs/4146253609
-      dotnet-pack-ignore-warning: NU5118
