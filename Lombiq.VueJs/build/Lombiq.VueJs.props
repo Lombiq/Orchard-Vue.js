@@ -3,7 +3,7 @@
 
   <!-- Necessary to avoid NU5118 due to duplicate build/Lombiq.VueJs.props files from OrchardCore.Module.Targets. -->
   <ItemGroup>
-    <!-- Copied from https://github.com/OrchardCMS/OrchardCore/blob/main/src/OrchardCore/OrchardCore.Module.Targets/Package.Build.props
+    <!-- Copied from: https://github.com/OrchardCMS/OrchardCore/blob/main/src/OrchardCore/OrchardCore.Module.Targets/Package.Build.props
          Please verify if the file changed when upgrading Orchard Core versions, and update this file accordingly. -->
     <ModulePackageNames Include="Lombiq.VueJs" />
   </ItemGroup>
