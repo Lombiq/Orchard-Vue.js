@@ -36,7 +36,8 @@
     <None Include="Assets/**" Pack="true" PackagePath="Assets/" />
     <None Remove="node_modules/**" />
 
-    <!-- Necessary to avoid NU5118 due to duplicate build/Lombiq.VueJs.props files from OrchardCore.Module.Targets. -->
+    <!-- Necessary to avoid NU5118 due to duplicate build/Lombiq.VueJs.props files. The referenced module
+         "OrchardCore.Module.Targets" tries to generate that file from the Package.Build.props mentioned below. -->
     <None Remove="$(NuGetPackageRoot)orchardcore.module.targets\*\build\Package.Build.props" />
   </ItemGroup>
 
