@@ -5,5 +5,13 @@
     "compile": "npm explore nodejs-extensions -- pnpm compile && npm explore lombiq-vuejs -- pnpm compile",
     "clean": "npm explore nodejs-extensions -- pnpm clean && npm explore lombiq-vuejs -- pnpm clean",
     "watch": "npm explore nodejs-extensions -- pnpm watch && npm explore lombiq-vuejs -- pnpm watch"
+  },
+  "devDependencies": {
+    "eslint": "^8.25.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-only-warn": "^1.0.3",
+    "eslint-plugin-promise": "^6.1.0"
   }
 }

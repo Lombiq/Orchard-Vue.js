@@ -1,6 +1,6 @@
 # Lombiq Vue.js module for Orchard Core
 
-[![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
+[![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs?label=Lombiq.VueJs)](https://www.nuget.org/packages/Lombiq.VueJs/) [![Lombiq.VueJs.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Samples?label=Lombiq.VueJs.Samples)](https://www.nuget.org/packages/Lombiq.VueJs.Samples/) [![Lombiq.VueJs.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Tests.UI?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
 
 ## About
 
@@ -17,12 +17,12 @@ Do you want to quickly try out this project and see it in action? Check it out i
     ```xml
     <Project Sdk="Microsoft.NET.Sdk.Razor">
       <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
-      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+      <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.props" />
         
       <!-- Everything else goes here. -->
     
       <Import Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
-      <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
+      <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.targets" />
     </Project>
     ```
 

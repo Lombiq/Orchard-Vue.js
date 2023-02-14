@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
-  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.props" />
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.props" />
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +26,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="License.md" Pack="true" PackagePath="" />
+    <None Include="Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+
+    <None Remove="node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0"/>
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.5.0"/>
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.5.0"/>
@@ -34,7 +43,11 @@
     <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj"/>
   </ItemGroup>
 
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="1.1.0" />
+  </ItemGroup>
+
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
-  <Import Project="..\..\Lombiq.VueJs\Lombiq.VueJs\Lombiq.VueJs.targets" />
+  <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.targets" />
 
 </Project>
