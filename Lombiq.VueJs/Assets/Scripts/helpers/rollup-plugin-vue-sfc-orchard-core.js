@@ -76,7 +76,7 @@ module.exports = function vuePlugin() {
             const source = await readFile(filePath, 'utf8');
             let code = onlyScript(source).trim();
 
-            // Reappend leading space.
+            // Reappend leading space. #spell-check-ignore-line
             const leadingSpace = lastItem(source.substring(0, source.indexOf(code) + 1).split('\n'));
             if (leadingSpace && leadingSpace.match(/^\s+$/)) code = leadingSpace + code;
 

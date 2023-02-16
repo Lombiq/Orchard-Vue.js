@@ -35,7 +35,7 @@ module.exports = function rollupPipeline(
     panicOnFailure = true) {
     function configure(fileName, entryPath) {
         const defaultRollupOptions = {
-            onwarn: (warning, next) => {
+            onwarn: (warning, next) => { // #spell-check-ignore-line
                 if (warning.code === 'THIS_IS_UNDEFINED') return;
                 next(warning);
             },
@@ -70,7 +70,7 @@ module.exports = function rollupPipeline(
 
             try {
                 const options = configure(fileName, entryPath);
-                const outputOptions = { format: 'cjs' };
+                const outputOptions = { format: 'cjs' }; // #spell-check-ignore-line
 
                 bundle = await rollup(options);
                 const { output } = await bundle.generate(outputOptions);
