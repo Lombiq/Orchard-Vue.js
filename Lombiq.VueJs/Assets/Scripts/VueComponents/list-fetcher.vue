@@ -17,8 +17,9 @@ export default {
             if (!self.query) return;
 
             const url = new URL(self.url, window.location.href);
-            Object.entries(self.query)
-                .forEach((pair) => url.searchParams.set(pair[0], pair[1]));
+            Object
+                .entries(typeof self.query === 'string' ? JSON.parse(self.query) : self.query)
+                .forEach(([name, value]) => url.searchParams.set(name, value));
 
             fetch(url.toString(), {
                 headers: {
@@ -46,7 +47,7 @@ export default {
         },
     },
     watch: {
-        query() { this.update(); },
+        query(value, previous) { if (value !== previous) this.update(); },
     },
     mounted: function () { this.update(); },
 };
