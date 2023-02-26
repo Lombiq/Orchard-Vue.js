@@ -7,6 +7,7 @@ export default {
     props: {
         url: { type: String, required: true },
         query: { required: true },
+        initialized: { default: false },
     },
     data: () => ({
         testCounter: 0,
@@ -49,6 +50,6 @@ export default {
     watch: {
         query(value, previous) { if (value !== previous) this.update(); },
     },
-    mounted: function () { this.update(); },
+    mounted: function () { if (!this.initialized) this.update(); },
 };
 </script>
