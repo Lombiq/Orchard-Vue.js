@@ -8,7 +8,7 @@
         <div class="vuePagination__item vuePagination__item_prev"
              :class="{ vuePagination__item_disabled: page <= 0 }"
              @click="page > 0 && $emit('change', page - 1)">
-            <i class="fas fa-chevron-left"></i> [[ Previous ]]
+            <i class="fas fa-chevron-left"></i>
         </div>
         <div v-for="index in indexes"
              class="vuePagination__item vuePagination__item_disabled"
@@ -49,7 +49,7 @@ export default {
     computed: {
         indexes(self) {
             return Array.from({ length: 5 })
-                .map((_, index) => index - 2 + self.page )
+                .map((_, index) => index - 2 + self.page)
                 .filter((index) => index >= 0 && index < self.pageCount);
         },
     },
