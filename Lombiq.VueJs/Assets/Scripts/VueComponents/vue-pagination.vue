@@ -3,7 +3,8 @@
         <div class="vuePagination__item vuePagination__item_first"
              :class="{ vuePagination__item_disabled: page === 0 }"
              @click="page > 0 && $emit('change', 0)">
-            <i class="fas fa-chevron-double-left"></i>
+            <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
         </div>
         <div class="vuePagination__item vuePagination__item_prev"
              :class="{ vuePagination__item_disabled: page <= 0 }"
@@ -11,7 +12,7 @@
             <i class="fas fa-chevron-left"></i>
         </div>
         <div v-for="index in indexes"
-             class="vuePagination__item vuePagination__item_disabled"
+             class="vuePagination__item"
              :class="{ vuePagination__item_current: index === page }"
              @click="index !== page && $emit('change', index)">
             {{ index }}
@@ -25,7 +26,8 @@
              class="vuePagination__item vuePagination__item_last"
              :class="{ vuePagination__item_disabled: page + 1 === pageCount }"
              @click="page + 1 < pageCount && $emit('change', pageCount - 1)">
-            <i class="fas fa-chevron-double-right"></i>
+            <i class="fas fa-chevron-right"></i>
+            <i class="fas fa-chevron-right"></i>
         </div>
     </div>
 </template>
