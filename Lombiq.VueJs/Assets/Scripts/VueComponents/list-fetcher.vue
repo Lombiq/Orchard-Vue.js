@@ -38,12 +38,14 @@ export default {
 
                         self.$emit('items', []);
                         self.$emit('max-page', 0);
+                        self.$emit('page-count', 0);
 
                         return;
                     }
 
                     self.$emit('items', data.items);
                     self.$emit('max-page', data.pageCount - 1);
+                    self.$emit('page-count', data.pageCount);
                 });
         },
     },
