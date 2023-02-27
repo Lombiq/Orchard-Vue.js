@@ -46,7 +46,7 @@ public class VueComponentTagHelper : TagHelper
         var scriptName = "vue-component-" + Name;
         _resourceManager.InlineManifest
             .DefineScript(scriptName)
-            .SetUrl($"/{Area}/vue/{Name}.min.js", $"/{Area}/vue/{Name}.js")
+            .SetUrl($"~/{Area}/vue/{Name}.min.js", $"~/{Area}/vue/{Name}.js")
             .SetDependencies(ResourceNames.Vue);
         _resourceManager.RegisterScript(scriptName).AtFoot();
 
