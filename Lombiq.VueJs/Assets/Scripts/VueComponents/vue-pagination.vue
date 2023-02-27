@@ -12,6 +12,7 @@
             <i class="fas fa-chevron-left"></i>
         </div>
         <div v-for="index in indexes"
+             :key="'vuePagination__item_' + index"
              class="vuePagination__item"
              :class="{ vuePagination__item_current: index === page }"
              @click="index !== page && $emit('change', index)">
