@@ -16,7 +16,7 @@
              class="vuePagination__item"
              :class="{ vuePagination__item_current: index === page }"
              @click="index !== page && $emit('change', index)">
-            {{ index }}
+            {{ index + 1 }}
         </div>
         <div class="vuePagination__item vuePagination__item_next"
              :class="{ vuePagination__item_disabled: page + 1 >= pageCount }"
