@@ -7,6 +7,7 @@ export default {
     props: {
         url: { type: String, required: true },
         query: { required: true },
+        initialized: { default: false },
     },
     data: () => ({
         testCounter: 0,
@@ -17,8 +18,9 @@ export default {
             if (!self.query) return;
 
             const url = new URL(self.url, window.location.href);
-            Object.entries(self.query)
-                .forEach((pair) => url.searchParams.set(pair[0], pair[1]));
+            Object
+                .entries(typeof self.query === 'string' ? JSON.parse(self.query) : self.query)
+                .forEach(([name, value]) => url.searchParams.set(name, value));
 
             fetch(url.toString(), {
                 headers: {
@@ -36,18 +38,20 @@ export default {
 
                         self.$emit('items', []);
                         self.$emit('max-page', 0);
+                        self.$emit('page-count', 0);
 
                         return;
                     }
 
                     self.$emit('items', data.items);
                     self.$emit('max-page', data.pageCount - 1);
+                    self.$emit('page-count', data.pageCount);
                 });
         },
     },
     watch: {
-        query() { this.update(); },
+        query(value, previous) { if (value !== previous) this.update(); },
     },
-    mounted: function () { this.update(); },
+    mounted: function () { if (!this.initialized) this.update(); },
 };
 </script>
