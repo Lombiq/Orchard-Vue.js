@@ -1,9 +1,11 @@
 using Lombiq.VueJs.Constants;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Mvc.Utilities;
 using OrchardCore.ResourceManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,6 +54,14 @@ public class VueComponentTagHelper : TagHelper
 
         foreach (var resourceName in FindResourceNames())
         {
+            if (resourceName.StartsWithOrdinal("script:"))
+            {
+                var parts = resourceName.Split(':');
+                _resourceManager.RegisterScript(parts[1], location: ResourceLocation.Head);
+                output.PreElement.AppendHtml(new HtmlString($"<script>Vue.use(window['{parts[2]}']);</script>"));
+                continue;
+            }
+
             var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
 
             output.PostElement.AppendHtml(
