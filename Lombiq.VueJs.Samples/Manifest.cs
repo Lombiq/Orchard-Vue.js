@@ -10,5 +10,6 @@ using OrchardCore.Modules.Manifest;
     Dependencies = new[]
     {
         Lombiq.VueJs.Constants.FeatureIds.Area,
+        "OrchardCore.ContentFields",
     }
 )]

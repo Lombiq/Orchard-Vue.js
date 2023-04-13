@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -33,14 +33,17 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0"/>
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.5.0"/>
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.5.0"/>
+    <PackageReference Include="OrchardCore.ContentFields" Version="1.5.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.5.0" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.5.0" />
+    <PackageReference Include="ZXing.Net.Bindings.ImageSharp.V2" Version="0.16.15" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj"/>
+    <ProjectReference Include="..\Lombiq.VueJs\Lombiq.VueJs.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">

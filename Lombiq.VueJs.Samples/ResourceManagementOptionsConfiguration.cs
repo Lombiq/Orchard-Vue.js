@@ -30,6 +30,15 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 
         // On the other hand make sure your .vue files are embedded during build, e.g. include this in the csproj:
         // <ItemGroup><EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" /></ItemGroup>
+
+        _manifest
+            .DefineSingleFileComponent(BusinessCard)
+            .SetDependencies(LoadingIndicator);
+
+        _manifest
+            .DefineSingleFileComponent(QrCard)
+            .SetDependencies(LoadingIndicator)
+            .SetDependencies(BusinessCard);
     }
 
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
