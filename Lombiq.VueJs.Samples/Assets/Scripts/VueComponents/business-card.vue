@@ -50,7 +50,7 @@ export default {
                 const response = await fetch(`${this.apiUrl}/${newId}`);
 
                 if (!response.ok) {
-                    const message = `An error has occured: ${response.status} - ${response.statusText}`;
+                    const message = `An error has occurred: ${response.status} - ${response.statusText}`;
 
                     throw new Error(message);
                 }
