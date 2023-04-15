@@ -1,12 +1,13 @@
+using Lombiq.VueJs.Samples.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
+using OrchardCore.Mvc.Core.Utilities;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Samples.Controllers;
 
-[ApiController]
-[Route("business-card")]
-[IgnoreAntiforgeryToken]
 public class QrCardController : Controller
 {
     private readonly IContentManager _contentManager;
@@ -14,9 +15,19 @@ public class QrCardController : Controller
     public QrCardController(IContentManager contentManager) =>
         _contentManager = contentManager;
 
-    public ActionResult Index() => View();
+    // /Lombiq.VueJs.Samples/QrCard/Index
+    public ActionResult Index()
+    {
+        var linkGenerator = HttpContext.RequestServices.GetRequiredService<LinkGenerator>();
 
-    [HttpGet("{cardId}")]
+        var apiUrl = linkGenerator.GetPathByAction(nameof(GetBusinessCard), typeof(QrCardController).ControllerName());
+
+        return View(new QrCardAppViewModel
+        {
+            ApiUrl = apiUrl,
+        });
+    }
+
     public async Task<ActionResult> GetBusinessCard(string cardId)
     {
         var businessCard = await _contentManager.GetAsync(cardId);

@@ -1,3 +1,4 @@
+using Lombiq.Tests.UI.Constants;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
@@ -105,6 +106,46 @@ public static class TestCaseUITestContextExtensions
         await context.ClickReliablyOnAsync(byPreviousButton);
         VerifyFirstPageFirstRow();
     }
+
+    public static async Task TestQrCardFoundAsync(this UITestContext context)
+    {
+        await context.SetupAndNavigateQrCardAppAsync();
+        context.WaitForCardElementAndAssert(
+            By.CssSelector(".qr-card .full-name"),
+            element => element.Text.ShouldBe("John, Doe"));
+    }
+
+    public static async Task TestQrCardNotFoundAsync(this UITestContext context)
+    {
+        await context.SetupAndNavigateQrCardAppAsync();
+        context.WaitForCardElementAndAssert(
+            By.CssSelector(".qr-card .error-message"),
+            element => element.Text.ShouldContain("404"));
+    }
+
+    private static async Task SetupAndNavigateQrCardAppAsync(this UITestContext context)
+    {
+        await context.ExecuteQrCardSampleRecipeDirectlyAsync();
+        context.SetViewportSize(CommonDisplayResolutions.WxgaPlus);
+        await context.GoToQrCardAppAsync();
+    }
+
+    private static void WaitForCardElementAndAssert(
+        this UITestContext context,
+        By elementToWaitSelector,
+        Action<IWebElement> assert) =>
+        context.DoWithRetriesOrFail(
+            () =>
+            {
+                if (context.Exists(elementToWaitSelector))
+                {
+                    assert(context.Get(elementToWaitSelector));
+
+                    return true;
+                }
+
+                return false;
+            });
 
     private enum Numeric { One = 1 }
 }

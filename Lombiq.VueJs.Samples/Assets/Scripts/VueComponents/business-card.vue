@@ -1,13 +1,13 @@
 <template>
-    <div class="card" v-if="!loading">
+    <div class="card qr-card" v-if="!loading">
         <div class="card-body" v-if="!error && currentCard">
-            <h5>{{ currentCard.BusinessCard.FirstName.Text }}, {{ currentCard.BusinessCard.LastName.Text }}</h5>
+            <h5 class="full-name">{{ currentCard.BusinessCard.FirstName.Text }}, {{ currentCard.BusinessCard.LastName.Text }}</h5>
             <p v-if="currentCard.BusinessCard.Phone.Text">Phone: {{ currentCard.BusinessCard.Phone.Text }}</p>
             <p v-if="currentCard.BusinessCard.Email.Text">Email: {{ currentCard.BusinessCard.Email.Text }}</p>
         </div>
         <div class="card-body" v-else-if="error">
             <h5>Something went wrong :(</h5>
-            <p>{{ error }}</p>
+            <p class="error-message">{{ error }}</p>
         </div>
     </div>
     <loading-indicator v-else-if="loading" />
@@ -47,7 +47,7 @@ export default {
             this.loading = true;
 
             try {
-                const response = await fetch(`${this.apiUrl}/${newId}`);
+                const response = await fetch(`${this.apiUrl}?cardId=${newId}`);
 
                 if (!response.ok) {
                     const message = `An error has occurred: ${response.status} - ${response.statusText}`;
