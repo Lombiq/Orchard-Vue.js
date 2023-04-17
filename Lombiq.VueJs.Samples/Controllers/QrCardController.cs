@@ -15,7 +15,7 @@ public class QrCardController : Controller
     public QrCardController(IContentManager contentManager) =>
         _contentManager = contentManager;
 
-    // /Lombiq.VueJs.Samples/QrCard/Index
+    // Open this from under /Lombiq.VueJs.Samples/QrCard/Index.
     public ActionResult Index()
     {
         var linkGenerator = HttpContext.RequestServices.GetRequiredService<LinkGenerator>();
