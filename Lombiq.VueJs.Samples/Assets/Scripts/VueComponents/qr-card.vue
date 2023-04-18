@@ -4,7 +4,7 @@
             <div class="col-md-6 col-sm">
                 <div class="card">
                     <div class="card-body">
-                        <h5 v-if="!loading && !error">Scan code</h5>
+                        <h5 v-if="!loading && !error">{{ texts.ScanCode }}</h5>
                         <qrcode-stream @decode="onDecode" @init="onInit" :track="paintOutline">
                             <loading-indicator v-if="loading" />
                         </qrcode-stream>
@@ -19,7 +19,7 @@
         </div>
         <div class="row justify-content-center mb-3" v-if="!error && !loading">
             <div class="col-md-6 col-sm">
-                <business-card :card-id="cardId" :api-url="apiUrl" />
+                <business-card :card-id="cardId" :api-url="apiUrl" :texts="texts" />
             </div>
         </div>
     </div>
@@ -60,6 +60,22 @@ export default {
         apiUrl: {
             type: String,
             required: true,
+        },
+        texts: {
+            type: Object,
+            default: function (raw) {
+                const texts = {
+                    ErrorTitle: 'An error occurred.',
+                    ScanCode: 'Scan code',
+                    Email: 'Email',
+                    Phone: 'Phone',
+                };
+
+                return {
+                    ...texts,
+                    ...(raw || {}),
+                };
+            },
         },
     },
     data: function () {

@@ -2,11 +2,11 @@
     <div class="card qr-card" v-if="!loading">
         <div class="card-body" v-if="!error && currentCard">
             <h5 class="full-name">{{ currentCard.BusinessCard.FirstName.Text }}, {{ currentCard.BusinessCard.LastName.Text }}</h5>
-            <p v-if="currentCard.BusinessCard.Phone.Text">Phone: {{ currentCard.BusinessCard.Phone.Text }}</p>
-            <p v-if="currentCard.BusinessCard.Email.Text">Email: {{ currentCard.BusinessCard.Email.Text }}</p>
+            <p v-if="currentCard.BusinessCard.Phone.Text">{{ texts.Phone }}: {{ currentCard.BusinessCard.Phone.Text }}</p>
+            <p v-if="currentCard.BusinessCard.Email.Text">{{ texts.Email }}: {{ currentCard.BusinessCard.Email.Text }}</p>
         </div>
         <div class="card-body" v-else-if="error">
-            <h5>T["An error occurred."]</h5>
+            <h5>{{ texts.ErrorTitle }}</h5>
             <p class="error-message">{{ error }}</p>
         </div>
     </div>
@@ -27,6 +27,21 @@ export default {
         apiUrl: {
             type: String,
             required: true,
+        },
+        texts: {
+            type: Object,
+            default: function (raw) {
+                const texts = {
+                    ErrorTitle: 'An error occurred.',
+                    Email: 'Email',
+                    Phone: 'Phone',
+                };
+
+                return {
+                    ...texts,
+                    ...(raw || {}),
+                };
+            },
         },
     },
     data: function () {

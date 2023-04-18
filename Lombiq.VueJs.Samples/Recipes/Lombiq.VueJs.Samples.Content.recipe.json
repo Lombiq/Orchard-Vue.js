@@ -47,7 +47,7 @@
           }
         },
         {
-          "ContentItemId": "4zapf7vh1ym7s0wm5tge191xwt",
+          "ContentItemId": "[js: uuid()]",
           "ContentType": "BusinessCard",
           "Latest": true,
           "Published": true,
