@@ -1,3 +1,4 @@
+using Lombiq.HelpfulLibraries.Common.DependencyInjection;
 using Lombiq.VueJs.Samples.Migrations;
 using Lombiq.VueJs.Samples.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,5 +14,6 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services) =>
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>()
             .AddScoped<IDataMigration, BusinessCardMigrations>()
-            .AddTagHelpers<QrCodeTagHelper>();
+            .AddTagHelpers<QrCodeTagHelper>()
+            .AddLazyInjectionSupport();
 }
