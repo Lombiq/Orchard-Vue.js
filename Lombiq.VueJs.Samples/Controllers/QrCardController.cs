@@ -15,7 +15,7 @@ public class QrCardController : Controller
     public QrCardController(IContentManager contentManager) =>
         _contentManager = contentManager;
 
-    // Open this from under /Lombiq.VueJs.Samples/QrCard/Index.
+    /// <remarks><para>Open this from under /Lombiq.VueJs.Samples/QrCard/Index.</para></remarks>
     public ActionResult Index()
     {
         var linkGenerator = HttpContext.RequestServices.GetRequiredService<LinkGenerator>();
@@ -28,14 +28,8 @@ public class QrCardController : Controller
         });
     }
 
-    public async Task<ActionResult> GetBusinessCard(string cardId)
-    {
-        var businessCard = await _contentManager.GetAsync(cardId);
-        if (businessCard is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(businessCard);
-    }
+    public async Task<ActionResult> GetBusinessCard(string cardId) =>
+        await _contentManager.GetAsync(cardId) is { } businessCard
+            ? Ok(businessCard)
+            : NotFound();
 }

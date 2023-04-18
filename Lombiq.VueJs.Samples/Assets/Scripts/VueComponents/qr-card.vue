@@ -44,7 +44,7 @@ export default {
                     NotAllowedError: 'You need to grant camera access permission.',
                     NotFoundError: 'No camera found.',
                     NotSupportedError: 'Secure context required (HTTPS, localhost).',
-                    NotReadableError: 'The camera already in use.',
+                    NotReadableError: 'The camera is already in use.',
                     OverconstrainedError: 'Installed cameras are not suitable.',
                     StreamApiNotSupportedError: 'The stream API is not supported in this browser.',
                     InsecureContextError: 'Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.',

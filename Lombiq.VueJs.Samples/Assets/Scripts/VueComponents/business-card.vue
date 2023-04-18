@@ -6,7 +6,7 @@
             <p v-if="currentCard.BusinessCard.Email.Text">Email: {{ currentCard.BusinessCard.Email.Text }}</p>
         </div>
         <div class="card-body" v-else-if="error">
-            <h5>Something went wrong :(</h5>
+            <h5>T["An error occurred."]</h5>
             <p class="error-message">{{ error }}</p>
         </div>
     </div>

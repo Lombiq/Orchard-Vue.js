@@ -37,8 +37,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 
         _manifest
             .DefineSingleFileComponent(QrCard)
-            .SetDependencies(LoadingIndicator)
-            .SetDependencies(BusinessCard);
+            .SetDependencies(LoadingIndicator, BusinessCard);
     }
 
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
