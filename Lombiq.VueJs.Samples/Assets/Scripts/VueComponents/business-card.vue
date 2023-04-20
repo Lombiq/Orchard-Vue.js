@@ -1,5 +1,5 @@
 <template>
-    <div class="card qr-card" v-if="!loading">
+    <div class="card qr-card" v-if="!loading && cardId">
         <div class="card-body" v-if="!error && currentCard">
             <h5 class="full-name">{{ currentCard.BusinessCard.FirstName.Text }}, {{ currentCard.BusinessCard.LastName.Text }}</h5>
             <p v-if="currentCard.BusinessCard.Phone.Text">{{ texts.Phone }}: {{ currentCard.BusinessCard.Phone.Text }}</p>

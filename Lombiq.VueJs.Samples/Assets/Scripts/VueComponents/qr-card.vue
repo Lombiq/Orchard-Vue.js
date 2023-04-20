@@ -17,6 +17,11 @@
                 <p class="error">{{ error }}</p>
             </div>
         </div>
+        <div class="row justify-content-center mb-3" v-if="scanError">
+            <div class="col-md-6 col-sm">
+                <p class="error">{{ scanError }}</p>
+            </div>
+        </div>
         <div class="row justify-content-center mb-3" v-if="!error && !loading">
             <div class="col-md-6 col-sm">
                 <business-card :card-id="cardId" :api-url="apiUrl" :texts="texts" />
@@ -48,6 +53,7 @@ export default {
                     OverconstrainedError: 'Installed cameras are not suitable.',
                     StreamApiNotSupportedError: 'The stream API is not supported in this browser.',
                     InsecureContextError: 'Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.',
+                    InvalidCard: 'This QR code does not represent a business card.',
                     Unknown: 'Camera error.',
                 };
 
@@ -83,20 +89,29 @@ export default {
             cardId: null,
             error: '',
             loading: false,
+            scanError: '',
         };
     },
     methods: {
         onDecode(result) {
-            try {
-                const content = JSON.parse(result);
-
-                if (content.cardId) {
-                    this.cardId = content.cardId;
+            const content = ((text) => {
+                try {
+                    return JSON.parse(text);
                 }
+                catch {
+                    return {};
+                }
+            })(result);
+
+            if (!content.cardId) {
+                this.cardId = '';
+                this.scanError = this.errorMessages.InvalidCard;
+
+                return;
             }
-            catch {
-                // Nothing to do here, just continue scanning.
-            }
+
+            this.cardId = content.cardId;
+            this.scanError = '';
         },
         async onInit(promise) {
             this.loading = true;
