@@ -4,7 +4,7 @@
             <div class="col-md-6 col-sm">
                 <div class="card">
                     <div class="card-body">
-                        <h5 v-if="!loading && !error">{{ texts.ScanCode }}</h5>
+                        <h5 v-if="!loading && !error">[[ Scan code ]]</h5>
                         <qrcode-stream @decode="onDecode" @init="onInit" :track="paintOutline">
                             <loading-indicator v-if="loading" />
                         </qrcode-stream>
@@ -14,17 +14,24 @@
         </div>
         <div class="row justify-content-center mb-3" v-if="error">
             <div class="col-md-6 col-sm">
-                <p class="error">{{ error }}</p>
+                <p v-if="error === 'NotAllowedError'" class="error">[[ You need to grant camera access permission. ]]</p>
+                <p v-else-if="error === 'NotFoundError'" class="error">[[ No camera found. ]]</p>
+                <p v-else-if="error === 'NotSupportedError'" class="error">[[ Secure context required (HTTPS, localhost). ]]</p>
+                <p v-else-if="error === 'NotReadableError'" class="error">[[ The camera is already in use. ]]</p>
+                <p v-else-if="error === 'OverconstrainedError'" class="error">[[ Installed cameras are not suitable. ]]</p>
+                <p v-else-if="error === 'StreamApiNotSupportedError'" class="error">[[ The stream API is not supported in this browser. ]]</p>
+                <p v-else-if="error === 'InsecureContextError'" class="error">[[ Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP. ]]</p>
+                <p v-else class="error">[[ Camera error. ]]</p>
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="scanError">
             <div class="col-md-6 col-sm">
-                <p class="error">{{ scanError }}</p>
+                <p v-if="scanError == 'InvalidCard'" class="error">[[ This QR code does not represent a business card. ]]</p>
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="!error && !loading">
             <div class="col-md-6 col-sm">
-                <business-card :card-id="cardId" :api-url="apiUrl" :texts="texts" />
+                <business-card :card-id="cardId" :api-url="apiUrl" />
             </div>
         </div>
     </div>
@@ -42,46 +49,9 @@ export default {
         BusinessCard,
     },
     props: {
-        errorMessages: {
-            type: Object,
-            default: function (raw) {
-                const messages = {
-                    NotAllowedError: 'You need to grant camera access permission.',
-                    NotFoundError: 'No camera found.',
-                    NotSupportedError: 'Secure context required (HTTPS, localhost).',
-                    NotReadableError: 'The camera is already in use.',
-                    OverconstrainedError: 'Installed cameras are not suitable.',
-                    StreamApiNotSupportedError: 'The stream API is not supported in this browser.',
-                    InsecureContextError: 'Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.',
-                    InvalidCard: 'This QR code does not represent a business card.',
-                    Unknown: 'Camera error.',
-                };
-
-                return {
-                    ...messages,
-                    ...(raw || {}),
-                };
-            },
-        },
         apiUrl: {
             type: String,
             required: true,
-        },
-        texts: {
-            type: Object,
-            default: function (raw) {
-                const texts = {
-                    ErrorTitle: 'An error occurred.',
-                    ScanCode: 'Scan code',
-                    Email: 'Email',
-                    Phone: 'Phone',
-                };
-
-                return {
-                    ...texts,
-                    ...(raw || {}),
-                };
-            },
         },
     },
     data: function () {
@@ -105,7 +75,7 @@ export default {
 
             if (!content.cardId) {
                 this.cardId = null;
-                this.scanError = this.errorMessages.InvalidCard;
+                this.scanError = 'InvalidCard';
 
                 return;
             }
@@ -120,7 +90,7 @@ export default {
                 await promise;
             }
             catch (error) {
-                this.error = this.errorMessages[error.name] || this.errorMessages.Unknown;
+                this.error = error.name;
             }
             finally {
                 this.loading = false;

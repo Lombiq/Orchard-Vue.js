@@ -2,25 +2,7 @@
 
 <vue-component area="@FeatureIds.Area" name="@ResourceNames.QrCard" />
 <div id="qrCardApp">
-    <qr-card
-        :error-messages="{
-            NotAllowedError: '@T["You need to grant camera access permission."]',
-            NotFoundError: '@T["No camera found."]',
-            NotSupportedError: '@T["Secure context required (HTTPS, localhost)."]',
-            NotReadableError: '@T["The camera already in use."]',
-            OverconstrainedError: '@T["Installed cameras are not suitable."]',
-            StreamApiNotSupportedError: '@T["The stream API is not supported in this browser."]',
-            InsecureContextError: '@T["Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP."]',
-            InvalidCard: '@T["This QR code does not represent a business card."]',
-            Unknown: '@T["Camera error."]',
-        }"
-        :texts="{
-            ErrorTitle: '@T["An error occurred."]',
-            ScanCode: '@T["Scan code"]',
-            Email: '@T["Email"]',
-            Phone: '@T["Phone"]',
-        }"
-        api-url="@Model.ApiUrl">
+    <qr-card api-url="@Model.ApiUrl">
     </qr-card>
 </div>
 
