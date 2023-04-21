@@ -6,7 +6,9 @@
                     <div class="card-body">
                         <h5 v-if="!loading && !error">[[ Scan code ]]</h5>
                         <qrcode-stream @decode="onDecode" @init="onInit" :track="paintOutline">
-                            <loading-indicator v-if="loading" />
+                            <loading-indicator v-if="loading">
+                                [[ Loading ... ]]
+                            </loading-indicator>
                         </qrcode-stream>
                     </div>
                 </div>

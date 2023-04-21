@@ -1,17 +1,11 @@
 <template>
     <blockquote class="blockquote text-center">
-        {{ message || '[[ Loading... ]]' }}
+        <slot></slot>
     </blockquote>
 </template>
 
 <script>
 export default {
-    props: {
-        message: {
-            type: String,
-            default: '',
-        },
-    },
 };
 </script>
 
