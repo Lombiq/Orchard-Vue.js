@@ -104,7 +104,7 @@ export default {
             })(result);
 
             if (!content.cardId) {
-                this.cardId = '';
+                this.cardId = null;
                 this.scanError = this.errorMessages.InvalidCard;
 
                 return;
