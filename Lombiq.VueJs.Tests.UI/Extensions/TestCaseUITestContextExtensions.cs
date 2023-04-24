@@ -112,7 +112,7 @@ public static class TestCaseUITestContextExtensions
         await context.SetupAndNavigateQrCardAppAsync();
         context.WaitForCardElementAndAssert(
             By.CssSelector(".qr-card .full-name"),
-            element => element.Text.ShouldBe("John, Doe"));
+            element => element.Text.ShouldBe("John Doe"));
     }
 
     public static async Task TestQrCardNotFoundAsync(this UITestContext context)
