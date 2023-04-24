@@ -75,15 +75,8 @@ export default {
                 }
             })(result);
 
-            if (!content.cardId) {
-                this.cardId = null;
-                this.scanError = 'InvalidCard';
-
-                return;
-            }
-
             this.cardId = content.cardId;
-            this.scanError = '';
+            this.scanError = content.cardId ? '' : 'InvalidCard';
         },
         async onInit(promise) {
             this.loading = true;
