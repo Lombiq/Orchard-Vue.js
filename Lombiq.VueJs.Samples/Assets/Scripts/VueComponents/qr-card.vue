@@ -15,20 +15,20 @@
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="error">
-            <div class="col-md-6 col-sm">
-                <p v-if="error === 'NotAllowedError'" class="error">[[ You need to grant camera access permission. ]]</p>
-                <p v-else-if="error === 'NotFoundError'" class="error">[[ No camera found. ]]</p>
-                <p v-else-if="error === 'NotSupportedError'" class="error">[[ Secure context required (HTTPS, localhost). ]]</p>
-                <p v-else-if="error === 'NotReadableError'" class="error">[[ The camera is already in use. ]]</p>
-                <p v-else-if="error === 'OverconstrainedError'" class="error">[[ Installed cameras are not suitable. ]]</p>
-                <p v-else-if="error === 'StreamApiNotSupportedError'" class="error">[[ The stream API is not supported in this browser. ]]</p>
-                <p v-else-if="error === 'InsecureContextError'" class="error">[[ Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP. ]]</p>
-                <p v-else class="error">[[ Camera error. ]]</p>
+            <div class="col-md-6 col-sm message-error px-1">
+                <span v-if="error === 'NotAllowedError'">[[ You need to grant camera access permission. ]]</span>
+                <span v-else-if="error === 'NotFoundError'">[[ No camera found. ]]</span>
+                <span v-else-if="error === 'NotSupportedError'">[[ Secure context required (HTTPS, localhost). ]]</span>
+                <span v-else-if="error === 'NotReadableError'">[[ The camera is already in use. ]]</span>
+                <span v-else-if="error === 'OverconstrainedError'">[[ Installed cameras are not suitable. ]]</span>
+                <span v-else-if="error === 'StreamApiNotSupportedError'">[[ The stream API is not supported in this browser. ]]</span>
+                <span v-else-if="error === 'InsecureContextError'">[[ Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP. ]]</span>
+                <span v-else>[[ Camera error. ]]</span>
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="scanError">
-            <div class="col-md-6 col-sm">
-                <p v-if="scanError == 'InvalidCard'" class="error">[[ This QR code does not represent a business card. ]]</p>
+            <div class="col-md-6 col-sm message-error px-1">
+                <span v-if="scanError == 'InvalidCard'">[[ This QR code does not represent a business card. ]]</span>
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="!error && !loading">
