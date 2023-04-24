@@ -34,6 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Media\john.doe.mjpeg" />
+    <EmbeddedResource Include="Assets\Media\richard.roe.mjpeg" />
     <EmbeddedResource Include="Readme.md">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </EmbeddedResource>

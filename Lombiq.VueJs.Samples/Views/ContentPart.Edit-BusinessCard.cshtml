@@ -1,0 +1,12 @@
+@using OrchardCore.ContentManagement
+
+@foreach (var shape in Model)
+{
+    @await DisplayAsync(shape)
+}
+
+<div class="mb-3">
+    <p>@T["QR code:"]</p>
+    <qr-code content="@Json.Serialize(new { CardId = Model.ContentPart.ContentItem.ContentItemId})" class="mx-auto d-block">
+    </qr-code>
+</div>

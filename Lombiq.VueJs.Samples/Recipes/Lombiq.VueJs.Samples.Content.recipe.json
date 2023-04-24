@@ -1,0 +1,96 @@
+{
+  "name": "Lombiq.VueJs.Samples.Content",
+  "displayName": "Lombiq Vue.js - Sample Content - Virtual business card",
+  "description": "Sample content for testing and demonstration of the Lombiq Vue.js module.",
+  "author": "Lombiq Technologies",
+  "website": "https://github.com/Lombiq/Orchard-Chart.js",
+  "version": "1.0",
+  "issetuprecipe": false,
+  "categories": [
+    "training"
+  ],
+  "tags": [
+    "developer",
+    "training",
+    "sample"
+  ],
+  "steps": [
+    {
+      "name": "feature",
+      "enable": [
+        "Lombiq.VueJs.Samples"
+      ]
+    },
+    {
+      "name": "content",
+      "data": [
+        {
+          "ContentItemId": "498bwtc3jjqm4w8drpx7kc16xh",
+          "ContentType": "BusinessCard",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "BusinessCard": {
+            "FirstName": {
+              "Text": "John"
+            },
+            "LastName": {
+              "Text": "Doe"
+            },
+            "Email": {
+              "Text": "john.doe@example.com"
+            },
+            "Phone": {
+              "Text": "+123456789"
+            }
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "BusinessCard",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "BusinessCard": {
+            "FirstName": {
+              "Text": "Jane"
+            },
+            "LastName": {
+              "Text": "Doe"
+            },
+            "Email": {
+              "Text": "jane.doe@example.com"
+            },
+            "Phone": {
+              "Text": "+123456789"
+            }
+          }
+        },
+        {
+          "ContentItemId": "4h146ahreawv2xapda69ynfcxd",
+          "ContentType": "BusinessCard",
+          "Latest": true,
+          "Published": false,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "BusinessCard": {
+            "FirstName": {
+              "Text": "Richard"
+            },
+            "LastName": {
+              "Text": "Roe"
+            },
+            "Email": {
+              "Text": "richard.roe@example.com"
+            },
+            "Phone": {
+              "Text": "+123456789"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

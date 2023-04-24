@@ -1,0 +1,13 @@
+@model Lombiq.VueJs.Samples.ViewModels.QrCardAppViewModel
+
+<vue-component area="@FeatureIds.Area" name="@ResourceNames.QrCard" />
+<div id="qrCardApp">
+    <qr-card api-url="@Model.ApiUrl">
+    </qr-card>
+</div>
+
+<script at="Foot" depends-on="@ResourceNames.QrCard">
+    window.app = new Vue({
+        el: '#qrCardApp',
+    });
+</script>
