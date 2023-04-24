@@ -1,7 +1,7 @@
 <template>
     <div class="card qr-card" v-if="!loading && cardId">
         <div class="card-body" v-if="!error && currentCard">
-            <h5 class="full-name">{{ currentCard.BusinessCard.FirstName.Text }}, {{ currentCard.BusinessCard.LastName.Text }}</h5>
+            <h5 class="full-name">{{ currentCard.BusinessCard.FirstName.Text }} {{ currentCard.BusinessCard.LastName.Text }}</h5>
             <p v-if="currentCard.BusinessCard.Phone.Text">[[ Phone ]]: {{ currentCard.BusinessCard.Phone.Text }}</p>
             <p v-if="currentCard.BusinessCard.Email.Text">[[ Email ]]: {{ currentCard.BusinessCard.Email.Text }}</p>
         </div>
@@ -39,6 +39,7 @@ export default {
     watch: {
         async cardId(newId) {
             this.error = null;
+
             if (!newId) {
                 this.currentCard = null;
                 return;
@@ -50,9 +51,7 @@ export default {
                 const response = await fetch(`${this.apiUrl}?cardId=${newId}`);
 
                 if (!response.ok) {
-                    const message = `An error has occurred: ${response.status} - ${response.statusText}`;
-
-                    throw new Error(message);
+                    throw new Error(`An error has occurred: ${response.status} - ${response.statusText}`);
                 }
 
                 this.currentCard = await response.json();
