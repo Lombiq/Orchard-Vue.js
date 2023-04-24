@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="error">
-            <div class="col-md-6 col-sm message-error px-1">
+            <div class="col-md-6 col-sm message-error">
                 <span v-if="error === 'NotAllowedError'">[[ You need to grant camera access permission. ]]</span>
                 <span v-else-if="error === 'NotFoundError'">[[ No camera found. ]]</span>
                 <span v-else-if="error === 'NotSupportedError'">[[ Secure context required (HTTPS, localhost). ]]</span>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="scanError">
-            <div class="col-md-6 col-sm message-error px-1">
+            <div class="col-md-6 col-sm message-error">
                 <span v-if="scanError == 'InvalidCard'">[[ This QR code does not represent a business card. ]]</span>
             </div>
         </div>
