@@ -119,7 +119,7 @@ public static class TestCaseUITestContextExtensions
     {
         await context.SetupAndNavigateQrCardAppAsync();
         context.WaitForCardElementAndAssert(
-            By.CssSelector(".qr-card .error-message"),
+            By.CssSelector(".qr-card .message-error"),
             element => element.Text.ShouldContain("404"));
     }
 
