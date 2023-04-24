@@ -7,7 +7,7 @@
         </div>
         <div class="card-body" v-else-if="error">
             <h5>[[ An error occurred. ]]</h5>
-            <p class="error-message">{{ error }}</p>
+            <p class="message-error px-1">{{ error }}</p>
         </div>
     </div>
     <loading-indicator v-else-if="loading" />
