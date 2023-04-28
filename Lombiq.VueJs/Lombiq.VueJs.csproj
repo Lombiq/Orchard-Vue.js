@@ -25,14 +25,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="License.md" Pack="true" PackagePath="" />
-    <None Include="..\Readme.md" />
+    <None Include="../License.md" Link="License.md" Pack="true" PackagePath="" />
+    <None Include="../Readme.md" Link="Readme.md" />
+    <None Include="package.json" Pack="true" PackagePath="" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="build/**" Pack="true" PackagePath="build/" />
     <None Include="*.props" Pack="true" PackagePath="" />
     <None Include="*.targets" Pack="true" PackagePath="" />
+    <None Include=".npmrc" Pack="true" PackagePath="" />
+    <None Include="Assets/**" Pack="true" PackagePath="Assets/" />
+    <None Remove="node_modules/**" />
 
-    <None Remove="node_modules\**" />
+    <!-- Necessary to include the reusabe SFCs in this module. For other modules that consume Lombiq.VueJs this is
+         handled by the Lombiq.VueJs.props file. -->
+    <EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" />
+
+    <!-- Necessary to avoid NU5118 due to duplicate build/Lombiq.VueJs.props files. The referenced module
+         "OrchardCore.Module.Targets" tries to generate that file from the Package.Build.props mentioned below. -->
+    <None Remove="$(NuGetPackageRoot)orchardcore.module.targets\*\build\Package.Build.props" />
   </ItemGroup>
 
   <ItemGroup>
