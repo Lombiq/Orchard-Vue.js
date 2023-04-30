@@ -12,7 +12,7 @@
     <Exec Command="pnpm install"
           WorkingDirectory="$(LombiqVueJsNpmPackageSourcePath)"
           StandardOutputImportance="$(_Importance)" />
-    <Exec Command="pnpm link $(LombiqVueJsNpmPackageSourcePath)" />
+    <Exec Command="pnpm link &quot;$(LombiqVueJsNpmPackageSourcePath)&quot;" />
   </Target>
 
   <Target Name="DeleteLombiqVueJsNpmPackage" AfterTargets="CleanNodeJsExtensionsNpmPackage">

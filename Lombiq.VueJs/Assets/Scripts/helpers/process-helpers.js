@@ -2,7 +2,7 @@ const { handleErrorObject, handleErrorMessage } = require('.nx/scripts/handle-er
 const path = require('path');
 
 async function executeFunctionByCommandLineArgument(functions) {
-    const [functionName, argumentOptionsJson] = process.argv.splice(2);
+    const [functionName, argumentOptionsJson] = process.argv.slice(2);
     const argumentOptions = argumentOptionsJson ? JSON.parse(argumentOptionsJson) : undefined;
 
     // Informs the consumer of correct usage and exits if something is missing.
