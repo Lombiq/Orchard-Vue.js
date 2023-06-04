@@ -1,11 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Lombiq.VueJs.Tests.UI.Assets.Media;
 
-[SuppressMessage(
-    "Minor Code Smell",
-    "S2094:Classes should not be empty",
-    Justification = "This is a dummy class to easier access the requested resource.")]
+// This is a dummy class to easier access the requested resource.
+#pragma warning disable S2094 // Classes should not be empty
 internal class DirectoryPlaceholder
+#pragma warning restore S2094 // Classes should not be empty
 {
 }
