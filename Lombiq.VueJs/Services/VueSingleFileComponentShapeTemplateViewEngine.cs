@@ -1,3 +1,4 @@
+using Lombiq.HelpfulLibraries.Common.Utilities;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
@@ -57,8 +58,7 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
         }
 
-        template = FormattableString.Invariant(
-            $"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
+        template = StringHelper.CreateInvariant($"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
 
         var entries = new List<object>();
         foreach (var amender in _amenders) entries.AddRange(await amender.PrependAsync(shapeName));
