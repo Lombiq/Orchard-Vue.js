@@ -24,6 +24,7 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-only-warn": "1.1.0",
     "eslint-plugin-promise": "6.1.1",
+    "semver": "7.5.4",
     "fancy-log": "^2.0.0",
     "fs": "^0.0.1-security",
     "glob": "^8.0.3",
