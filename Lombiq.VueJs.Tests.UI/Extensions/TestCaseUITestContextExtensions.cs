@@ -145,7 +145,7 @@ public static class TestCaseUITestContextExtensions
                 }
 
                 return false;
-            });
+            }, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
     private enum Numeric { One = 1 }
 }
