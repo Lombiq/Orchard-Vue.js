@@ -110,8 +110,7 @@ public static class TestCaseUITestContextExtensions
     public static async Task TestQrCardFoundAsync(this UITestContext context)
     {
         await context.SetupAndNavigateQrCardAppAsync();
-        await Task.Delay(10000);
-
+        context.Refresh();
         context.WaitForCardElementAndAssert(
             By.CssSelector(".qr-card .full-name"),
             element => element.Text.ShouldBe("John Doe"));
@@ -120,7 +119,7 @@ public static class TestCaseUITestContextExtensions
     public static async Task TestQrCardNotFoundAsync(this UITestContext context)
     {
         await context.SetupAndNavigateQrCardAppAsync();
-        await Task.Delay(10000);
+        context.Refresh();
         context.WaitForCardElementAndAssert(
             By.CssSelector(".qr-card .message-error"),
             element => element.Text.ShouldContain("404"));
