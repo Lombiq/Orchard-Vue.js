@@ -7,10 +7,10 @@ namespace Lombiq.VueJs.Tests.UI.Extensions;
 public static class BrowserConfigurationExtensions
 {
     public static void ConfigureFakeVideoSourceForNegativeTest(this BrowserConfiguration browserConfiguration) =>
-        browserConfiguration.ConfigureFakeVideoSource("richard.roe.mjpeg");
+        browserConfiguration.ConfigureFakeVideoSource("richard.roe.y4m");
 
     public static void ConfigureFakeVideoSourceForPositiveTest(this BrowserConfiguration browserConfiguration) =>
-        browserConfiguration.ConfigureFakeVideoSource("john.doe.mjpeg");
+        browserConfiguration.ConfigureFakeVideoSource("john.doe.y4m");
 
     private static void ConfigureFakeVideoSource(this BrowserConfiguration browserConfiguration, string resource) =>
         browserConfiguration.FakeVideoSource = new FakeBrowserVideoSource
@@ -18,6 +18,6 @@ public static class BrowserConfigurationExtensions
             StreamProvider = () => typeof(DirectoryPlaceholder)
                 .Assembly
                 .GetManifestResourceStream(typeof(DirectoryPlaceholder), resource),
-            Format = FakeBrowserVideoSourceFileFormat.MJpeg,
+            Format = FakeBrowserVideoSourceFileFormat.Y4m,
         };
 }
