@@ -39,8 +39,7 @@
     <EmbeddedResource Include="Assets\Media\john.doe.y4m" />
     <EmbeddedResource Include="Assets\Media\richard.roe.y4m" />
     <EmbeddedResource Include="Readme.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
