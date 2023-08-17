@@ -1,6 +1,7 @@
 <Project>
   <Target Name="InstallLombiqVueJsPackage"
-          AfterTargets="InstallNodeJsExtensionsNpmPackage">
+          AfterTargets="InstallNodeJsExtensionsNpmPackage"
+          DependsOnTargets="EnablePnpm">
     <Message
       Text="Copying Lombiq.VueJs files to $(LombiqVueJsNpmPackageSourcePath):%0a - @(LombiqVueJsNpmPackageFiles,'%0a - ')"
       Importance="$(_Importance)" />
@@ -9,7 +10,7 @@
           SkipUnchangedFiles="true" />
 
     <Message Text="Calling pnpm install in $(LombiqVueJsNpmPackageSourcePath)" Importance="$(_Importance)" />
-    <Exec Command="pnpm install"
+    <Exec Command="$(LombiqVueJsInstallCommand)"
           WorkingDirectory="$(LombiqVueJsNpmPackageSourcePath)"
           StandardOutputImportance="$(_Importance)" />
     <Exec Command="pnpm link &quot;$(LombiqVueJsNpmPackageSourcePath)&quot;" />

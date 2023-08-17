@@ -4,6 +4,7 @@
     <LombiqVueJsNpmPackageSourcePath Condition="'$(NodeJsExtensionsNpmPackageSourcePath)' == ''">./node_modules/.lv</LombiqVueJsNpmPackageSourcePath>
     <LombiqVueJsNpmPackageSourcePath Condition="'$(NodeJsExtensionsNpmPackageSourcePath)' != ''">$(NodeJsExtensionsNpmPackageSourcePath)/../.lv</LombiqVueJsNpmPackageSourcePath>
     <LombiqVueJsInstallationPath>$(MSBuildThisFileDirectory.TrimEnd('/\'))</LombiqVueJsInstallationPath>
+    <LombiqVueJsInstallCommand>$(PnpmInstallCommand)</LombiqVueJsInstallCommand>
   </PropertyGroup>
 
   <ItemGroup>
