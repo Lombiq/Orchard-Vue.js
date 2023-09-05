@@ -10,7 +10,7 @@ We at [Lombiq](https://lombiq.com/) also used this module for the following proj
 
 - The multi-tenant church community management system [Kast](https://www.kast.io/) ([see case study](https://lombiq.com/blog/helping-kast-build-a-multi-tenant-platform-on-orchard-core)).
 - The new [Lombiq website](https://lombiq.com/) when migrating it from Orchard 1 to Orchard Core ([see case study](https://lombiq.com/blog/how-we-renewed-and-migrated-lombiq-com-from-orchard-1-to-orchard-core)).
-- The new client portal for [Willis Towers Watson](https://www.wtwco.com/) ([see case study](https://lombiq.com/blog/lombiqs-journey-with-willis-towers-watsons-client-portal)).
+- The new client portal for [WTW](https://www.wtwco.com/) ([see case study](https://lombiq.com/blog/lombiqs-journey-with-wtw-client-portal)).
 
 Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 
