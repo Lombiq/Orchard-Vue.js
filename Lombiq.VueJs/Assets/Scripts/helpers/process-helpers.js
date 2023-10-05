@@ -1,4 +1,5 @@
-const { handleErrorObject, handleErrorMessage } = require('.nx/scripts/handle-error');
+const getCwd = require('nodejs-extensions/scripts/get-cwd');
+const { handleErrorObject, handleErrorMessage } = require('nodejs-extensions/scripts/handle-error');
 const path = require('path');
 
 async function executeFunctionByCommandLineArgument(functions) {
@@ -33,11 +34,11 @@ async function executeFunctionByCommandLineArgument(functions) {
 }
 
 function leaveNodeModule() {
-    const location = process.cwd().split(path.sep).slice(-2).join('/');
+    const cwd = getCwd();
+    const location = cwd.split(path.sep).slice(-2).join('/');
 
-    // Need to check both because Windows and Linux resolve the directory symlink between the two differently.
-    if (location === 'node_modules/lombiq-vuejs' || location === 'node_modules/.lv') {
-        process.chdir(path.resolve('..', '..'));
+    if (location === 'node_modules/lombiq-vuejs') {
+        process.chdir(path.join(cwd, '..', '..'));
     }
 }
 
