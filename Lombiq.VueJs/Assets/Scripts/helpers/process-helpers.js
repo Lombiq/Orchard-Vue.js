@@ -1,6 +1,6 @@
-const getCwd = require('.nx/scripts/get-cwd');
-const { handleErrorObject, handleErrorMessage } = require('.nx/scripts/handle-error');
-const path = require('path');
+const fs = require('fs');
+const getProjectDirectory = require('.nx/scripts/get-project-directory');
+const { handleErrorObject, handleErrorMessage, handleWarningMessage } = require('.nx/scripts/handle-error');
 
 async function executeFunctionByCommandLineArgument(functions) {
     const [functionName, argumentOptionsJson] = process.argv.slice(2);
@@ -34,11 +34,19 @@ async function executeFunctionByCommandLineArgument(functions) {
 }
 
 function leaveNodeModule() {
-    const cwd = getCwd();
-    const location = cwd.split(path.sep).slice(-2).join('/');
+    const projectDirectory = getProjectDirectory();
 
-    if (location === 'node_modules/lombiq-vuejs') {
-        process.chdir(path.join(cwd, '..', '..'));
+    if (!projectDirectory) {
+        handleWarningMessage(
+            'The project directory is not specified. Your environment may be misconfigured, see ' +
+            'get-project-directory for information about what the script is looking for.');
+    }
+    else if (fs.existsSync(projectDirectory)) {
+        process.chdir(projectDirectory);
+    }
+    else {
+        handleWarningMessage(
+            `The project directory according to get-project-directory.js (${projectDirectory}) is not found.`);
     }
 }
 
