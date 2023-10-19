@@ -16,8 +16,8 @@ const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./pro
 leaveNodeModule();
 
 const defaultOptions = {
-    sfcRootPath: path.join('Assets', 'Scripts', 'VueComponents'),
-    sfcDestinationPath: path.join('wwwroot', 'vue'),
+    sfcRootPath: path.resolve('Assets', 'Scripts', 'VueComponents'),
+    sfcDestinationPath: path.resolve('wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
     isProduction: false,

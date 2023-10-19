@@ -1,6 +1,5 @@
-const fs = require('fs');
-const getProjectDirectory = require('.nx/scripts/get-project-directory');
-const { handleErrorObject, handleErrorMessage, handleWarningMessage } = require('.nx/scripts/handle-error');
+const { handleErrorObject, handleErrorMessage } = require('.nx/scripts/handle-error');
+const path = require('path');
 
 async function executeFunctionByCommandLineArgument(functions) {
     const [functionName, argumentOptionsJson] = process.argv.slice(2);
@@ -34,19 +33,11 @@ async function executeFunctionByCommandLineArgument(functions) {
 }
 
 function leaveNodeModule() {
-    const projectDirectory = getProjectDirectory();
+    const location = process.cwd().split(path.sep).slice(-2).join('/');
 
-    if (!projectDirectory) {
-        handleWarningMessage(
-            'The project directory is not specified. Your environment may be misconfigured, see ' +
-            'get-project-directory for information about what the script is looking for.');
-    }
-    else if (fs.existsSync(projectDirectory)) {
-        process.chdir(projectDirectory);
-    }
-    else {
-        handleWarningMessage(
-            `The project directory according to get-project-directory.js (${projectDirectory}) is not found.`);
+    // Need to check both because Windows and Linux resolve the directory symlink between the two differently.
+    if (location === 'node_modules/lombiq-vuejs' || location === 'node_modules/.lv') {
+        process.chdir(path.resolve('..', '..'));
     }
 }
 
