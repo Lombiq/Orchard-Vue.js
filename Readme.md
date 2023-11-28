@@ -121,9 +121,9 @@ If your Vue app is just going to include one top level component and bind to tha
 </script>
 ```
 
-If you are encountering missing Vue templates, make sure that they are located in the correct places. The tag helper expects the script files to be in `My.Module/vue/{Name}.js`, and the pipeline is configured to compile the scripts to `My.Module/wwwroot/vue/{Name}.js` by default.
+If you are encountering missing Vue templates, make sure that they are located in the correct places. The tag helper expects the script files to be in `My.Module/vue/{Name}.js`, and the pipeline is configured to compile the scripts to this location by default.
 
-Also, in case you are using a custom `nodejsExtensions.scripts` configuration, and this raises issues with the Vue templates' default place, you can just include your templates with the following `nodejsExtensions.assetsToCopy` entry:
+In case you are using a custom `nodejsExtensions.scripts` configuration, and this raises issues with the Vue templates' default place, you can just include your templates with the following `nodejsExtensions.assetsToCopy` entry:
 
 ```json
 {
