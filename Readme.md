@@ -121,6 +121,17 @@ If your Vue app is just going to include one top level component and bind to tha
 </script>
 ```
 
+If you are encountering missing Vue templates, make sure that they are located in the correct places. The tag helper expects the script files to be in `My.Module/vue/{Name}.js`, and the pipeline is configured to compile the scripts to this location by default.
+
+In case you are using a custom `nodejsExtensions.scripts` configuration, and this raises issues with the Vue templates' default place, you can just include your templates with the following `nodejsExtensions.assetsToCopy` entry:
+
+```json
+{
+  "sources": [ "Assets/Scripts/VueComponents" ],
+  "target": "wwwroot/vue"
+}
+```
+
 ### Advantages of SFCs
 
 - Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, property autocomplete, Go to Definition for custom elements, and all other advantages of static Vue development.
