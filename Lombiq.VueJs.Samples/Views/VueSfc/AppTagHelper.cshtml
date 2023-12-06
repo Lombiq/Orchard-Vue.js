@@ -22,6 +22,15 @@
                    class="additional-class-for-styling"
                    model="@(new { Value = 10 })" />
 
+@* If you are using Liquid, you can duplicate the above like this:
+    {% capture my_model %}{ value: 10 }{% endcapture %}
+    {% assign model_json = my_model | jsonparse %}
+
+    {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"myapp", class:"myapp", model:model_json %}
+
+  Note the difference in the model, the Liquid version uses lower case "value". This is because the built-in JSON
+  serializer doesn't alter the names of JSON object properties the way it does with C# objects. *@
+
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
 <script at="Foot" depends-on="DemoSfcRootComponent-VueApp">
