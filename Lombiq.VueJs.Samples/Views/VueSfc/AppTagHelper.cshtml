@@ -26,7 +26,7 @@
     {% capture my_model %}{ value: 10 }{% endcapture %}
     {% assign model_json = my_model | jsonparse %}
 
-    {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"myapp", class:"myapp", model:model_json %}
+    {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"unique-id", class:"additional-class-for-styling", model:model_json %}
 
   Note the difference in the model, the Liquid version uses lower case "value". This is because the built-in JSON
   serializer doesn't alter the names of JSON object properties the way it does with C# objects. *@
