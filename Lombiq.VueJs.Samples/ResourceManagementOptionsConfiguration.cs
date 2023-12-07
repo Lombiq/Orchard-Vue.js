@@ -26,7 +26,9 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             // This is resolved recursively so you don't need to add more than the direct child components.
             .SetDependencies(DemoRepeater);
 
-        // We don't need to define an SFC resource for DemoRepeater since it doesn't have child components.
+        // We don't need to define an SFC resource for DemoRepeater, because it doesn't have child components. If you
+        // define an empty resource definition such as "_manifest.DefineSingleFileComponent(DemoRepeater);" it will be
+        // ignored.
 
         // On the other hand make sure your .vue files are embedded during build, e.g. include this in the csproj:
         // <ItemGroup><EmbeddedResource Include="Assets\Scripts\VueComponents\*.vue" /></ItemGroup>
