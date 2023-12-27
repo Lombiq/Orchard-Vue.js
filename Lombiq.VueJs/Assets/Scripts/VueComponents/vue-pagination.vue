@@ -14,9 +14,9 @@
         <div v-for="index in indexes"
              :key="'vuePagination__item_' + index"
              class="vuePagination__item"
-             :class="{ vuePagination__item_current: index + 1 === page }"
-             @click="index + 1 !== page && $emit('change', index + 1)">
-            {{ index + 1 }}
+             :class="{ vuePagination__item_current: index === page }"
+             @click="index !== page && $emit('change', index )">
+            {{ index }}
         </div>
         <div class="vuePagination__item vuePagination__item_next"
              :class="{ vuePagination__item_disabled: page >= pageCount }"
@@ -53,7 +53,7 @@ export default {
         indexes(self) {
             return Array.from({ length: 5 })
                 .map((_, index) => index - 2 + self.page)
-                .filter((index) => index >= 0 && index < self.pageCount);
+                .filter((index) => index > 0 && index <= self.pageCount);
         },
     },
 };
