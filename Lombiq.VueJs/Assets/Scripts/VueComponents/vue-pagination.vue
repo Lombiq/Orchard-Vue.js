@@ -1,32 +1,32 @@
 <template>
     <div v-if="pageCount > 0" class="vuePagination">
         <div class="vuePagination__item vuePagination__item_first"
-             :class="{ vuePagination__item_disabled: page === 0 }"
-             @click="page > 0 && $emit('change', 0)">
+             :class="{ vuePagination__item_disabled: page === 1 }"
+             @click="page > 1 && $emit('change', 1)">
             <i class="fas fa-chevron-left"></i>
             <i class="fas fa-chevron-left"></i>
         </div>
         <div class="vuePagination__item vuePagination__item_prev"
-             :class="{ vuePagination__item_disabled: page <= 0 }"
-             @click="page > 0 && $emit('change', page - 1)">
+             :class="{ vuePagination__item_disabled: page <= 1 }"
+             @click="page > 1 && $emit('change', page - 1)">
             <i class="fas fa-chevron-left"></i>
         </div>
         <div v-for="index in indexes"
              :key="'vuePagination__item_' + index"
              class="vuePagination__item"
              :class="{ vuePagination__item_current: index === page }"
-             @click="index !== page && $emit('change', index)">
-            {{ index + 1 }}
+             @click="index !== page && $emit('change', index )">
+            {{ index }}
         </div>
         <div class="vuePagination__item vuePagination__item_next"
-             :class="{ vuePagination__item_disabled: page + 1 >= pageCount }"
-             @click="page + 1 < pageCount && $emit('change', page + 1)">
+             :class="{ vuePagination__item_disabled: page >= pageCount }"
+             @click="page < pageCount && $emit('change', page + 1)">
             <i class="fas fa-chevron-right"></i>
         </div>
         <div v-if="pageCount !== Number.POSITIVE_INFINITY"
              class="vuePagination__item vuePagination__item_last"
-             :class="{ vuePagination__item_disabled: page + 1 === pageCount }"
-             @click="page + 1 < pageCount && $emit('change', pageCount - 1)">
+             :class="{ vuePagination__item_disabled: page === pageCount }"
+             @click="page < pageCount && $emit('change', pageCount )">
             <i class="fas fa-chevron-right"></i>
             <i class="fas fa-chevron-right"></i>
         </div>
@@ -53,7 +53,7 @@ export default {
         indexes(self) {
             return Array.from({ length: 5 })
                 .map((_, index) => index - 2 + self.page)
-                .filter((index) => index >= 0 && index < self.pageCount);
+                .filter((index) => index > 0 && index <= self.pageCount);
         },
     },
 };
