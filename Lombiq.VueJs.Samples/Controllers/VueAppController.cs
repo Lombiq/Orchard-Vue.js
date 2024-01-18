@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lombiq.VueJs.Samples.Controllers;
 
@@ -7,6 +8,7 @@ namespace Lombiq.VueJs.Samples.Controllers;
 public class VueAppController : Controller
 {
     [HttpGet]
+    [ScriptUnsafeEval]
     // Open this from under /Lombiq.VueJs.Samples/VueApp/Index
     public ActionResult Index() => View();
 
