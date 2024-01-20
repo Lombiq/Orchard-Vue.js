@@ -11,22 +11,13 @@ using static Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDi
 
 namespace Lombiq.VueJs.Samples.Controllers;
 
-public class QrCardController : Controller
+public class QrCardController(IContentManager contentManager, Lazy<LinkGenerator> linkGenerator) : Controller
 {
-    private readonly IContentManager _contentManager;
-    private readonly Lazy<LinkGenerator> _linkGenerator;
-
-    public QrCardController(IContentManager contentManager, Lazy<LinkGenerator> linkGenerator)
-    {
-        _contentManager = contentManager;
-        _linkGenerator = linkGenerator;
-    }
-
     /// <remarks><para>Open this from under /Lombiq.VueJs.Samples/QrCard/Index.</para></remarks>
     [ContentSecurityPolicy(Blob, WorkerSrc, ScriptSrc)]
     public ActionResult Index()
     {
-        var apiUrl = _linkGenerator.Value.GetPathByAction(nameof(GetBusinessCard), typeof(QrCardController).ControllerName());
+        var apiUrl = linkGenerator.Value.GetPathByAction(nameof(GetBusinessCard), typeof(QrCardController).ControllerName());
 
         return View(new QrCardAppViewModel
         {
@@ -35,7 +26,7 @@ public class QrCardController : Controller
     }
 
     public async Task<ActionResult> GetBusinessCard(string cardId) =>
-        await _contentManager.GetAsync(cardId) is { } businessCard
+        await contentManager.GetAsync(cardId) is { } businessCard
             ? Ok(businessCard)
             : NotFound();
 }

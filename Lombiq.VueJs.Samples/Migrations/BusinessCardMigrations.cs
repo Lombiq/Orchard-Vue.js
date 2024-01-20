@@ -7,16 +7,11 @@ using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Samples.Migrations;
 
-public class BusinessCardMigrations : DataMigration
+public class BusinessCardMigrations(IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private readonly IContentDefinitionManager _contentDefinitionManager;
-
-    public BusinessCardMigrations(IContentDefinitionManager contentDefinitionManager) =>
-        _contentDefinitionManager = contentDefinitionManager;
-
     public async Task<int> CreateAsync()
     {
-        var businessCardPart = await _contentDefinitionManager.AlterPartDefinitionAsync<BusinessCard>(partBuilder => partBuilder
+        var businessCardPart = await contentDefinitionManager.AlterPartDefinitionAsync<BusinessCard>(partBuilder => partBuilder
             .WithField(model => model.FirstName, field => field
                 .WithDisplayName("First name")
                 .WithSettings(new TextFieldSettings { Required = true }))
@@ -28,7 +23,7 @@ public class BusinessCardMigrations : DataMigration
             .WithField(model => model.Phone, field => field
                 .WithSettings(new TextFieldSettings { Required = true })));
 
-        await _contentDefinitionManager.AlterTypeDefinitionAsync(nameof(BusinessCard), typeBuilder => typeBuilder
+        await contentDefinitionManager.AlterTypeDefinitionAsync(nameof(BusinessCard), typeBuilder => typeBuilder
             .DisplayedAs("Business card")
             .Creatable()
             .Listable()
