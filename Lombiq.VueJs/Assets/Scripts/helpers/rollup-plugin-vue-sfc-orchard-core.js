@@ -121,24 +121,6 @@ module.exports = function vuePlugin() {
                 // files anyway.
                 ' /* eslint-disable linebreak-style */');
 
-            if (isEntryComponent) {
-                code = code.replace(pattern, `window.Vue.component('${componentName}', {`);
-
-                if (code[code.length - 1] === '}') {
-                    // If the last character is the closing brace that needs to be treated separately. No semicolon here
-                    // because we want ESLint to know about it not being there in the original source.
-                    code += ')';
-                }
-                else {
-                    let finalSemicolon = code.length - 1;
-                    for (; finalSemicolon > 0 && code[finalSemicolon] !== ';'; finalSemicolon--) {
-                        // Prevent overshooting if the optional semicolon is not used in the final expression.
-                        if (finalSemicolon > 0 && code[finalSemicolon - 1] === '}') break;
-                    }
-                    code = code.substring(0, finalSemicolon) + ')' + (code[finalSemicolon] === ';' ? ';' : '');
-                }
-            }
-
             // Add trailing newline. This is not normal for .vue files but expected from .js files.
             code += '\n';
 
