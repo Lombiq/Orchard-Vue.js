@@ -1,8 +1,10 @@
 using Lombiq.VueJs.Services;
 using Lombiq.VueJs.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.Modules;
+using OrchardCore.ResourceManagement;
 
 namespace Lombiq.VueJs;
 
@@ -18,5 +20,7 @@ public class Startup : StartupBase
 
         services.AddScoped<IVueSingleFileComponentShapeAmender, ContentItemDisplayVueSingleFileComponentShapeAmender>();
         services.AddScoped<IVueSingleFileComponentShapeAmender, DateTimeVueSingleFileComponentShapeAmender>();
+
+        services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
     }
 }

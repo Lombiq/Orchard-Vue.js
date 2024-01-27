@@ -1,4 +1,5 @@
 @using GraphQL
+@using Lombiq.VueJs.Constants
 @using Lombiq.VueJs.Models
 @using OrchardCore.Mvc.Utilities
 @{
@@ -29,21 +30,4 @@
     @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
 </div>
 
-<script at="Foot" asp-name="Lombiq.VueJs.VueComponentApp.Script" depends-on="@dependsOn">
-(function() {
-    document.querySelectorAll('.lombiq-vue').forEach((element) => {
-        const componentName = element.getAttribute('data-name');
-        const data = JSON.parse(element.getAttribute('data-model'));
-
-        if (!('applications' in Vue)) Vue.applications = { };
-        if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
-
-        const app = new Vue({
-            el: element,
-            data: data,
-        });
-        app.$appId = element.id;
-        Vue.applications[componentName].push(app);
-    });
-})();
-</script>
+<script asp-name="@ResourceNames.VueComponentApp" depends-on="@shapeModel.ComponentName" type="module"></script>
