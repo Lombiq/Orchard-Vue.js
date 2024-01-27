@@ -41,13 +41,14 @@ public class VueComponentTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        _resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
+        _resourceManager.RegisterResource("script", ResourceNames.Vue3).AtHead();
 
         var scriptName = "vue-component-" + Name;
-        _resourceManager.InlineManifest
+        _resourceManager
+            .InlineManifest
             .DefineScript(scriptName)
             .SetUrl($"~/{Area}/vue/{Name}.min.js", $"~/{Area}/vue/{Name}.js")
-            .SetDependencies(ResourceNames.Vue);
+            .SetDependencies(ResourceNames.Vue3);
         _resourceManager.RegisterScript(scriptName).AtFoot();
 
         foreach (var resourceName in FindResourceNames())
