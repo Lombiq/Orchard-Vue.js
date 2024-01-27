@@ -5,7 +5,6 @@
     VueComponentApp shapeModel = Model.ShapeModel;
 
     var dependsOn = "vuejs," + shapeModel.ComponentName;
-    var aspName = shapeModel.Id + "-VueApp";
 
     var arguments = shapeModel
         .ViewModel
@@ -23,24 +22,28 @@
     var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));
 }
 
-<div id="@shapeModel.Id" class="@shapeModel.Class">
+<div id="@shapeModel.Id"
+     class="@shapeModel.Class lombiq-vue"
+     data-name="@shapeModel.ComponentName"
+     @Json.DataAttribute("model", shapeModel.ComponentName)>
     @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
 </div>
 
-<script at="Foot" depends-on="@dependsOn" asp-name="@aspName">
+<script at="Foot" asp-name="Lombiq.VueJs.VueComponentApp.Script" depends-on="@dependsOn">
 (function() {
-    const appId = @shapeModel.Id.JsonHtmlContent();
-    const componentName = @shapeModel.ComponentName.JsonHtmlContent();
-    const data = @Json.Serialize(shapeModel.ViewModel);
+    document.querySelectorAll('.lombiq-vue').forEach((element) => {
+        const componentName = element.getAttribute('data-name');
+        const data = JSON.parse(element.getAttribute('data-model'));
 
-    if (!('applications' in Vue)) Vue.applications = { };
-    if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
+        if (!('applications' in Vue)) Vue.applications = { };
+        if (!Array.isArray(Vue.applications[componentName])) Vue.applications[componentName] = [ ];
 
-    const app = new Vue({
-        el: '#' + appId,
-        data: data,
+        const app = new Vue({
+            el: element,
+            data: data,
+        });
+        app.$appId = element.id;
+        Vue.applications[componentName].push(app);
     });
-    app.$appId = appId;
-    Vue.applications[componentName].push(app);
 })();
 </script>
