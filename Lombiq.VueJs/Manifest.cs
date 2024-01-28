@@ -6,9 +6,5 @@ using OrchardCore.Modules.Manifest;
     Website = "https://github.com/Lombiq/Orchard-Vue.js",
     Version = "0.0.1",
     Description = "Adds Vue.js to Orchard Core.",
-    Category = "Vue.js",
-    Dependencies =
-    [
-        "OrchardCore.ContentPreview",
-    ]
+    Category = "Vue.js"
 )]
