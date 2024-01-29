@@ -13,6 +13,8 @@ namespace Lombiq.VueJs.Samples.Controllers;
 // However, you could use any other ways of doing it such as injecting as a shape or using widgets.
 public class VueSfcController(IClock clock, IStringLocalizer<VueSfcController> stringLocalizer) : Controller
 {
+    private readonly IStringLocalizer T = stringLocalizer;
+
     [HttpGet]
     // Open this from under /Lombiq.VueJs.Samples/VueSfc/Index
     public ActionResult Index() => View();
@@ -47,8 +49,8 @@ public class VueSfcController(IClock clock, IStringLocalizer<VueSfcController> s
             .Select(index => new EnhancedListViewModel.EnhancedListViewModelData
             {
                 Number = index + 1,
-                Date = stringLocalizer["{0:d}", today.AddDays(index)],
-                Day = stringLocalizer["{0:dddd}", today.AddDays(index)].Value,
+                Date = T["{0:d}", today.AddDays(index)],
+                Day = T["{0:dddd}", today.AddDays(index)].Value,
                 Random = new Random(index).Next(10) + 1, // Not actually random, more like deterministic noise.
             });
     }
