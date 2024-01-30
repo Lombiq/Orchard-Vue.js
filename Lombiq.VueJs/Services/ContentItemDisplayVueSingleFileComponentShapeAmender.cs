@@ -4,13 +4,18 @@ using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
 
-public class ContentItemDisplayVueSingleFileComponentShapeAmender(IHttpContextAccessor hca, LinkGenerator linkGenerator)
-    : ServerSideValuesVueSingleFileComponentShapeAmenderBase
+public class ContentItemDisplayVueSingleFileComponentShapeAmender : ServerSideValuesVueSingleFileComponentShapeAmenderBase
 {
-    private readonly IHttpContextAccessor _hca = hca;
-    private readonly LinkGenerator _linkGenerator = linkGenerator;
+    private readonly IHttpContextAccessor _hca;
+    private readonly LinkGenerator _linkGenerator;
     protected override string ShapeName => "VueComponent-ContentItemDisplay";
     protected override string PropertyName => "contentItemDisplay";
+
+    public ContentItemDisplayVueSingleFileComponentShapeAmender(IHttpContextAccessor hca, LinkGenerator linkGenerator)
+    {
+        _hca = hca;
+        _linkGenerator = linkGenerator;
+    }
 
     protected override ValueTask<object> GetPropertyValueAsync(string shapeName)
     {

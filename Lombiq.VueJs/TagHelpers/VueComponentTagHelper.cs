@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 namespace Lombiq.VueJs.TagHelpers;
 
 [HtmlTargetElement("vue-component", Attributes = "area,name")]
-public class VueComponentTagHelper(
-    IDisplayHelper displayHelper,
-    IOptions<ResourceManagementOptions> resourceManagementOptions,
-    IResourceManager resourceManager,
-    IShapeFactory shapeFactory) : TagHelper
+public class VueComponentTagHelper : TagHelper
 {
+    private readonly IDisplayHelper _displayHelper;
+    private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
+    private readonly IResourceManager _resourceManager;
+    private readonly IShapeFactory _shapeFactory;
+
     [HtmlAttributeName("area")]
     public string Area { get; set; }
 
@@ -26,30 +27,42 @@ public class VueComponentTagHelper(
     [HtmlAttributeName("children")]
     public string Children { get; set; }
 
+    public VueComponentTagHelper(
+        IDisplayHelper displayHelper,
+        IOptions<ResourceManagementOptions> resourceManagementOptions,
+        IResourceManager resourceManager,
+        IShapeFactory shapeFactory)
+    {
+        _displayHelper = displayHelper;
+        _resourceManagementOptions = resourceManagementOptions;
+        _resourceManager = resourceManager;
+        _shapeFactory = shapeFactory;
+    }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
+        _resourceManager.RegisterResource("script", ResourceNames.Vue).AtHead();
 
         var scriptName = "vue-component-" + Name;
-        resourceManager.InlineManifest
+        _resourceManager.InlineManifest
             .DefineScript(scriptName)
             .SetUrl($"~/{Area}/vue/{Name}.min.js", $"~/{Area}/vue/{Name}.js")
             .SetDependencies(ResourceNames.Vue);
-        resourceManager.RegisterScript(scriptName).AtFoot();
+        _resourceManager.RegisterScript(scriptName).AtFoot();
 
         foreach (var resourceName in FindResourceNames())
         {
             var shapeType = "VueComponent-" + resourceName.ToPascalCaseDash();
 
             output.PostElement.AppendHtml(
-                await displayHelper.ShapeExecuteAsync(
-                    await shapeFactory.CreateAsync(shapeType)));
+                await _displayHelper.ShapeExecuteAsync(
+                    await _shapeFactory.CreateAsync(shapeType)));
         }
 
         output.TagName = null;
     }
 
-    private HashSet<string> FindResourceNames()
+    private IEnumerable<string> FindResourceNames()
     {
         var resourceNames = (Children?.Split(',') ?? Enumerable.Empty<string>())
             .SelectWhere(child => child.Trim(), child => !string.IsNullOrEmpty(child))
@@ -57,7 +70,7 @@ public class VueComponentTagHelper(
         resourceNames.Add(Name);
 
         // The key is the resource name and the value is one of its dependencies.
-        var componentDependencies = resourceManagementOptions
+        var componentDependencies = _resourceManagementOptions
                 .Value
                 .ResourceManifests
                 .SingleResourceTypeToLookup(ResourceTypes.SingleFileComponent);
@@ -77,7 +90,7 @@ public class VueComponentTagHelper(
             .Where(dependency => !resourceNames.Contains(dependency))
             .ToHashSet();
 
-        if (newDependencies.Count == 0) return;
+        if (!newDependencies.Any()) return;
 
         resourceNames.AddRange(newDependencies);
         AddShapesRecursively(resourceNames, newDependencies, componentDependencies);

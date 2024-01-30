@@ -11,9 +11,16 @@ namespace Lombiq.VueJs.Samples.Controllers;
 
 // This controller is for returning a Vue.js Single File Component (abbreviated as SFC going forward) in an MVC view.
 // However, you could use any other ways of doing it such as injecting as a shape or using widgets.
-public class VueSfcController(IClock clock, IStringLocalizer<VueSfcController> stringLocalizer) : Controller
+public class VueSfcController : Controller
 {
-    private readonly IStringLocalizer T = stringLocalizer;
+    private readonly IClock _clock;
+    private readonly IStringLocalizer<VueSfcController> T;
+
+    public VueSfcController(IClock clock, IStringLocalizer<VueSfcController> stringLocalizer)
+    {
+        _clock = clock;
+        T = stringLocalizer;
+    }
 
     [HttpGet]
     // Open this from under /Lombiq.VueJs.Samples/VueSfc/Index
@@ -43,7 +50,7 @@ public class VueSfcController(IClock clock, IStringLocalizer<VueSfcController> s
     [SuppressMessage("Security", "SCS0005:Weak random number generator.", Justification = "Same.")]
     private IEnumerable<EnhancedListViewModel.EnhancedListViewModelData> GetDataForPage(int page)
     {
-        var today = clock.UtcNow;
+        var today = _clock.UtcNow;
 
         return Enumerable.Range((page - 1) * 10, 10)
             .Select(index => new EnhancedListViewModel.EnhancedListViewModelData

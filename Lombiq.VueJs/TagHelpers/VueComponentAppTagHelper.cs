@@ -12,14 +12,10 @@ using System.Threading.Tasks;
 namespace Lombiq.VueJs.TagHelpers;
 
 [HtmlTargetElement("vue-component-app", Attributes = "area,name")]
-public class VueComponentAppTagHelper(
-    IDisplayHelper displayHelper,
-    IOptions<ResourceManagementOptions> resourceManagementOptions,
-    IResourceManager resourceManager,
-    IShapeFactory shapeFactory) : VueComponentTagHelper(displayHelper, resourceManagementOptions, resourceManager, shapeFactory)
+public class VueComponentAppTagHelper : VueComponentTagHelper
 {
-    private readonly IDisplayHelper _displayHelper = displayHelper;
-    private readonly IShapeFactory _shapeFactory = shapeFactory;
+    private readonly IDisplayHelper _displayHelper;
+    private readonly IShapeFactory _shapeFactory;
 
     [HtmlAttributeName("id")]
     public string Id { get; set; }
@@ -32,6 +28,17 @@ public class VueComponentAppTagHelper(
 
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
+
+    public VueComponentAppTagHelper(
+        IDisplayHelper displayHelper,
+        IOptions<ResourceManagementOptions> resourceManagementOptions,
+        IResourceManager resourceManager,
+        IShapeFactory shapeFactory)
+        : base(displayHelper, resourceManagementOptions, resourceManager, shapeFactory)
+    {
+        _displayHelper = displayHelper;
+        _shapeFactory = shapeFactory;
+    }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {

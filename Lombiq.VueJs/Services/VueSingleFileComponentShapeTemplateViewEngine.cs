@@ -13,20 +13,28 @@ using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
 
-public class VueSingleFileComponentShapeTemplateViewEngine(
-    IShapeTemplateFileProviderAccessor fileProviderAccessor,
-    IMemoryCache memoryCache,
-    IStringLocalizerFactory stringLocalizerFactory,
-    IEnumerable<IVueSingleFileComponentShapeAmender> amenders) : IShapeTemplateViewEngine
+public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewEngine
 {
     public const string CachePrefix = nameof(VueSingleFileComponentShapeTemplateViewEngine) + ":";
 
-    private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor = fileProviderAccessor;
-    private readonly IMemoryCache _memoryCache = memoryCache;
-    private readonly IStringLocalizerFactory _stringLocalizerFactory = stringLocalizerFactory;
-    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders = amenders;
+    private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
+    private readonly IMemoryCache _memoryCache;
+    private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
+
+    public VueSingleFileComponentShapeTemplateViewEngine(
+        IShapeTemplateFileProviderAccessor fileProviderAccessor,
+        IMemoryCache memoryCache,
+        IStringLocalizerFactory stringLocalizerFactory,
+        IEnumerable<IVueSingleFileComponentShapeAmender> amenders)
+    {
+        _fileProviderAccessor = fileProviderAccessor;
+        _memoryCache = memoryCache;
+        _stringLocalizerFactory = stringLocalizerFactory;
+        _amenders = amenders;
+    }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
     {
