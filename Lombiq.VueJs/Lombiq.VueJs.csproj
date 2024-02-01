@@ -63,4 +63,9 @@
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
 
+  <!-- Execute Lombiq.NodeJs separately, to avoid inheriting these instructions in projects that consume Lombiq.VueJs. -->
+  <Target Name="BuildLocalScripts" AfterTargets="NpmInstall">
+    <Exec Command="npm explore nodejs-extensions -- pnpm build" />
+  </Target>
+
 </Project>

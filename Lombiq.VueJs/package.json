@@ -39,5 +39,14 @@
     "--": "------------------------------------------------- VUE APP -------------------------------------------------",
     "build:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' compile",
     "clean:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' clean"
+  },
+  "nodejsExtensions": {
+    "assetsToCopy": [
+      {
+        "sources": [ "node_modules/vue/dist" ],
+        "target": "wwwroot/vendors/vue",
+        "pattern": "vue.esm-browser.*"
+      }
+    ]
   }
 }
