@@ -123,7 +123,7 @@ If your Vue app is just going to include one top level component and bind to tha
 
 ```html
 <script at="Foot" depends-on="unique-id-VueApp">
-    const app = Vue.applications['my-article'].filter((app) => app.$appId === 'unique-id')[0];
+    const app = window.VueApplications['my-article'].filter((app) => app.$appId === 'unique-id')[0];
 </script>
 ```
 

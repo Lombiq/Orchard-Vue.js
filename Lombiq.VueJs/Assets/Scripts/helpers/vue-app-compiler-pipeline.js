@@ -26,7 +26,7 @@ const defaultOptions = {
 };
 
 function compileApp(options) {
-    const fileOptions = tryOpenJson("vue-app-compiler-pipeline.json");
+    const fileOptions = tryOpenJson('vue-app-compiler-pipeline.json');
     const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {

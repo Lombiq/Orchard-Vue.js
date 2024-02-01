@@ -34,12 +34,13 @@
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
 <script at="Foot" depends-on="DemoSfcRootComponent-VueApp">
-    @* The initializer script automatically creates the "Vue.applications" object, and adds an Array type property with
-       the name of the root component (i.e. 'demo-sfc'). It contains any components of that type in the current page, in
-       case you need only one. Each app created with <vue-component-app> receives a special "$appId" property with the
-       value of the "id" so if you plan to use it from dependent scripts like here make sure to set that attribute. *@
+    @* The initializer script automatically creates the "window.VueApplications" object, and adds an Array type property
+       with the name of the root component (i.e. 'demo-sfc'). It contains any components of that type in the current
+       page, in case you need only one. Each app created with <vue-component-app> receives a special "$appId" property
+       with the value of the "id" so if you plan to use it from dependent scripts like here make sure to set that
+       attribute. *@
     const componentName = @ResourceNames.DemoSfc.JsonHtmlContent();
-    const app = Vue.applications[componentName].filter((app) => app.$appId === 'unique-id')[0];
+    const app = window.VueApplications[componentName].filter((app) => app.$appId === 'unique-id')[0];
 
     @* This is the same as before except we call it "value" instead of "count". *@
     document.getElementById('random').addEventListener('click', function () {

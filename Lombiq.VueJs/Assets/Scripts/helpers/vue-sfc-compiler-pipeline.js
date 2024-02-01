@@ -25,7 +25,7 @@ const defaultOptions = {
 };
 
 function compile(options) {
-    const fileOptions = tryOpenJson("vue-sfc-compiler-pipeline.json");
+    const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
     const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
