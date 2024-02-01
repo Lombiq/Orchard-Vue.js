@@ -22,5 +22,7 @@ public class Startup : StartupBase
         services.AddScoped<IVueSingleFileComponentShapeAmender, DateTimeVueSingleFileComponentShapeAmender>();
 
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+
+        services.AddContentSecurityPolicyProvider<Vue3ContentSecurityPolicyProvider>();
     }
 }
