@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { QrcodeStream } from '../../../node_modules/vue-qrcode-reader';
+import { QrcodeStream } from 'vue-qrcode-reader';
 import LoadingIndicator from './loading-indicator.vue';
 import BusinessCard from './business-card.vue';
 
