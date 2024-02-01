@@ -1,4 +1,3 @@
-const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
@@ -56,7 +55,6 @@ function compile(options) {
                 },
                 preventAssignment: true,
             }),
-            commonjs(),
         ],
         null,
         (fileName) => fileName.split('.')[0]);

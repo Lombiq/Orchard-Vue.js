@@ -54,7 +54,8 @@ function compileApp(options) {
             commonjs(),
         ],
         null,
-        (fileName) => path.basename(path.dirname(fileName)));
+        (fileName) => path.basename(path.dirname(fileName)),
+        { format: 'cjs' }); // #spell-check-ignore-line
 }
 
 function globPromise(basePath) {

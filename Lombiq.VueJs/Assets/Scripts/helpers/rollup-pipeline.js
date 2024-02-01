@@ -32,7 +32,7 @@ module.exports = function rollupPipeline(
     rollupPlugins,
     rollupOptions = null,
     outputFileNameTransform = null,
-    panicOnFailure = true) {
+    outputOptions = null) {
     function configure(fileName, entryPath) {
         const defaultRollupOptions = {
             onwarn: (warning, next) => { // #spell-check-ignore-line
@@ -69,11 +69,8 @@ module.exports = function rollupPipeline(
             let bundle;
 
             try {
-                const options = configure(fileName, entryPath);
-                const outputOptions = { format: 'cjs' }; // #spell-check-ignore-line
-
-                bundle = await rollup(options);
-                const { output } = await bundle.generate(outputOptions);
+                bundle = await rollup(configure(fileName, entryPath));
+                const { output } = await bundle.generate(outputOptions ?? {});
 
                 await Promise.all(output.map(async (item) => {
                     try {
@@ -109,5 +106,5 @@ module.exports = function rollupPipeline(
             if (!success) throw new Error('rollupPipeline failed!');
         }));
 
-    return handlePromiseRejectionAsError(pipelinePromise, panicOnFailure);
+    return handlePromiseRejectionAsError(pipelinePromise, true);
 };
