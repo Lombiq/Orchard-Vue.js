@@ -45,6 +45,12 @@ Do you want to quickly try out this project and see it in action? Check it out i
     }
     ```
 
+### Configuration
+
+Both app and SFC building can be configured by placing a JSON file (called _vue-app-compiler-pipeline.json_ and _vue-sfc-compiler-pipeline.json_ respectively) in the project root. They can contain the same properties you can see in the `defaultOptions` variables in [vue-app-compiler-pipeline.js](Lombiq.VueJs/Assets/scripts/helpers/vue-app-compiler-pipeline.js) and [vue-sfc-compiler-pipeline.js](Lombiq.VueJs/Assets/scripts/helpers/vue-sfc-compiler-pipeline.js). Any property set in the JSON file overrides the default value as the two objects are merged. This is most useful with the `rollupAlias` property where you can declare additional module aliases. By default the app pipeline has the `vue` alias declared the SFC pipeline has no default aliases.
+
+> ⚠ In previous versions `vuelidate`, `vue-router` and `vue-axios` were also included aliases by default. This was unnecessary bloat as not all Vue apps need those libraries. If you need either, add them as dependencies to your project and configure the `rollupAlias` option accordingly.
+
 ## Sample project
 
 If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md).

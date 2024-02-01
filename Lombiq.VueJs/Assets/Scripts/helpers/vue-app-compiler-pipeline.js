@@ -11,6 +11,7 @@ const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const { getVueApps } = require('./get-vue-files');
 const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
+const tryOpenJson = require('./try-open-json');
 
 // If this script is invoked from "npm explore lombiq-vuejs" then we have to navigate back to the current project root.
 leaveNodeModule();
@@ -25,7 +26,8 @@ const defaultOptions = {
 };
 
 function compileApp(options) {
-    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    const fileOptions = tryOpenJson("vue-app-compiler-pipeline.json");
+    const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.vueJsNodeModulesPath)) {
         throw new Error(`The vueJsNodeModulesPath option's path "${opts.vueJsNodeModulesPath}" does not exist!`);
