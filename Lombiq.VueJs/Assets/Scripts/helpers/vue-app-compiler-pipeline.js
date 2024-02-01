@@ -3,6 +3,7 @@ const del = require('del');
 const fs = require('fs');
 const glob = require('glob');
 const json = require('@rollup/plugin-json');
+const alias = require('@rollup/plugin-alias');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
@@ -42,7 +43,7 @@ function compileApp(options) {
             .map((appName) => ({ fileName: appName, entryPath: path.join(opts.appRootPath, appName, '/main.js') })),
         [
             json(),
-            configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
+            alias(opts.rollupAlias),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }), // #spell-check-ignore-line
             replace({
                 values: {
