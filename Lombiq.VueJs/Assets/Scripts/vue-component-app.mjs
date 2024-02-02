@@ -1,5 +1,4 @@
-// eslint-disable-next-line -- Ignore temporary direct import for now.
-import * as Vue from 'https://unpkg.com/vue@3.4.15/dist/vue.esm-browser.js';
+import * as Vue from 'Vue';
 
 window.VueApplications = window.VueApplications ?? { };
 
