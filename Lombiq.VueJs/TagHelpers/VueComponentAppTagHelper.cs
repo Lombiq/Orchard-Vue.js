@@ -1,4 +1,5 @@
 using Lombiq.VueJs.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers;
 
-[HtmlTargetElement("vue-component-app", Attributes = "area,name")]
+[HtmlTargetElement("vue-component-app", Attributes = "name")]
 public class VueComponentAppTagHelper : VueComponentTagHelper
 {
     private readonly IDisplayHelper _displayHelper;
@@ -31,10 +32,11 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
 
     public VueComponentAppTagHelper(
         IDisplayHelper displayHelper,
+        IHttpContextAccessor hca,
         IOptions<ResourceManagementOptions> resourceManagementOptions,
         IResourceManager resourceManager,
         IShapeFactory shapeFactory)
-        : base(displayHelper, resourceManagementOptions, resourceManager, shapeFactory)
+        : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory)
     {
         _displayHelper = displayHelper;
         _shapeFactory = shapeFactory;

@@ -1,19 +1,22 @@
 using Lombiq.VueJs.Constants;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Mvc.Utilities;
 using OrchardCore.ResourceManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers;
 
-[HtmlTargetElement("vue-component", Attributes = "area,name")]
+[HtmlTargetElement("vue-component", Attributes = "name")]
 public class VueComponentTagHelper : TagHelper
 {
     private readonly IDisplayHelper _displayHelper;
+    private readonly IHttpContextAccessor _hca;
     private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
     private readonly IResourceManager _resourceManager;
     private readonly IShapeFactory _shapeFactory;
@@ -29,11 +32,13 @@ public class VueComponentTagHelper : TagHelper
 
     public VueComponentTagHelper(
         IDisplayHelper displayHelper,
+        IHttpContextAccessor hca,
         IOptions<ResourceManagementOptions> resourceManagementOptions,
         IResourceManager resourceManager,
         IShapeFactory shapeFactory)
     {
         _displayHelper = displayHelper;
+        _hca = hca;
         _resourceManagementOptions = resourceManagementOptions;
         _resourceManager = resourceManager;
         _shapeFactory = shapeFactory;
@@ -43,11 +48,23 @@ public class VueComponentTagHelper : TagHelper
     {
         _resourceManager.RegisterResource("script", ResourceNames.Vue3).AtHead();
 
+        var area = string.IsNullOrEmpty(Area)
+            ? _hca.HttpContext?.Request.RouteValues.GetMaybe("area")?.ToString()
+            : Area;
+
+        if (string.IsNullOrEmpty(area))
+        {
+            throw new InvalidOperationException(
+                $"Failed to automatically resolve the current area name. Please specify the correct value in the " +
+                $"\"area\" attribute of your <{context.TagName}> tag helper. This is usually the name of the module " +
+                $"where the vue file is located.");
+        }
+
         var scriptName = "vue-component-" + Name;
         _resourceManager
             .InlineManifest
             .DefineScript(scriptName)
-            .SetUrl($"~/{Area}/vue/{Name}.min.js", $"~/{Area}/vue/{Name}.js")
+            .SetUrl($"~/{area}/vue/{Name}.min.js", $"~/{area}/vue/{Name}.js")
             .SetDependencies(ResourceNames.Vue3);
         _resourceManager.RegisterScript(scriptName).AtFoot();
 
