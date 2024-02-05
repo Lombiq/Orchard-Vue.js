@@ -23,18 +23,12 @@
 
 <script type="importmap">
   @Json.Serialize(new { Imports = new Dictionary<string, string> { ["Vue"] = "https://unpkg.com/vue@3.4.15/dist/vue.esm-browser.js" } })
-  {
-    "imports": {
-      "square": "./module/shapes/square.js",
-      "circle": "https://example.com/shapes/circle.js"
-    }
-  }
 </script>
 
 <div id="@shapeModel.Id"
      class="@shapeModel.Class lombiq-vue"
      data-name="@shapeModel.ComponentName"
-     @Json.DataAttribute("model", shapeModel.ComponentName)>
+     @Json.DataAttribute("model", shapeModel.ViewModel)>
     @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
 </div>
 
