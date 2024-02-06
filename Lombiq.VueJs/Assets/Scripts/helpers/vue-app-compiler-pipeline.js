@@ -1,11 +1,12 @@
 const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');
-const glob = require('glob');
 const json = require('@rollup/plugin-json');
 const alias = require('@rollup/plugin-alias');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
+
+const { glob } = require('glob');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const rollupPipeline = require('./rollup-pipeline');
@@ -58,18 +59,12 @@ function compileApp(options) {
         { format: 'cjs' }); // #spell-check-ignore-line
 }
 
-function globPromise(basePath) {
-    return new Promise((resolve, reject) => {
-        glob(basePath, (err, matches) => (err ? reject(err) : resolve(matches)));
-    });
-}
-
 function compileCss(options) {
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     return Promise.all(getVueApps(opts.appRootPath)
         .map(async (appName) => {
-            const paths = await globPromise(path.join(
+            const paths = await glob(path.join(
                 opts.appRootPath,
                 appName,
                 opts.appStylesPath,
