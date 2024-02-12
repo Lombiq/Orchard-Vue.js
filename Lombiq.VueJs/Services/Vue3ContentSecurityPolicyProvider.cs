@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using static Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDirectives;
 using static Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDirectives.CommonValues;
+using static Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement.ResourceTypes;
 using static Lombiq.VueJs.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Services;
@@ -13,7 +14,7 @@ namespace Lombiq.VueJs.Services;
 /// </summary>
 public class Vue3ContentSecurityPolicyProvider : ResourceManagerContentSecurityPolicyProvider
 {
-    protected override string ResourceType => "script";
+    protected override string ResourceType => ScriptModule;
     protected override string ResourceName => Vue3;
     protected override IReadOnlyCollection<string> DirectiveNameChain { get; } = new[] { ScriptSrc };
     protected override string DirectiveValue => UnsafeEval;

@@ -19,14 +19,14 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
     static ResourceManagementOptionsConfiguration()
     {
         _manifest
-            .DefineScript(Vue3)
+            .DefineScriptAsModule(Vue3)
             .SetUrl(Vendors + "vue/vue.esm-browser.prod.js", Vendors + "vue/vue.esm-browser.js")
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(VueVersion);
 
         _manifest
-            .DefineScript(VueComponentApp)
-            .SetUrl(Js + "vue-component-app.min.js", Js + "/vue-component-app.js");
+            .DefineScriptAsModule(VueComponentApp)
+            .SetUrl(Js + "vue-component-app.min.mjs", Js + "/vue-component-app.mjs");
     }
 
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);

@@ -2,6 +2,7 @@
 @using Lombiq.VueJs.Constants
 @using Lombiq.VueJs.Models
 @using OrchardCore.Mvc.Utilities
+
 @{
     VueComponentApp shapeModel = Model.ShapeModel;
 
@@ -21,7 +22,7 @@
     var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));
 }
 
-<script type="importmap">
+<script asp-name="@(ResourceNames.VueComponentApp).ImportMap" type="importmap">
   @Json.Serialize(new { Imports = new Dictionary<string, string> { ["Vue"] = "https://unpkg.com/vue@3.4.15/dist/vue.esm-browser.js" } })
 </script>
 

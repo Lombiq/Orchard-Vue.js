@@ -46,7 +46,7 @@ public class VueComponentTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        _resourceManager.RegisterResource("script", ResourceNames.Vue3).AtHead();
+        _resourceManager.RegisterScriptAsModule(ResourceNames.Vue3);
 
         var area = string.IsNullOrEmpty(Area)
             ? _hca.HttpContext?.Request.RouteValues.GetMaybe("area")?.ToString()
@@ -63,9 +63,8 @@ public class VueComponentTagHelper : TagHelper
         var scriptName = "vue-component-" + Name;
         _resourceManager
             .InlineManifest
-            .DefineScript(scriptName)
-            .SetUrl($"~/{area}/vue/{Name}.min.js", $"~/{area}/vue/{Name}.js")
-            .SetDependencies(ResourceNames.Vue3);
+            .DefineScriptAsModule(scriptName)
+            .SetUrl($"~/{area}/vue/{Name}.min.js", $"~/{area}/vue/{Name}.js");
         _resourceManager.RegisterScript(scriptName).AtFoot();
 
         foreach (var resourceName in FindResourceNames())
