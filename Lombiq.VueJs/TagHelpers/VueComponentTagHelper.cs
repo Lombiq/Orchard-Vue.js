@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Lombiq.VueJs.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.TagHelpers;
 
@@ -46,8 +47,6 @@ public class VueComponentTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        _resourceManager.RegisterScriptAsModule(ResourceNames.Vue3);
-
         var area = string.IsNullOrEmpty(Area)
             ? _hca.HttpContext?.Request.RouteValues.GetMaybe("area")?.ToString()
             : Area;
@@ -63,9 +62,9 @@ public class VueComponentTagHelper : TagHelper
         var scriptName = "vue-component-" + Name;
         _resourceManager
             .InlineManifest
-            .DefineScriptAsModule(scriptName)
+            .DefineScriptModule(scriptName)
             .SetUrl($"~/{area}/vue/{Name}.min.js", $"~/{area}/vue/{Name}.js");
-        _resourceManager.RegisterScript(scriptName).AtFoot();
+        _resourceManager.RegisterScriptModule(VueComponentApp);
 
         foreach (var resourceName in FindResourceNames())
         {

@@ -1,7 +1,14 @@
 @using GraphQL
 @using Lombiq.VueJs.Constants
 @using Lombiq.VueJs.Models
+@using Microsoft.Extensions.Options
 @using OrchardCore.Mvc.Utilities
+@using OrchardCore.ResourceManagement
+@using static Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement.ResourceTypes
+
+@inject IResourceManager ResourceManager
+@inject IOptions<ResourceManagementOptions> ResourceManagementOptions
+@inject IFileVersionProvider FileVersionProvider
 
 @{
     VueComponentApp shapeModel = Model.ShapeModel;
@@ -22,9 +29,9 @@
     var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));
 }
 
-<script asp-name="@(ResourceNames.VueComponentApp).ImportMap" type="importmap">
-  @Json.Serialize(new { Imports = new Dictionary<string, string> { ["Vue"] = "https://unpkg.com/vue@3.4.15/dist/vue.esm-browser.js" } })
-</script>
+@* These two will be placed somewhere else later. *@
+@ResourceManagementOptions.Value.GetScriptModuleMap(FileVersionProvider)
+@ResourceManager.GetRequiredScriptModuleTag(ResourceManagementOptions.Value.ContentBasePath, ResourceNames.VueComponentApp)
 
 <div id="@shapeModel.Id"
      class="@shapeModel.Class lombiq-vue"
@@ -32,5 +39,3 @@
      @Json.DataAttribute("model", shapeModel.ViewModel)>
     @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
 </div>
-
-<script asp-name="@ResourceNames.VueComponentApp" depends-on="@shapeModel.ComponentName" type="module"></script>
