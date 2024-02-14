@@ -1,41 +1,19 @@
-@using GraphQL
 @using Lombiq.VueJs.Constants
 @using Lombiq.VueJs.Models
 @using Microsoft.Extensions.Options
-@using OrchardCore.Mvc.Utilities
 @using OrchardCore.ResourceManagement
-@using static Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement.ResourceTypes
-
 @inject IResourceManager ResourceManager
 @inject IOptions<ResourceManagementOptions> ResourceManagementOptions
 @inject IFileVersionProvider FileVersionProvider
 
 @{
-    VueComponentApp shapeModel = Model.ShapeModel;
-
-    var arguments = shapeModel
-        .ViewModel
-        .Properties()
-        .Select(property => property.Name)
-        .ToList();
-
-    var vModel = string.Empty;
-    if (arguments.Contains(shapeModel.ModelProperty))
-    {
-        vModel = $"v-model=\"{shapeModel.ModelProperty}\"";
-        arguments.Remove(shapeModel.ModelProperty);
-    }
-
-    var attributes = string.Join(" ", arguments.Select(name => $":{name.HtmlClassify()}=\"{name.ToCamelCase()}\""));
+    var shapeModel = (VueComponentApp)Model.ShapeModel;
+    var name = shapeModel.ComponentName;
+    var model = shapeModel.ViewModel;
 }
 
 @* These two will be placed somewhere else later. *@
 @ResourceManagementOptions.Value.GetScriptModuleMap(FileVersionProvider)
 @ResourceManager.GetRequiredScriptModuleTag(ResourceManagementOptions.Value.ContentBasePath, ResourceNames.VueComponentApp)
 
-<div id="@shapeModel.Id"
-     class="@shapeModel.Class lombiq-vue"
-     data-name="@shapeModel.ComponentName"
-     @Json.DataAttribute("model", shapeModel.ViewModel)>
-    @Html.Raw($"<{shapeModel.ComponentName} {attributes} {vModel}></{shapeModel.ComponentName}>")
-</div>
+<div id="@shapeModel.Id" class="@shapeModel.Class lombiq-vue" data-name="@name" @Json.DataAttribute("model", model)></div>
