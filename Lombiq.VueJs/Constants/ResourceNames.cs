@@ -2,7 +2,7 @@ namespace Lombiq.VueJs.Constants;
 
 public static class ResourceNames
 {
-    public const string Vue3 = "Vue";
+    public const string Vue3 = "vue";
     public const string VueComponentApp = $"{FeatureIds.Area}.{nameof(VueComponentApp)}";
 
     public static class Components

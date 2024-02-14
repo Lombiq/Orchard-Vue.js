@@ -1,4 +1,4 @@
-import * as Vue from 'Vue';
+import { createApp } from 'vue'
 
 window.VueApplications = window.VueApplications ?? { };
 
@@ -8,7 +8,7 @@ document.querySelectorAll('.lombiq-vue').forEach((element) => {
 
     if (!Array.isArray(window.VueApplications[componentName])) window.VueApplications[componentName] = [];
 
-    const app = new Vue({
+    const app = createApp({
         el: element,
         data: data,
     });
