@@ -7,10 +7,9 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
     const viewModel = JSON.parse(element.getAttribute('data-model'));
     const component = (await import('vue-component-' + componentName)).default;
 
-    if (!Array.isArray(window.VueApplications[componentName])) window.VueApplications[componentName] = [];
-
     const app = createApp(component, viewModel);
     app.$appId = element.id;
-    window.VueApplications[componentName].push(app);
+    app.$el = element;
+    window.VueApplications[element.id] = app;
     app.mount(element);
 });

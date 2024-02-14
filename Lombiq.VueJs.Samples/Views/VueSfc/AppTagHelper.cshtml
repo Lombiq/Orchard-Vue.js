@@ -1,3 +1,7 @@
+@* There is a wall of text here, but don't be intimidated! In most cases all you will need is a single tag helper usage
+   like <vue-component-app name="resouce-name" model="@myData">. You can see an example in /Views/QrCard/Index.cshtml of
+   that. The rest of this file will give you insight on the extended features of the app tag helper. *@
+
 @* This is the same you've just seen in Index.cshtml, but using the <vue-component-app> tag helper. This is specifically
    for when your app only has one top level component (sometimes referred to as a "root component" or "app component")
    and all the app does is JSON serializes a data component and binds it to this app. This way you don't need to create
@@ -31,19 +35,24 @@
   Note the difference in the model, the Liquid version uses lower case "value". This is because the built-in JSON
   serializer doesn't alter the names of JSON object properties the way it does with C# objects. *@
 
+@* Below is an example of interacting with your Vue app from Javascript. This is rarely needed, usually only if you want
+   to dynamically send data from a non-Vue app. Here a  button and its JS event handler is the stand-in for such an app.
+   This is not a practical example, because if you just want to put a piece of the Vue app outside of its main container
+   you should use Vue's "Teleport" feature. *@
+
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
-<script at="Foot" depends-on="DemoSfcRootComponent-VueApp">
-    @* The initializer script automatically creates the "window.VueApplications" object, and adds an Array type property
-       with the name of the root component (i.e. 'demo-sfc'). It contains any components of that type in the current
-       page, in case you need only one. Each app created with <vue-component-app> receives a special "$appId" property
-       with the value of the "id" so if you plan to use it from dependent scripts like here make sure to set that
-       attribute. *@
-    const componentName = @ResourceNames.DemoSfc.JsonHtmlContent();
-    const app = window.VueApplications[componentName].filter((app) => app.$appId === 'unique-id')[0];
-
+@* The application is created in a JS module and JS modules are always async. So you can't use the dependes-on to
+   control execution order. To avoid problems, either put any code that interacts with a Vue app in event handlers or
+   wrap them in retry logic that polls for  *@
+<script at="Foot">
     @* This is the same as before except we call it "value" instead of "count". *@
     document.getElementById('random').addEventListener('click', function () {
+        @* The initializer script automatically creates the "window.VueApplications" object. Every time a Vue app is
+           created with <vue-component-app> a new property is created; its name is the component ID (in this case
+           "unique-id") and the value is the app instance. Apps created with <vue-component-app> also receivve a special
+           "$appId" property with same value. *@
+        const app = window.VueApplications['unique-id'];
         app.value = Math.floor(Math.random() * 10 + 1);
         app.$el.setAttribute('data-count', app.value);
     });
