@@ -46,7 +46,7 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     {
         await base.ProcessAsync(context, output);
 
-        if (string.IsNullOrWhiteSpace(Id)) Id = $"{Name}_{Guid.NewGuid():N}";
+        if (string.IsNullOrWhiteSpace(Id)) Id = $"{Name}_{Guid.NewGuid():D}";
 
         var jObject = JObject.FromObject(
             Model,
