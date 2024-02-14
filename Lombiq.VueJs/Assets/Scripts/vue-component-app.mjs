@@ -7,10 +7,6 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
     const viewModel = JSON.parse(element.getAttribute('data-model'));
     const component = (await import('vue-component-' + componentName)).default;
 
-    window.componen = component;
-    console.log(component);
-    console.log(component.template);
-
     if (!Array.isArray(window.VueApplications[componentName])) window.VueApplications[componentName] = [];
 
     const app = createApp(component, viewModel);
