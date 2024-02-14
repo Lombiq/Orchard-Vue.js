@@ -26,7 +26,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 
         _manifest
             .DefineScriptModule(VueComponentApp)
-            .SetUrl(Js + "vue-component-app.min.mjs", Js + "/vue-component-app.mjs");
+            .SetUrl(Js + "vue-component-app.min.mjs", Js + "vue-component-app.mjs");
     }
 
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);

@@ -4,16 +4,20 @@
 @using OrchardCore.ResourceManagement
 @inject IResourceManager ResourceManager
 @inject IOptions<ResourceManagementOptions> ResourceManagementOptions
-@inject IFileVersionProvider FileVersionProvider
 
 @{
     var shapeModel = (VueComponentApp)Model.ShapeModel;
     var name = shapeModel.ComponentName;
     var model = shapeModel.ViewModel;
+
+    var script = ResourceManager.GetRequiredScriptModuleTag(
+        ResourceManagementOptions.Value.ContentBasePath,
+        ResourceNames.VueComponentApp);
+    script.MergeAttribute("defer", null);
 }
 
 @* These two will be placed somewhere else later. *@
-@ResourceManagementOptions.Value.GetScriptModuleMap(FileVersionProvider)
-@ResourceManager.GetRequiredScriptModuleTag(ResourceManagementOptions.Value.ContentBasePath, ResourceNames.VueComponentApp)
+@Orchard.GetScriptModuleImportMap()
+@script
 
 <div id="@shapeModel.Id" class="@shapeModel.Class lombiq-vue" data-name="@name" @Json.DataAttribute("model", model)></div>
