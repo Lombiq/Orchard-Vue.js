@@ -14,6 +14,8 @@ We at [Lombiq](https://lombiq.com/) also used this module for the following proj
 
 Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 
+> ⚠️ Starting NuGet version 4.0, this Orchard Core module uses Vue 3 as a [Javascript module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) so it's independent of Orchard Core's built-in `vuejs` [resource](https://docs.orchardcore.net/en/main/docs/resources/libraries/). If you have an existing project that relies on the now discontinued version of Vue.js, check out [our migration instructions below](#migrating-from-vue-2).
+
 ## Prerequisites
 
 1. This project relies on [Lombiq Node.js Extensions](https://github.com/Lombiq/NodeJs-Extensions/), please see its prerequisites [here](https://github.com/Lombiq/NodeJs-Extensions/#prerequisites).
@@ -147,8 +149,13 @@ In case you are using a custom `nodejsExtensions.scripts` configuration, and thi
 - No other Razor features including string localizer with arguments.
 - Including a script element in your template will break it. Although you shouldn't do that anyway.
 - As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue.
+- Our compiler extracts the `<script>` block from the SFC into a JS module instead of using the official `@vue/compiler-sfc`. The rationale there is that we don't want to compile the template into the script anyway so using the official compiler has limited benefits and significant added complexity over simply extracting the script from the blocks as plain text. The only drawback is that SFC-specific syntax (e.g. `<script setup>`) won't work.
 
-Regarding the points: If you need anything more complicated, first reconsider your application design to see if your goals can be achieved in a more Vue.js logic. For example, pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
+Regarding the first three points: If you need anything more complicated, first reconsider your application design to see if your goals can be achieved in a more Vue.js logic. For example, pass the variables in your main app that hands them down via property binding. If you are certain you need more server side features, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
+
+## Migrating from Vue 2
+
+Most importantly, if you are not familiar with the breaking changes in Vue 3, please read the [official migration guide](https://v3-migration.vuejs.org/). Note that the new `<script setup>` syntax is not yet supported.
 
 ## Dependencies
 
