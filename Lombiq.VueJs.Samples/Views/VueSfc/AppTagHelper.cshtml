@@ -53,6 +53,7 @@
            "unique-id") and the value is the app instance. Apps created with <vue-component-app> also receivve a special
            "$appId" property with same value. *@
         const app = window.VueApplications['unique-id'];
+        @* You can access the SFC itself using the "main" property in $refs like. app.$refs.main if needed. *@
         app.viewModel.value = Math.floor(Math.random() * 10 + 1);
         app.$el.setAttribute('data-count', app.value);
     });

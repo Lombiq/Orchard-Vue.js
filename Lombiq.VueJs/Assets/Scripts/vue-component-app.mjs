@@ -17,7 +17,7 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
             return { viewModel };
         },
         components: { [componentName]: component },
-        template: `<${componentName} v-bind="viewModel"${vModel.join('')} />`,
+        template: `<${componentName} v-bind="viewModel"${vModel.join('')} ref="main" />`,
         mounted: function mounted() {
             window.VueApplications[element.id] = this;
             this.$appId = element.id;
