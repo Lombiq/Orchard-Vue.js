@@ -2,7 +2,7 @@
     <!-- This is the template of the component. If you have IDE plugin for Vue.js, this format
          affords you first-class Vue.js coding support. -->
     <div class="DemoSfc__wrapper">
-        <select class="DemoSfc__select" @change="$emit('input', parseInt($event.target.value))">
+        <select class="DemoSfc__select" @change="$emit('update:value', parseInt($event.target.value))">
             <!-- Note the bound "key" property - it must be unique and you should always include
                  it for performance reasons. Also the "value" binding is not strictly necessary
                  but can be useful for communicating value with external libraries, e.g. with
@@ -31,9 +31,7 @@ export default {
     // added during compilation.
     // name: "demo-sfc",
 
-    // Here we declare a required and an optional property, both are validated to be numeric. The
-    // "value" here is a special property name, along with the "input" event name. They together
-    // make up the input and output part of the "v-model" directive you saw in the cshtml.
+    // Here we declare a required and an optional property, both are validated to be numeric.
     props: {
         value: {
             type: Number,
@@ -44,6 +42,8 @@ export default {
             default: 10,
         },
     },
+
+    emits: [ 'update:value' ],
 
     // Computed properties are like getters, but they are cached and reactive. For example this
     // one is only re-evaluated if self.value changes which triggers an update.

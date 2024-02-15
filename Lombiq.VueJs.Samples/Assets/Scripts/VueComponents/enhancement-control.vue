@@ -5,7 +5,7 @@
         <button type="button"
                 class="btn btn-primary"
                 :class="{ disabled: value <= 1 }"
-                @click.prevent="$emit('input', value - 1)">
+                @click.prevent="$emit('update:modelValue', value - 1)">
             [[ << ]]
         </button>
         <button v-for="page in max"
@@ -13,13 +13,13 @@
                 class="btn btn-primary"
                 :class="{ disabled: page === value }"
                 type="button"
-                @click.prevent="$emit('input', page)">
+                @click.prevent="$emit('update:modelValue', page)">
             {{ page }}
         </button>
         <button type="button"
                 class="btn btn-primary"
                 :class="{ disabled: value >= max }"
-                @click.prevent="$emit('input', value + 1)">
+                @click.prevent="$emit('update:modelValue', value + 1)">
             [[ >> ]]
         </button>
     </div>

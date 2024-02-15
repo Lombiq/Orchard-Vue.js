@@ -8,6 +8,8 @@ using Newtonsoft.Json.Serialization;
 using OrchardCore.DisplayManagement;
 using OrchardCore.ResourceManagement;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers;
@@ -25,7 +27,7 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     public string Class { get; set; }
 
     [HtmlAttributeName("model-property")]
-    public string ModelProperty { get; set; } = "value";
+    public IEnumerable<string> ModelProperties { get; set; } = new[] { "value", "modelValue" };
 
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
@@ -54,13 +56,7 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
             }));
-        var shapeModel = new VueComponentApp(jObject)
-        {
-            Id = Id,
-            Class = Class,
-            ModelProperty = ModelProperty,
-            ComponentName = Name,
-        };
+        var shapeModel = new VueComponentApp(Id, Class, Name, ModelProperties, jObject);
 
         output.PostElement.AppendHtml(
             await _displayHelper.ShapeExecuteAsync(
