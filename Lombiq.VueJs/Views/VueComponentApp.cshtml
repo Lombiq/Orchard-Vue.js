@@ -7,8 +7,7 @@
 
 @{
     var shapeModel = (VueComponentApp)Model.ShapeModel;
-    var name = shapeModel.ComponentName;
-    var model = shapeModel.ViewModel;
+    var vue = new { shapeModel.ComponentName, shapeModel.ViewModel, shapeModel.ModelProperty };
 
     var script = ResourceManager.GetRequiredScriptModuleTag(
         ResourceManagementOptions.Value.ContentBasePath,
@@ -20,4 +19,4 @@
 @Orchard.GetScriptModuleImportMap()
 @script
 
-<div id="@shapeModel.Id" class="@shapeModel.Class lombiq-vue" data-name="@name" @Json.DataAttribute("model", model)></div>
+<div id="@shapeModel.Id" class="@shapeModel.Class lombiq-vue" @Json.DataAttribute("vue", vue)></div>

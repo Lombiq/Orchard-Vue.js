@@ -3,13 +3,22 @@ import { createApp } from 'vue'
 window.VueApplications = window.VueApplications ?? { };
 
 document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueComponentApp(element) {
-    const componentName = element.getAttribute('data-name');
-    const viewModel = JSON.parse(element.getAttribute('data-model'));
+    const { componentName, viewModel, modelProperty } = JSON.parse(element.getAttribute('data-vue'));
     const component = (await import('vue-component-' + componentName)).default;
 
-    const app = createApp(component, viewModel);
-    app.$appId = element.id;
-    app.$el = element;
-    window.VueApplications[element.id] = app;
-    app.mount(element);
+    const vModel = typeof viewModel === 'object' && modelProperty in viewModel
+        ? `v-model="viewModel.${modelProperty}"`
+        : '';
+
+    createApp({
+        data: function data() {
+            return { viewModel };
+        },
+        components: { [componentName]: component },
+        template: `<${componentName} v-bind="viewModel"${vModel} />`,
+        mounted: function mounted() {
+            window.VueApplications[element.id] = this;
+            this.$appId = element.id;
+        },
+    }).mount(element);
 });
