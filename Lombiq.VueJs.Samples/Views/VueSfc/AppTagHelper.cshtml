@@ -9,17 +9,22 @@
    holder app is automatically created for you. This is all done via the VueComponentApp shape so don't override that
    unless you are absolutely sure of what you are doing. *@
 
-@* The first 2 arguments are required and they behave identically to <vue-component>. The rest are optional.
+@* The "area" is optional if the vue file is in the same module as the current file, so it works much like passing an
+   "area" to the URL helper.
 
-   The "id" will be the wrapper element's ID used by the "el" property in "new Vue({ el })". If not provided one is
-   generated from the root component name and a random GUID. This is also used as the "asp-name" of initializer script
-   so make sure to include $"{id}-VueApp" in any following script's "depends-on" argument.
+   The "name" is the only required attribute. It should be the same as the .vue file's name without the extension and
+   the resource name in ResourceManagementOptionsConfiguration.cs when child components are used.
 
-   The "class" are just passed to the wrapper element as regular HTML "class" attribute.
+   The "id" will be the wrapper element's ID, the application is mounted to this element. If not provided, one is
+   generated from the root component name and a random GUID.
 
-   The "model" is turned into JSON and becomes the "data" property in "new Vue({ data })". It's immediate properties are
-   also bound to the top root component's properties so only include what it needs. The serialization uses the camelCase
-   naming strategy. If your model contains a "value", that is two-way bound using "v-model" instead. *@
+   The "class" is just passed to the wrapper element as regular HTML "class" attribute.
+
+   The "model" is turned into JSON and becomes the "viewModel" data property of the app. It's immediate properties are
+   also bound to the target component's properties so only include what it needs. The serialization uses the camelCase
+   naming strategy. If the model contains "value" or "modelValue" properties, these are two-way bound.
+
+   Make sure to add "@addTagHelper *, Lombiq.VueJs" to your /Views/_ViewImports.cshtml so this tag helper will work. *@
 <vue-component-app area="@FeatureIds.Area"
                    name="@ResourceNames.DemoSfc"
                    id="unique-id"
