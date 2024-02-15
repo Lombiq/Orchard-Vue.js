@@ -9,7 +9,7 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
     const vModel = typeof viewModel === 'object'
         ? modelProperties
             .filter(property => property in viewModel)
-            .map(property => ` @update:${property}="newValue => viewModel.${property} = newValue"`)
+            .map(property => ` @update:${property}="viewModel.${property} = $event"`)
         : [];
 
     createApp({

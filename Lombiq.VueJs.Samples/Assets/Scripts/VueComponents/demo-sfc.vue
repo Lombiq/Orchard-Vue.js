@@ -33,6 +33,9 @@ export default {
 
     // Here we declare a required and an optional property, both are validated to be numeric.
     props: {
+        // If you use the <vue-component-app> tag helper both the old "value" and the new "modelValue" properties are
+        // treated as if they were v-model bound, meaning they receive the "update:value" and "update:modelValue" events
+        // respectively. The old "input" events are not handled though.
         value: {
             type: Number,
             required: true,
