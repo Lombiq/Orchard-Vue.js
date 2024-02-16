@@ -3,21 +3,21 @@ import { createApp } from 'vue'
 window.VueApplications = window.VueApplications ?? { };
 
 document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueComponentApp(element) {
-    const { componentName, viewModel, modelProperties } = JSON.parse(element.getAttribute('data-vue'));
-    const component = (await import('vue-component-' + componentName)).default;
+    const { name, model, modelProperties } = JSON.parse(element.dataset.vue);
+    const component = (await import('vue-component-' + name)).default;
 
-    const vModel = typeof viewModel === 'object'
+    const vModel = typeof model === 'object'
         ? modelProperties
-            .filter(property => property in viewModel)
+            .filter(property => property in model)
             .map(property => ` @update:${property}="viewModel.${property} = $event"`)
         : [];
 
     createApp({
         data: function data() {
-            return { viewModel };
+            return { viewModel: model };
         },
-        components: { [componentName]: component },
-        template: `<${componentName} v-bind="viewModel"${vModel.join('')} ref="main" />`,
+        components: { [name]: component },
+        template: `<${name} v-bind="viewModel" ${vModel.join('')} ref="main" />`,
         mounted: function mounted() {
             window.VueApplications[element.id] = this;
             this.$appId = element.id;

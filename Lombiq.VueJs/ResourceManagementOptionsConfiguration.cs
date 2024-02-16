@@ -26,6 +26,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 
         _manifest
             .DefineScriptModule(VueComponentApp)
+            .SetAttribute("defer", string.Empty)
             .SetUrl(Js + "vue-component-app.min.mjs", Js + "vue-component-app.mjs");
     }
 

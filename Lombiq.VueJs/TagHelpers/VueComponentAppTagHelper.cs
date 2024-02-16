@@ -1,15 +1,12 @@
-using Lombiq.VueJs.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using OrchardCore.DisplayManagement;
 using OrchardCore.ResourceManagement;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.TagHelpers;
@@ -48,18 +45,26 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     {
         await base.ProcessAsync(context, output);
 
-        if (string.IsNullOrWhiteSpace(Id)) Id = $"{Name}_{Guid.NewGuid():D}";
-
-        var jObject = JObject.FromObject(
-            Model,
-            JsonSerializer.Create(new JsonSerializerSettings
+        var dataVue = new { Name, Model, ModelProperties };
+        output.PostElement.AppendHtml(new TagBuilder("div")
+        {
+            Attributes =
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            }));
-        var shapeModel = new VueComponentApp(Id, Class, Name, ModelProperties, jObject);
+                ["id"] = string.IsNullOrWhiteSpace(Id) ? $"{Name}_{Guid.NewGuid():D}" : Id,
+                ["class"] = $"{Class} lombiq-vue".Trim(),
+                ["data-vue"] = Json(dataVue),
+            },
+            TagRenderMode = TagRenderMode.Normal,
+        });
 
         output.PostElement.AppendHtml(
             await _displayHelper.ShapeExecuteAsync(
-                await _shapeFactory.CreateAsync("VueComponentApp", new { ShapeModel = shapeModel })));
+                await _shapeFactory.CreateAsync("ImportScriptModules", this)));
     }
+
+    private string Json<T>(T value) =>
+        JsonSerializer.Serialize(value, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        });
 }
