@@ -1,3 +1,5 @@
+using Lombiq.HelpfulLibraries.AspNetCore.Extensions;
+using Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement;
 using Lombiq.VueJs.Services;
 using Lombiq.VueJs.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,7 @@ public class Startup : StartupBase
         services.AddScoped<IVueSingleFileComponentShapeAmender, DateTimeVueSingleFileComponentShapeAmender>();
 
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+        services.AddAsyncResultFilter<ScriptModuleResourceFilter>();
 
         services.AddContentSecurityPolicyProvider<Vue3ContentSecurityPolicyProvider>();
     }

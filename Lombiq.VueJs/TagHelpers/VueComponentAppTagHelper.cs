@@ -14,9 +14,6 @@ namespace Lombiq.VueJs.TagHelpers;
 [HtmlTargetElement("vue-component-app", Attributes = "name")]
 public class VueComponentAppTagHelper : VueComponentTagHelper
 {
-    private readonly IDisplayHelper _displayHelper;
-    private readonly IShapeFactory _shapeFactory;
-
     [HtmlAttributeName("id")]
     public string Id { get; set; }
 
@@ -37,8 +34,6 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
         IShapeFactory shapeFactory)
         : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory)
     {
-        _displayHelper = displayHelper;
-        _shapeFactory = shapeFactory;
     }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -56,13 +51,9 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
             },
             TagRenderMode = TagRenderMode.Normal,
         });
-
-        output.PostElement.AppendHtml(
-            await _displayHelper.ShapeExecuteAsync(
-                await _shapeFactory.CreateAsync("ImportScriptModules", this)));
     }
 
-    private string Json<T>(T value) =>
+    private static string Json<T>(T value) =>
         JsonSerializer.Serialize(value, new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
