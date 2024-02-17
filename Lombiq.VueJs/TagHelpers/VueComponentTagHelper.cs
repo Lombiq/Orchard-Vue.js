@@ -55,10 +55,9 @@ public class VueComponentTagHelper : TagHelper
                 $"where the vue file is located.");
         }
 
-        var scriptName = "vue-component-" + Name;
         _resourceManager
             .InlineManifest
-            .DefineScriptModule(scriptName)
+            .DefineScriptModule(Name + ".vue")
             .SetUrl($"~/{area}/vue/{Name}.min.js", $"~/{area}/vue/{Name}.js");
 
         foreach (var resourceName in FindResourceNames())

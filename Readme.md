@@ -115,7 +115,7 @@ export default {
 </script>
 ```
 
-You can include the `<vue-component area="My.Module" name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
+You can include the `<vue-component area="My.Module" name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `{name}.vue` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
 
 The Rollup plugin automatically registers each component you include (but not their children) as globally accessible components. So you don't need to list them in your app's `components` property. Indeed the component object isn't exposed as a global variable.
 

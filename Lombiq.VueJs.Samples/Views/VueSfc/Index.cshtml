@@ -41,19 +41,20 @@
     @* Lombiq.VueJs always maps "vue" so this works even if your IDE is miffed by it. *@
     import { createApp } from 'vue';
 
-    @* The component is mapped to the name you passed to the tag helper, prefixed with "vue-component-". *@
-    import DemoSfc from 'vue-component-@ResourceNames.DemoSfc';
+    @* The component is mapped to the name you passed to the tag helper suffixed with ".vue" which together should make
+       up the original SFC's file name and help your IDE understand that this is a Vue.js component. *@
+    import DemoSfc from 'demo-sfc.vue';
 
     @* If you use v-model in your tempalte, this structure is necessary to make the initial data updatable. If you don't
        need such two-way binding with the view-model, you can simplify this to just a one liner like this:
-       window.app = creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
-   const topModule = {
+       creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
+   const topComponent = {
        data() {
           return @Json.Serialize(new { Count = 10 });
        },
        components: { DemoSfc }
    };
-   window.app = createApp(topModule).mount('#demoApp');
+   window.app = createApp(topComponent).mount('#demoApp');
 
     @* Since the property is bound across the component layers you can edit the top level externally from other JS code
        and it propagates down. *@

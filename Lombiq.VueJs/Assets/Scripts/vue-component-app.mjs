@@ -11,7 +11,7 @@ function toKebabCase(camelCase) {
 
 document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueComponentApp(element) {
     const { name, model } = JSON.parse(element.dataset.vue);
-    const component = (await import('vue-component-' + name)).default;
+    const component = (await import(name + '.vue')).default;
 
     const hasEmit = Array.isArray(component?.emit);
     const vModel = Object
