@@ -9,11 +9,15 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+using static Lombiq.VueJs.Constants.ResourceNames;
+
 namespace Lombiq.VueJs.TagHelpers;
 
 [HtmlTargetElement("vue-component-app", Attributes = "name")]
 public class VueComponentAppTagHelper : VueComponentTagHelper
 {
+    private readonly IResourceManager _resourceManager;
+
     [HtmlAttributeName("id")]
     public string Id { get; set; }
 
@@ -32,13 +36,13 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
         IOptions<ResourceManagementOptions> resourceManagementOptions,
         IResourceManager resourceManager,
         IShapeFactory shapeFactory)
-        : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory)
-    {
-    }
+        : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory) =>
+        _resourceManager = resourceManager;
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         await base.ProcessAsync(context, output);
+        _resourceManager.RegisterScriptModule(VueComponentApp);
 
         var dataVue = new { Name, Model, ModelProperties };
         output.PostElement.AppendHtml(new TagBuilder("div")
