@@ -24,9 +24,6 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     [HtmlAttributeName("class")]
     public string Class { get; set; }
 
-    [HtmlAttributeName("model-property")]
-    public IEnumerable<string> ModelProperties { get; set; } = new[] { "value", "modelValue" };
-
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
 
@@ -44,14 +41,13 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
         await base.ProcessAsync(context, output);
         _resourceManager.RegisterScriptModule(VueComponentApp);
 
-        var dataVue = new { Name, Model, ModelProperties };
         output.PostElement.AppendHtml(new TagBuilder("div")
         {
             Attributes =
             {
                 ["id"] = string.IsNullOrWhiteSpace(Id) ? $"{Name}_{Guid.NewGuid():D}" : Id,
                 ["class"] = $"{Class} lombiq-vue".Trim(),
-                ["data-vue"] = Json(dataVue),
+                ["data-vue"] = Json(new { Name, Model }),
             },
             TagRenderMode = TagRenderMode.Normal,
         });
