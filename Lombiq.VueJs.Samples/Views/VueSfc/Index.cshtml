@@ -22,7 +22,8 @@
 @* You need an "importmap" script to be able to import by name. Lombiq.VueJs uses an ASP.NET Core filter which
    automatically generates such a script if you have required any "script-module" type resource from the resource
    manager. The <vue-component-app> tag helper does this internally with the script that sets up the requested Vuze apps
-   but for <vue-component> this is not guaranteed so you should manually call it using this shortcut method. *@
+   but for <vue-component> this is not guaranteed so you should manually call it using this shortcut method. This call
+   must be below the the <vue-component> tag helpers, or better yet in a separate shape in the footer. *@
 @Orchard.GetScriptModuleImportMap()
 
 @* This is the container of the demo app. Use binding to pass the app data into the components. *@
@@ -50,7 +51,7 @@
        creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
    const topComponent = {
        data() {
-          return @Json.Serialize(new { Count = 10 });
+           return @Json.Serialize(new { Count = 10 });
        },
        components: { DemoSfc }
    };

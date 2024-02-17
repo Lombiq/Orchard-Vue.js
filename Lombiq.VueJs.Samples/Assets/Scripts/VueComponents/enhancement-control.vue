@@ -4,22 +4,22 @@
              event handling boilerplate -->
         <button type="button"
                 class="btn btn-primary"
-                :class="{ disabled: value <= 1 }"
-                @click.prevent="$emit('update:modelValue', value - 1)">
+                :class="{ disabled: modelValue <= 1 }"
+                @click.prevent="$emit('update:modelValue', modelValue - 1)">
             [[ << ]]
         </button>
         <button v-for="page in max"
                 :key="'pager-' + page"
                 class="btn btn-primary"
-                :class="{ disabled: page === value }"
+                :class="{ disabled: page === modelValue }"
                 type="button"
                 @click.prevent="$emit('update:modelValue', page)">
             {{ page }}
         </button>
         <button type="button"
                 class="btn btn-primary"
-                :class="{ disabled: value >= max }"
-                @click.prevent="$emit('update:modelValue', value + 1)">
+                :class="{ disabled: modelValue >= max }"
+                @click.prevent="$emit('update:modelValue', modelValue + 1)">
             [[ >> ]]
         </button>
     </div>
@@ -28,7 +28,7 @@
 <script>
 export default {
     props: {
-        value: {
+        modelValue: {
             type: Number,
             required: true,
         },
@@ -37,6 +37,8 @@ export default {
             required: true,
         },
     },
+
+    emits: [ 'update:model-modelValue' ],
 };
 
 // NEXT STATION: Assets/Scripts/VueComponents/enhancement-table-body.vue
