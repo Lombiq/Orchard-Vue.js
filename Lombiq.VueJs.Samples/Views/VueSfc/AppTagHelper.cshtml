@@ -28,15 +28,15 @@
                    name="@ResourceNames.DemoSfc"
                    id="unique-id"
                    class="additional-class-for-styling"
-                   model="@(new { Value = 10 })" />
+                   model="@(new { ModelValue = 10 })" />
 
 @* If you are using Liquid, you can duplicate the above like this:
-    {% capture my_model %}{ value: 10 }{% endcapture %}
+    {% capture my_model %}{ modelValue: 10 }{% endcapture %}
     {% assign model_json = my_model | jsonparse %}
 
     {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"unique-id", class:"additional-class-for-styling", model:model_json %}
 
-  Note the difference in the model, the Liquid version uses lower case "value". This is because the built-in JSON
+  Note the difference in the model, the Liquid version uses camelCase "modelValue". This is because the built-in JSON
   serializer doesn't alter the names of JSON object properties the way it does with C# objects. *@
 
 @* Below is an example of interacting with your Vue app from Javascript. This is rarely needed, usually only if you want
@@ -50,7 +50,7 @@
    control execution order. To avoid problems, either put any code that interacts with a Vue app in event handlers or
    wrap them in retry logic that polls for  *@
 <script at="Foot">
-    @* This is the same as before except we call it "value" instead of "count". *@
+    @* This is the same as before except we call it "modelValue" instead of "count" to match the component prop name. *@
     document.getElementById('random').addEventListener('click', function () {
         @* The initializer script automatically creates the "window.VueApplications" object. Every time a Vue app is
            created with <vue-component-app> a new property is created; its name is the component ID (in this case
@@ -58,8 +58,8 @@
            "$appId" property with same value. *@
         const app = window.VueApplications['unique-id'];
         @* You can access the SFC itself using the "main" property in $refs like. app.$refs.main if needed. *@
-        app.viewModel.value = Math.floor(Math.random() * 10 + 1);
-        app.$el.setAttribute('data-count', app.value);
+        app.viewModel.modelValue = Math.floor(Math.random() * 10 + 1);
+        app.$el.setAttribute('data-count', app.viewModel.modelValue);
     });
 </script>
 
