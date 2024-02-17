@@ -1,3 +1,4 @@
+@using OrchardCore.ResourceManagement
 @* If you are in a hurry: we start with this example just to lay down the basics but you probably want to skip to the
    next station at Views/VueSfc/AppTagHelper.cshtml. Unless you have to instantiate your app dynamically (e.g. from some
    event handler) you shouildn't take this approach as it's more complicated, has more boilerplate, and is less
@@ -19,6 +20,12 @@
    You only need to do this for the top component(s) that you want to use in your app directly. *@
 <vue-component area="@FeatureIds.Area" name="@ResourceNames.DemoSfc" />
 
+@* You need an "importmap" script to be able to import by name. Lombiq.VueJs uses an ASP.NET Core filter which
+   automatically generates such a script if you have required any "script-module" type resource from the resource
+   manager. The <vue-component-app> tag helper does this internally with the script that sets up the requested Vuze apps
+   but for <vue-component> this is not guaranteed so you should manually call it using this shortcut method. *@
+@Orchard.GetScriptModuleImportMap()
+
 @* This is the container of the demo app. Use binding to pass the app data into the components. *@
 <div id="demoApp" data-count="10">
     <demo-sfc v-model="count"></demo-sfc>
@@ -26,13 +33,28 @@
 
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
-@* And finally the initialization. Make sure to always use the "depends-on" attribute and include all the components
-   you've injected above using the <vue-component>. *@
-<script at="Foot" depends-on="@ResourceNames.DemoSfc">
-    window.app = new Vue({
-        el: '#demoApp',
-        data: @Json.Serialize(new { Count = 10 }),
-    });
+@* And finally the initialization. You have to set the type to "module" to indicate that this is a Javascript module
+   that can use the "import" syntax. Modules live in their own async scope and can import other modules by name or URL
+   so as the name suggests, they are very modular. The "defer" attribute means that the script is only executed when the
+   main document has loaded, so it's the same as wrapping it in a "DOMContentLoaded" event handler. You don't have to
+   add at="Foot" because a deferred script's location in the document doesn't matter. *@
+<script type="module" defer>
+    @* Lombiq.VueJs always maps "vue" so this works even if your IDE is miffed by it. *@
+    import { createApp } from 'vue';
+
+    @* The component is mapped to the name you passed to the tag helper, prefixed with "vue-component-". *@
+    import DemoSfc from 'vue-component-@ResourceNames.DemoSfc';
+
+    @* If you use v-model in your tempalte, this structure is necessary to make the initial data updatable. If you don't
+       need such two-way binding with the view-model, you can simplify this to just a one liner like this:
+       window.app = creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
+   const topModule = {
+       data() {
+          return @Json.Serialize(new { Count = 10 });
+       },
+       components: { DemoSfc }
+   };
+   window.app = createApp(topModule).mount('#demoApp');
 
     @* Since the property is bound across the component layers you can edit the top level externally from other JS code
        and it propagates down. *@
