@@ -8,8 +8,6 @@ namespace Lombiq.VueJs.Samples;
 
 public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
 {
-    private const string Root = "~/" + Area;
-
     private static readonly ResourceManifest _manifest = new();
 
     static ResourceManagementOptionsConfiguration()
