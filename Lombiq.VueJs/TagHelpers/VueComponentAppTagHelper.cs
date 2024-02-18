@@ -1,3 +1,4 @@
+using Lombiq.VueJs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -32,8 +33,9 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
         IHttpContextAccessor hca,
         IOptions<ResourceManagementOptions> resourceManagementOptions,
         IResourceManager resourceManager,
-        IShapeFactory shapeFactory)
-        : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory) =>
+        IShapeFactory shapeFactory,
+        VueComponentTagHelperState state)
+        : base(displayHelper, hca, resourceManagementOptions, resourceManager, shapeFactory, state) =>
         _resourceManager = resourceManager;
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

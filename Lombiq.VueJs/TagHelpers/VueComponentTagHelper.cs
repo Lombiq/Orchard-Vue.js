@@ -1,4 +1,5 @@
 using Lombiq.VueJs.Constants;
+using Lombiq.VueJs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ public class VueComponentTagHelper : TagHelper
     private readonly IOptions<ResourceManagementOptions> _resourceManagementOptions;
     private readonly IResourceManager _resourceManager;
     private readonly IShapeFactory _shapeFactory;
+    private readonly VueComponentTagHelperState _state;
 
     [HtmlAttributeName("area")]
     public string Area { get; set; }
@@ -35,13 +37,15 @@ public class VueComponentTagHelper : TagHelper
         IHttpContextAccessor hca,
         IOptions<ResourceManagementOptions> resourceManagementOptions,
         IResourceManager resourceManager,
-        IShapeFactory shapeFactory)
+        IShapeFactory shapeFactory,
+        VueComponentTagHelperState state)
     {
         _displayHelper = displayHelper;
         _hca = hca;
         _resourceManagementOptions = resourceManagementOptions;
         _resourceManager = resourceManager;
         _shapeFactory = shapeFactory;
+        _state = state;
     }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -69,6 +73,7 @@ public class VueComponentTagHelper : TagHelper
                     await _shapeFactory.CreateAsync(shapeType)));
         }
 
+        _state.Active = true;
         output.TagName = null;
     }
 

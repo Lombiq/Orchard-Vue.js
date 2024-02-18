@@ -1,5 +1,6 @@
 using Lombiq.HelpfulLibraries.AspNetCore.Extensions;
 using Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement;
+using Lombiq.VueJs.Models;
 using Lombiq.VueJs.Services;
 using Lombiq.VueJs.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ public class Startup : StartupBase
         services.AddScoped<IShapeTemplateHarvester, VueSingleFileComponentTemplateHarvester>();
         services.AddScoped<IShapeTemplateViewEngine, VueSingleFileComponentShapeTemplateViewEngine>();
         services.AddTagHelpers<VueComponentTagHelper>();
+        services.AddScoped<VueComponentTagHelperState>();
 
         services.AddScoped<IVueSingleFileComponentShapeAmender, ContentItemDisplayVueSingleFileComponentShapeAmender>();
         services.AddScoped<IVueSingleFileComponentShapeAmender, DateTimeVueSingleFileComponentShapeAmender>();
@@ -26,6 +28,6 @@ public class Startup : StartupBase
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
         services.AddAsyncResultFilter<ScriptModuleResourceFilter>();
 
-        services.AddContentSecurityPolicyProvider<Vue3ContentSecurityPolicyProvider>();
+        services.AddContentSecurityPolicyProvider<VueComponentContentSecurityPolicyProvider>();
     }
 }
