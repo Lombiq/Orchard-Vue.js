@@ -35,10 +35,7 @@
     "watch": "echo \"Watch is currently not supported (see https://github.com/Lombiq/Orchard-Vue.js/issues/64 for progress).\"",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
     "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
-    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean",
-    "--": "------------------------------------------------- VUE APP -------------------------------------------------",
-    "build:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' compile",
-    "clean:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' clean"
+    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean"
   },
   "nodejsExtensions": {
     "assetsToCopy": [

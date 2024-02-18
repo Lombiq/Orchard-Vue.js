@@ -13,26 +13,9 @@ public static class TestCaseUITestContextExtensions
 {
     public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
     {
-        // await context.TestVueAppAsync();
         await context.TestVueSfcASync(withAppTagHelper: false);
         await context.TestVueSfcASync(withAppTagHelper: true);
         await context.TestVueSfcEnhancedListAsync();
-    }
-
-    public static async Task TestVueAppAsync(this UITestContext context)
-    {
-        await context.GoToVueAppAsync();
-
-        var byText = By.ClassName("demo__text");
-        var byButton = By.ClassName("demo__showHideButton");
-
-        context.Missing(byText);
-
-        await context.ClickReliablyOnAsync(byButton);
-        context.Exists(byText);
-
-        await context.ClickReliablyOnAsync(byButton);
-        context.Missing(byText);
     }
 
     public static async Task TestVueSfcASync(this UITestContext context, bool withAppTagHelper)

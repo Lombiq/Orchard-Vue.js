@@ -18,8 +18,6 @@ public class VueJsNavigationProvider : MainMenuNavigationProviderBase
     protected override void Build(NavigationBuilder builder) =>
         builder
             .Add(T["Vue.js"], builder => builder
-                .Add(T["Vue Javascript App"], itemBuilder => itemBuilder
-                    .Action<VueAppController>(_hca.HttpContext, controller => controller.Index()))
                 .Add(T["Vue Single File Component (SFC)"], itemBuilder => itemBuilder
                     .Action<VueSfcController>(_hca.HttpContext, controller => controller.Index()))
                 .Add(T["Standalone SFC with Tag Helper"], itemBuilder => itemBuilder
