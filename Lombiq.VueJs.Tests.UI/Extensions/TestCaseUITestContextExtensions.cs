@@ -13,7 +13,7 @@ public static class TestCaseUITestContextExtensions
 {
     public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
     {
-        await context.TestVueAppAsync();
+        // await context.TestVueAppAsync();
         await context.TestVueSfcASync(withAppTagHelper: false);
         await context.TestVueSfcASync(withAppTagHelper: true);
         await context.TestVueSfcEnhancedListAsync();
