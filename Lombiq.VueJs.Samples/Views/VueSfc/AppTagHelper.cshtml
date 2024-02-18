@@ -1,5 +1,5 @@
 @* There is a wall of text here, but don't be intimidated! In most cases all you will need is a single tag helper usage
-   like <vue-component-app name="resouce-name" model="@myData">. You can see an example in /Views/QrCard/Index.cshtml of
+   like <vue-component-app name="resource-name" model="@myData">. You can see an example in /Views/QrCard/Index.cshtml of
    that. The rest of this file will give you insight on the extended features of the app tag helper. *@
 
 @* This is the same you've just seen in Index.cshtml, but using the <vue-component-app> tag helper. This is specifically
@@ -46,7 +46,7 @@
 
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
-@* The application is created in a JS module and JS modules are always async. So you can't use the dependes-on to
+@* The application is created in a JS module and JS modules are always async. So you can't use the depends-on to
    control execution order. To avoid problems, either put any code that interacts with a Vue app in event handlers or
    wrap them in retry logic that polls for  *@
 <script at="Foot">
@@ -54,7 +54,7 @@
     document.getElementById('random').addEventListener('click', function () {
         @* The initializer script automatically creates the "window.VueApplications" object. Every time a Vue app is
            created with <vue-component-app> a new property is created; its name is the component ID (in this case
-           "unique-id") and the value is the app instance. Apps created with <vue-component-app> also receivve a special
+           "unique-id") and the value is the app instance. Apps created with <vue-component-app> also receive a special
            "$appId" property with same value. *@
         const app = window.VueApplications['unique-id'];
         @* You can access the SFC itself using the "main" property in $refs like. app.$refs.main if needed. *@

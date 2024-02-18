@@ -1,6 +1,6 @@
 @* If you are in a hurry: we start with this example just to lay down the basics but you probably want to skip to the
    next station at Views/VueSfc/AppTagHelper.cshtml. Unless you have to instantiate your app dynamically (e.g. from some
-   event handler) you shouildn't take this approach as it's more complicated, has more boilerplate, and is less
+   event handler) you shouldn't take this approach as it's more complicated, has more boilerplate, and is less
    future-proof. *@
 
 @* Here a demo Vue.js application will be created. As we are working with components, they need to be housed in an
@@ -21,7 +21,7 @@
 
 @* You need an "importmap" script to be able to import by name. Lombiq.VueJs uses an ASP.NET Core filter which
    automatically generates such a script if you have required any "script-module" type resource from the resource
-   manager. The <vue-component-app> tag helper does this internally with the script that sets up the requested Vuze apps
+   manager. The <vue-component-app> tag helper does this internally with the script that sets up the requested Vue apps
    but for <vue-component> this is not guaranteed so you should manually call it using this shortcut method. This call
    must be below the the <vue-component> tag helpers, or better yet in a separate shape in the footer. *@
 @Orchard.GetScriptModuleImportMap()
@@ -46,7 +46,7 @@
        up the original SFC's file name and help your IDE understand that this is a Vue.js component. *@
     import DemoSfc from 'demo-sfc.vue';
 
-    @* If you use v-model in your tempalte, this structure is necessary to make the initial data updatable. If you don't
+    @* If you use v-model in your template, this structure is necessary to make the initial data updatable. If you don't
        need such two-way binding with the view-model, you can simplify this to just a one liner like this:
        creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
    const topComponent = {
