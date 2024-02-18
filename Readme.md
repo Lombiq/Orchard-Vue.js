@@ -158,6 +158,7 @@ Regarding the first three points: If you need anything more complicated, first r
 Most importantly, if you are not familiar with the breaking changes in Vue 3, please read the [official migration guide](https://v3-migration.vuejs.org/). Note that the new `<script setup>` syntax is not yet supported.
 
 Other changes:
+
 - The `Vue.applications` object is no longer available. A similar `window.VueApplications` is created, with a more straight-forward structure that's not grouped by component type, but directly accessible by name (`window.VueApplications[app.$appId] = app`).
 - The model passed to `<vue-component-app>` is now stored in the app's `viewModel` property. This means to access the view-model from JS you have to type `app.viewModel.propertyName` instead of `app.propertyName` as before.
 
