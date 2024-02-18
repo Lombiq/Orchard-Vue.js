@@ -47,7 +47,7 @@ export default {
     // events for all provided model props. If you declare the "emits" option like below, then only those that are also
     // listed here. This way props meant to be read-only won't get the same two-way binding and you won't see annoying
     // warnings if you use the "Vue.js devtools" browser extension.
-    emits: [ 'update:model-value' ],
+    emits: ['update:model-value'],
 
     // Computed properties are like getters, but they are cached and reactive. For example this
     // one is only re-evaluated if self.modelValue changes which triggers an update.

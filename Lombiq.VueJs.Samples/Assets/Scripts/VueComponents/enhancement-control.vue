@@ -38,7 +38,7 @@ export default {
         },
     },
 
-    emits: [ 'update:model-modelValue' ],
+    emits: ['update:model-modelValue'],
 };
 
 // NEXT STATION: Assets/Scripts/VueComponents/enhancement-table-body.vue
