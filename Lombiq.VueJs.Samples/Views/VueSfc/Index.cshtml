@@ -61,7 +61,7 @@
        and it propagates down. *@
     document.getElementById('random').addEventListener('click', function () {
         window.app.count = Math.floor(Math.random() * 10 + 1);
-        this.setAttribute('data-count', window.app.count);
+        document.getElementById('demoApp').setAttribute('data-count', window.app.count);
     });
 </script>
 

@@ -5,7 +5,7 @@
         <button type="button"
                 class="btn btn-primary"
                 :class="{ disabled: modelValue <= 1 }"
-                @click.prevent="$emit('update:modelValue', modelValue - 1)">
+                @click.prevent="$emit('update:model-value', modelValue - 1)">
             [[ << ]]
         </button>
         <button v-for="page in max"
@@ -13,13 +13,13 @@
                 class="btn btn-primary"
                 :class="{ disabled: page === modelValue }"
                 type="button"
-                @click.prevent="$emit('update:modelValue', page)">
+                @click.prevent="$emit('update:model-value', page)">
             {{ page }}
         </button>
         <button type="button"
                 class="btn btn-primary"
                 :class="{ disabled: modelValue >= max }"
-                @click.prevent="$emit('update:modelValue', modelValue + 1)">
+                @click.prevent="$emit('update:model-value', modelValue + 1)">
             [[ >> ]]
         </button>
     </div>
@@ -38,7 +38,7 @@ export default {
         },
     },
 
-    emits: ['update:model-modelValue'],
+    emits: ['update:model-value'],
 };
 
 // NEXT STATION: Assets/Scripts/VueComponents/enhancement-table-body.vue
