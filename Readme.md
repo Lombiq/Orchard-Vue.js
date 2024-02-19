@@ -130,6 +130,7 @@ Other changes:
 
 - The `Vue.applications` object is no longer available. A similar `window.VueApplications` is created, with a more straight-forward structure that's not grouped by component type, but directly accessible by name (`window.VueApplications[app.$appId] = app`).
 - The model passed to `<vue-component-app>` is now stored in the app's `viewModel` property. This means to access the view-model from JS you have to type `app.viewModel.propertyName` instead of `app.propertyName` as before.
+- The element where the app is mounted with `<vue-component-app>` is now stored in the app's `root` property. This should be used instead of `app.$el`.
 
 Also if your app still uses the `<vue-component>` tag helper directly, consider switching to `<vue-component-app>` to reduce future maintenance on your end.
 

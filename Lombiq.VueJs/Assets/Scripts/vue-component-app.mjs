@@ -22,7 +22,7 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
 
     createApp({
         data: function data() {
-            return { viewModel: model };
+            return { viewModel: model, root: element };
         },
         components: { [name]: component },
         template: `<${name} v-bind="viewModel" ${vModel.join('')} ref="main" />`,

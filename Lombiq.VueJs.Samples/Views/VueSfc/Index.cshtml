@@ -60,8 +60,8 @@
     @* Since the property is bound across the component layers you can edit the top level externally from other JS code
        and it propagates down. *@
     document.getElementById('random').addEventListener('click', function () {
-        app.count = Math.floor(Math.random() * 10 + 1);
-        app.$el.setAttribute('data-count', app.count);
+        window.app.count = Math.floor(Math.random() * 10 + 1);
+        this.setAttribute('data-count', window.app.count);
     });
 </script>
 
