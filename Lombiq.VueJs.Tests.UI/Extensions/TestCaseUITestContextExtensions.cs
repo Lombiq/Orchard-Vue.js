@@ -13,15 +13,17 @@ public static class TestCaseUITestContextExtensions
 {
     public static async Task TestVueSampleBehaviorAsync(this UITestContext context)
     {
-        await context.TestVueSfcASync(withAppTagHelper: false);
-        await context.TestVueSfcASync(withAppTagHelper: true);
+        await context.GoToVueSfcAsync();
+        await context.TestVueSfcASync();
+
+        await context.GoToVueSfcAppTagHelperAsync();
+        await context.TestVueSfcASync();
+
         await context.TestVueSfcEnhancedListAsync();
     }
 
-    public static async Task TestVueSfcASync(this UITestContext context, bool withAppTagHelper)
+    public static async Task TestVueSfcASync(this UITestContext context)
     {
-        await (withAppTagHelper ? context.GoToVueSfcAppTagHelperAsync() : context.GoToVueSfcAsync());
-
         var byItem = By.ClassName("DemoRepeater__listItem");
 
         // Test the "Pick Random!" button.
@@ -30,7 +32,7 @@ public static class TestCaseUITestContextExtensions
             await context.ClickReliablyOnAsync(By.Id("random"));
 
             var count = int.Parse(
-                context.Get(By.Id(withAppTagHelper ? "unique-id" : "demoApp")).GetAttribute("data-count"),
+                context.Get(By.Id("demoApp")).GetAttribute("data-count"),
                 CultureInfo.InvariantCulture);
 
             context.GetAll(byItem).Count.ShouldBe(count);

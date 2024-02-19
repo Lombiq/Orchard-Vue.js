@@ -26,7 +26,7 @@
    Make sure to add "@addTagHelper *, Lombiq.VueJs" to your /Views/_ViewImports.cshtml so this tag helper will work. *@
 <vue-component-app area="@FeatureIds.Area"
                    name="@ResourceNames.DemoSfc"
-                   id="unique-id"
+                   id="demoApp"
                    class="additional-class-for-styling"
                    model="@(new { ModelValue = 10 })" />
 
@@ -34,7 +34,7 @@
     {% capture my_model %}{ modelValue: 10 }{% endcapture %}
     {% assign model_json = my_model | jsonparse %}
 
-    {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"unique-id", class:"additional-class-for-styling", model:model_json %}
+    {% helper "vue-component-app", area:"Lombiq.VueJs.Samples", name:"demo-sfc", id:"demoApp", class:"additional-class-for-styling", model:model_json %}
 
   Note the difference in the model, the Liquid version uses camelCase "modelValue". This is because the built-in JSON
   serializer doesn't alter the names of JSON object properties the way it does with C# objects. *@
@@ -54,9 +54,10 @@
     document.getElementById('random').addEventListener('click', function () {
         @* The initializer script automatically creates the "window.VueApplications" object. Every time a Vue app is
            created with <vue-component-app> a new property is created; its name is the component ID (in this case
-           "unique-id") and the value is the app instance. Apps created with <vue-component-app> also receive a special
+           "demoApp") and the value is the app instance. Apps created with <vue-component-app> also receive a special
            "$appId" property with same value. *@
-        const app = window.VueApplications['unique-id'];
+        const app = window.VueApplications.demoApp;
+
         @* You can access the SFC itself using the "main" property in $refs like. app.$refs.main if needed. *@
         app.viewModel.modelValue = Math.floor(Math.random() * 10 + 1);
         app.$el.setAttribute('data-count', app.viewModel.modelValue);
