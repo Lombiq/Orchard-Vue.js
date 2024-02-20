@@ -24,8 +24,8 @@ devDependencies:
     specifier: 6.1.1
     version: 6.1.1(eslint@8.45.0)
   vue-qrcode-reader:
-    specifier: 5.5.1
-    version: 5.5.1
+    specifier: 5.5.3
+    version: 5.5.3
 
 packages:
 
@@ -1285,8 +1285,8 @@ packages:
       punycode: 2.3.0
     dev: true
 
-  /vue-qrcode-reader@5.5.1:
-    resolution: {integrity: sha512-O7YwhJSMLUA6jVvYoKOtGcgJ53cuH/7M65VgmluzDPlsyQnbOpu4/bqcR03tnMRNebm50dh4pZtSKOXjDNUGjw==}
+  /vue-qrcode-reader@5.5.3:
+    resolution: {integrity: sha512-ZR+3axFuW1rxrBZXhkmH+4x6c7JqYLkrYuBmwKLve2eEVZb3LiuYJdW7HZaWqvuuOo1uMjqFe3MqyFOf4/BGyA==}
     engines: {node: '>=18.0.0'}
     dependencies:
       barcode-detector: 2.2.2

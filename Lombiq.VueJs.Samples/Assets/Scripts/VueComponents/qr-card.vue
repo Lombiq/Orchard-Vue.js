@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 v-if="!loading && !error">[[ Scan code ]]</h5>
-                        <qrcode-stream @decode="onDecode" @init="onInit" :track="paintOutline">
+                        <qrcode-stream :track="paintOutline" @detect="onDetect" @init="onInit" @error="onError">
                             <loading-indicator v-if="loading">
                                 [[ Loading ... ]]
                             </loading-indicator>
@@ -44,6 +44,15 @@ import { QrcodeStream } from 'vue-qrcode-reader';
 import LoadingIndicator from './loading-indicator.vue';
 import BusinessCard from './business-card.vue';
 
+function tryParseJson(text) {
+    try {
+        return JSON.parse(text);
+    }
+    catch {
+        return {};
+    }
+}
+
 export default {
     components: {
         QrcodeStream,
@@ -65,18 +74,14 @@ export default {
         };
     },
     methods: {
-        onDecode(result) {
-            const content = ((text) => {
-                try {
-                    return JSON.parse(text);
-                }
-                catch {
-                    return {};
-                }
-            })(result);
+        onDetect(detectedCodes) {
+            const json = detectedCodes
+                .filter(code => code.format === 'qr_code' && code.rawValue)
+                .map(code => code.rawValue)[0];
+            const cardId = tryParseJson(json).cardId;
 
-            this.cardId = content.cardId;
-            this.scanError = content.cardId ? '' : 'InvalidCard';
+            this.cardId = cardId;
+            this.scanError = cardId ? '' : 'InvalidCard';
         },
         async onInit(promise) {
             this.loading = true;
@@ -91,6 +96,9 @@ export default {
                 this.loading = false;
             }
         },
+      onError(error) {
+        this.error = error.name;
+      },
         paintOutline(detectedCodes, ctx) {
             for (const detectedCode of detectedCodes) {
                 const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
