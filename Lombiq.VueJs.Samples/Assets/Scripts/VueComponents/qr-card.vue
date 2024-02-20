@@ -76,8 +76,8 @@ export default {
     methods: {
         onDetect(detectedCodes) {
             const json = detectedCodes
-                .filter(code => code.format === 'qr_code' && code.rawValue)
-                .map(code => code.rawValue)[0];
+                .filter((code) => code.format === 'qr_code' && code.rawValue)
+                .map((code) => code.rawValue)[0];
             const cardId = tryParseJson(json).cardId;
 
             this.cardId = cardId;
@@ -96,9 +96,9 @@ export default {
                 this.loading = false;
             }
         },
-      onError(error) {
-        this.error = error.name;
-      },
+        onError(error) {
+          this.error = error.name;
+        },
         paintOutline(detectedCodes, ctx) {
             for (const detectedCode of detectedCodes) {
                 const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
