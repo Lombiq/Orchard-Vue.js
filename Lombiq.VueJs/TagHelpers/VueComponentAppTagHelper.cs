@@ -16,6 +16,11 @@ namespace Lombiq.VueJs.TagHelpers;
 [HtmlTargetElement("vue-component-app", Attributes = "name")]
 public class VueComponentAppTagHelper : VueComponentTagHelper
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
+
     private readonly IResourceManager _resourceManager;
 
     [HtmlAttributeName("id")]
@@ -48,15 +53,9 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
             {
                 ["id"] = string.IsNullOrWhiteSpace(Id) ? $"{Name}_{Guid.NewGuid():D}" : Id,
                 ["class"] = $"{Class} lombiq-vue".Trim(),
-                ["data-vue"] = Json(new { Name, Model }),
+                ["data-vue"] = JsonSerializer.Serialize(new { Name, Model }, _jsonSerializerOptions),
             },
             TagRenderMode = TagRenderMode.Normal,
         });
     }
-
-    private static string Json<T>(T value) =>
-        JsonSerializer.Serialize(value, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        });
 }
