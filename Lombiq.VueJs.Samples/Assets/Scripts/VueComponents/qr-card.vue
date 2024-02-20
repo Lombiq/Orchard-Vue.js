@@ -97,7 +97,7 @@ export default {
             }
         },
         onError(error) {
-          this.error = error.name;
+            this.error = error.name;
         },
         paintOutline(detectedCodes, ctx) {
             for (const detectedCode of detectedCodes) {
