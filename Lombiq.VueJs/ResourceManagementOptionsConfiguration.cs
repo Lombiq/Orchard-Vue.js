@@ -11,7 +11,8 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
     private const string Js = Root + "js/";
     private const string Vendors = Root + "vendors/";
 
-    private const string VueVersion = "3.4.15";
+    // Always keep the version in sync with the value in package.json.
+    private const string VueVersion = "3.4.19";
     private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
 
     private static readonly ResourceManifest _manifest = new();
