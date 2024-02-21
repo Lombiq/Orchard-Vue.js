@@ -1,3 +1,8 @@
+@* If you are in a hurry: we start with this example just to lay down the basics but you probably want to skip to the
+   next station at Views/VueSfc/AppTagHelper.cshtml. Unless you have to instantiate your app dynamically (e.g. from some
+   event handler) you shouldn't take this approach as it's more complicated, has more boilerplate, and is less
+   future-proof. *@
+
 @* Here a demo Vue.js application will be created. As we are working with components, they need to be housed in an
    application. This application should do nothing except deliver initialization data. If your app needs to contain any
    logic or otherwise facilitate interaction between your components, then we suggest introducing a top level SFC for it
@@ -9,10 +14,17 @@
    the .vue file's name without the extension. This is used to find and render the template shape.
 
    This tag helper renders the template as a shape (in this case "demo-sfc" becomes VueComponent-DemoShape) and injects
-   the script which was transpiled using Rollup and Bublé among others.
+   the script which was transpiled using Rollup.
 
    You only need to do this for the top component(s) that you want to use in your app directly. *@
 <vue-component area="@FeatureIds.Area" name="@ResourceNames.DemoSfc" />
+
+@* You need an "importmap" script to be able to import by name. Lombiq.VueJs uses an ASP.NET Core filter which
+   automatically generates such a script if you have required any "script-module" type resource from the resource
+   manager. The <vue-component-app> tag helper does this internally with the script that sets up the requested Vue apps
+   but for <vue-component> this is not guaranteed so you should manually call it using this shortcut method. This call
+   must be below the the <vue-component> tag helpers, or better yet in a separate shape in the footer. *@
+@Orchard.GetScriptModuleImportMap()
 
 @* This is the container of the demo app. Use binding to pass the app data into the components. *@
 <div id="demoApp" data-count="10">
@@ -21,19 +33,35 @@
 
 <button id="random" class="btn btn-primary" type="button">@T["Pick Random!"]</button>
 
-@* And finally the initialization. Make sure to always use the "depends-on" attribute and include all the components
-   you've injected above using the <vue-component>. *@
-<script at="Foot" depends-on="@ResourceNames.DemoSfc">
-    window.app = new Vue({
-        el: '#demoApp',
-        data: @Json.Serialize(new { Count = 10 }),
-    });
+@* And finally the initialization. You have to set the type to "module" to indicate that this is a Javascript module
+   that can use the "import" syntax. Modules live in their own async scope and can import other modules by name or URL
+   so as the name suggests, they are very modular. The "defer" attribute means that the script is only executed when the
+   main document has loaded, so it's the same as wrapping it in a "DOMContentLoaded" event handler. You don't have to
+   add at="Foot" because a deferred script's location in the document doesn't matter. *@
+<script type="module" defer>
+    @* Lombiq.VueJs always maps "vue" so this works even if your IDE is miffed by it. *@
+    import { createApp } from 'vue';
+
+    @* The component is mapped to the name you passed to the tag helper suffixed with ".vue" which together should make
+       up the original SFC's file name and help your IDE understand that this is a Vue.js component. *@
+    import DemoSfc from 'demo-sfc.vue';
+
+    @* If you use v-model in your template, this structure is necessary to make the initial data updatable. If you don't
+       need such two-way binding with the view-model, you can simplify this to just a one liner like this:
+       creteApp(DemoSfc, @Json.Serialize(new { Count = 10 })) *@
+   const topComponent = {
+       data() {
+           return @Json.Serialize(new { Count = 10 });
+       },
+       components: { DemoSfc }
+   };
+   window.app = createApp(topComponent).mount('#demoApp');
 
     @* Since the property is bound across the component layers you can edit the top level externally from other JS code
        and it propagates down. *@
     document.getElementById('random').addEventListener('click', function () {
-        app.count = Math.floor(Math.random() * 10 + 1);
-        app.$el.setAttribute('data-count', app.count);
+        window.app.count = Math.floor(Math.random() * 10 + 1);
+        document.getElementById('demoApp').setAttribute('data-count', window.app.count);
     });
 </script>
 

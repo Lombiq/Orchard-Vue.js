@@ -13,6 +13,6 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-only-warn": "1.1.0",
     "eslint-plugin-promise": "6.1.1",
-    "vue-qrcode-reader": "^3.1.5"
+    "vue-qrcode-reader": "5.5.3"
   }
 }

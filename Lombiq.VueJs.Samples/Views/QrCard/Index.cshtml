@@ -1,13 +1,5 @@
 @model Lombiq.VueJs.Samples.ViewModels.QrCardAppViewModel
 
-<vue-component area="@FeatureIds.Area" name="@ResourceNames.QrCard" />
-<div id="qrCardApp">
-    <qr-card api-url="@Model.ApiUrl">
-    </qr-card>
-</div>
-
-<script at="Foot" depends-on="@ResourceNames.QrCard">
-    window.app = new Vue({
-        el: '#qrCardApp',
-    });
-</script>
+@* This is the simplest use of the SFC app tag helper, the vue file is located in the same module as this view, so the
+   area attribute is automatically resolved. You only need the resource name and the model. *@
+<vue-component-app name="@ResourceNames.QrCard" model="@Model" />

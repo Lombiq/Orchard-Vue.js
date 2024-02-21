@@ -7,6 +7,5 @@ function readDirectoryFunction(filter) {
 }
 
 module.exports = {
-    getVueApps: readDirectoryFunction((dirent) => dirent.isDirectory()),
     getVueComponents: readDirectoryFunction((dirent) => dirent.name.endsWith('.vue') && dirent.isFile()),
 };

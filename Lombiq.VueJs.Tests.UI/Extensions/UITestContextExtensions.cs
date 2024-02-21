@@ -8,9 +8,6 @@ namespace Lombiq.VueJs.Tests.UI.Extensions;
 
 public static class UITestContextExtensions
 {
-    public static Task GoToVueAppAsync(this UITestContext context) =>
-        context.GoToAsync<VueAppController>(controller => controller.Index());
-
     public static Task GoToVueSfcAsync(this UITestContext context) =>
         context.GoToAsync<VueSfcController>(controller => controller.Index());
 

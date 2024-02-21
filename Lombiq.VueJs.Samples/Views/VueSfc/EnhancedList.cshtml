@@ -1,9 +1,5 @@
 @model Lombiq.VueJs.Samples.ViewModels.EnhancedListViewModel
 
-@{
-    var dependencies = string.Join(", ", ResourceNames.EnhancementControl, ResourceNames.EnhancementTableBody);
-}
-
 <form id="enhanced-list">
     <fieldset id="controls">
         <input type="number" name="page" value="@Model.Page" min="1" max="10"/>
@@ -41,24 +37,30 @@
     </table>
 </form>
 
-<vue-component area="@FeatureIds.Area" name="@ResourceNames.EnhancementControl" />
-<vue-component area="@FeatureIds.Area" name="@ResourceNames.EnhancementTableBody" />
+<vue-component name="@ResourceNames.EnhancementControl" />
+<vue-component name="@ResourceNames.EnhancementTableBody" />
+@Orchard.GetScriptModuleImportMap()
 
 @* Here we replace the enhanced elements with vue components using vanilla Javascript. *@
-<script at="Foot" depends-on="@dependencies">
+<script type="module" defer>
+    import { createApp } from 'vue';
+    import EnhancementControl from 'enhancement-control.vue';
+    import EnhancementTableBody from 'enhancement-table-body.vue';
+
     // If you have a wrapper.
     document.getElementById('controls').innerHTML = '<enhancement-control v-model="page" :max="10">';
 
     // If you need to replace an element.
-    const tableBody = document.createElement(@ResourceNames.EnhancementTableBody.JsonHtmlContent());
+    const tableBody = document.createElement('enhancement-table-body');
     tableBody.setAttribute(':data', 'data');
     document.getElementById('table-body').replaceWith(tableBody);
 
     // Vue.js app with very light business logic. In general try to move as much of the code into the SFCs as feasible.
     const url = @(Orchard.Action<VueSfcController>(controller => controller.GetList(999)).JsonHtmlContent());
-    window.app = new Vue({
-        el: '#enhanced-list',
-        data: @Json.Serialize(new { Model.Page, Model.Data }),
+    const topComponent = {
+        data() {
+            return @Json.Serialize(new { Model.Page, Model.Data });
+        },
         watch: {
             page: function (page) {
                 const self = this;
@@ -70,19 +72,22 @@
                     });
             },
         },
-    });
+        components: { EnhancementControl, EnhancementTableBody }
+    };
+
+    createApp(topComponent).mount('#enhanced-list');
 </script>
 
-@* Another approach (if you want to completely replace the entire app surface) is to introduce a top level SFC and make
-   that component element the only thing in the template. We didn't make such an SFC now, but the below snippet should
-   covey the idea if that's the path you want to take.
+@* Another approach is to introduce a top level SFC that overwrites the whole form with its <template>. This may be more
+   effort but it greatly simplifies the glue logic. If you do this often, consider using a server side rendering
+   framework such as Nuxt.js. #spell-check-ignore-line
 
-<script at="Foot" depends-on="@dependencies">
-    window.app = new Vue({
-        el: '#enhanced-list',
-        data: @Json.Serialize(new { Page = Model.Page, Data = Model.Data }),
-        template: '@ResourceNames.EnhancementMain :page="page" :data="data" @@input="page = $event.page; data = $event.data;" />',
-    });
+<script type="module" defer>
+    import { createApp } from 'vue';
+    import FullEnhancedList from 'full-enhanced-list.vue';
+
+    createApp(FullEnhancedList, @Json.Serialize(new { InitialPage = Model.Page, InitialData = Model.Data }))
+        .mount('#enhanced-list');
 </script>
  *@
 

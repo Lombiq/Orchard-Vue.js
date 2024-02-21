@@ -5,10 +5,7 @@
   "dependencies": {
     "axios": "1.6.0",
     "source-map": "^0.7.3",
-    "vue": "2.6.14",
-    "vue-axios": "2.1.4",
-    "vue-router": "3.0.6",
-    "vuelidate": "0.7.4"
+    "vue": "3.4.19"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",
@@ -16,7 +13,6 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
-    "@vue/compiler-sfc": "^3.2.29",
     "del": "^6.0.0",
     "eslint": "8.45.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -26,7 +22,7 @@
     "eslint-plugin-promise": "6.1.1",
     "fancy-log": "^2.0.0",
     "fs": "^0.0.1-security",
-    "glob": "^8.0.3",
+    "glob": "10.3.10",
     "npm-run-all": "^4.1.5",
     "rollup": "^2.79.1",
     "rollup-plugin-eslint": "^7.0.0",
@@ -39,9 +35,15 @@
     "watch": "echo \"Watch is currently not supported (see https://github.com/Lombiq/Orchard-Vue.js/issues/64 for progress).\"",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
     "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
-    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean",
-    "--": "------------------------------------------------- VUE APP -------------------------------------------------",
-    "build:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' compile",
-    "clean:vue-app": "node './Assets/Scripts/helpers/vue-app-compiler-pipeline.js' clean"
+    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean"
+  },
+  "nodejsExtensions": {
+    "assetsToCopy": [
+      {
+        "sources": [ "node_modules/vue/dist" ],
+        "target": "wwwroot/vendors/vue",
+        "pattern": "vue.esm-browser.*"
+      }
+    ]
   }
 }

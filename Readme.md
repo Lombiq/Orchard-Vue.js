@@ -12,7 +12,9 @@ We at [Lombiq](https://lombiq.com/) also used this module for the following proj
 - The new [Lombiq website](https://lombiq.com/) when migrating it from Orchard 1 to Orchard Core ([see case study](https://lombiq.com/blog/how-we-renewed-and-migrated-lombiq-com-from-orchard-1-to-orchard-core)).
 - The new client portal for [WTW](https://www.wtwco.com/) ([see case study](https://lombiq.com/blog/lombiq-s-journey-with-wtw-s-client-portal)).
 
-Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
+If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md). Do you want to quickly try it out? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
+
+> ⚠️ Starting version 4.0, this Orchard Core module is using Vue 3 and only supports SFC compilation. Resources are now imported as [Javascript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), so the Vue 3 used by your component is independent from Orchard Core's built-in `vuejs` [resource](https://docs.orchardcore.net/en/main/docs/resources/libraries/) and the two can exist on the same page. If you have an existing project that relies on a discontinued version of Vue.js, check out [our migration instructions below](#migrating-from-vue-2).
 
 ## Prerequisites
 
@@ -45,23 +47,11 @@ Do you want to quickly try out this project and see it in action? Check it out i
     }
     ```
 
-## Sample project
+The packages will be automatically installed on build (i.e. `dotnet build`). You can also trigger the installation manually using the `pnpm install` command. Note that since dependencies are delivered as Javascript modules, you don't have to install the `vue` package in your consuming project as well.
 
-If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md).
+### Configuration
 
-## Using Vue.js node packages
-
-The packages will be automatically installed on build (i.e. `dotnet build`). You can also trigger the installation manually using the `pnpm install` command.
-
-## Adding Vue.js component templates
-
-Place your template files (.cshtml or .liquid) in the _Views/VueComponents_ folder. The shape template harvester will harvest these templates, and the generated shape type will be as it would be normally generated, but with a `VueComponent-` prefix. Eg.:
-
-```cshtml
-    <shape type="VueComponent-App_UserProfile"></shape>
-```
-
-In these shapes you can use any format you want (e.g. JSX templates) and reference their id in your Vue.js component's JavaScript code.
+The build script can be configured by placing a JSON file (called _vue-sfc-compiler-pipeline.json_) in the project root. It can contain the same properties you can see in the `defaultOptions` variables in [vue-sfc-compiler-pipeline.js](Lombiq.VueJs/Assets/scripts/helpers/vue-sfc-compiler-pipeline.js). Any property set in the JSON file overrides the default value as the two objects are merged.
 
 ## Using Vue.js Single File Components
 
@@ -69,11 +59,13 @@ The module identifies Single File Components in the _Assets/Scripts/VueComponent
 
 See a demo video of using Vue.js Single File Components [here](https://www.youtube.com/watch?v=L0qjpQ6THZU).
 
+### Writing SFCs
+
 What you need to know to write your own _.vue_ file:
 
 - Your component's script should have a `<template>` and `<script>` element in that order.
 - The script must export the module as an object literal ESM style (`export default { ... }`).
-  - You don't need to specify the `name` and `template` properties, as these are automatically provided during compilation.
+  - You shouldn't specify the `name` and `template` properties, as these are automatically provided during compilation.
 - If your component has child components, include the _.vue_ extension when importing them.
 
 For example if you have the file _My.Module/Assets/Scripts/VueComponents/my-article.vue_:
@@ -109,42 +101,39 @@ export default {
 </script>
 ```
 
-You can include the `<vue-component area="My.Module" name="my-article">` tag helper in your code. This will add Vue and _My.Module/wwwroot/vue/my-article.js_ to the resource manager (using the `vue-component-{name}` resource) as well as the `VueComponent-MyArticle` shape (the SFC's kebab-case name is converted into PascalCase). Include `depends-on="vue-component-my-article"` in your app's `<script>` element to ensure correct load order.
+### Using SFCs
 
-The Rollup plugin automatically registers each component you include (but not their children) as globally accessible components. So you don't need to list them in your app's `components` property. Indeed the component object isn't exposed as a global variable.
+In most cases you'll want to place a full app on a page and initialize it with server-side data. You can achieve this by using the tag helper like this:
 
-If your Vue app is just going to include one top level component and bind to that, feel free to use this tag helper: `<vue-component-app area="My.Module" name="my-article" model="@data" model-property="value" id="unique-id" class="additional classes">`. Here area and name are the same as above, model will be converted into JSON using camelCase property names. The model-property, id and class are optional. If you don't specify a model-property it defaults to "value". If you have set custom `model.prop` in your component, set this to the same value to indicate that the property is to be set up with two-way binding via `v-model`. If you don't specify an id, `{componentName}_{Guid.NewGuid():N}` is used to guarantee uniqueness. An `$appId` property is appended to your data object which contains the id. If you need to work with this Vue object you can access it like this:
-
-```html
-<script at="Foot" depends-on="unique-id-VueApp">
-    const app = Vue.applications['my-article'].filter((app) => app.$appId === 'unique-id')[0];
-</script>
+```razor
+<vue-component-app area="My.Module" name="my-article" model="@new { Title = "Hello World!", Date = DateTime.Now }" />
 ```
 
-If you are encountering missing Vue templates, make sure that they are located in the correct places. The tag helper expects the script files to be in `My.Module/vue/{Name}.js`, and the pipeline is configured to compile the scripts to this location by default.
+This will automatically create a new Vue app that only contains the component identified by the `name` attribute (i.e. _/Assets/Scripts/VueComponents/my-article.vue_). The app has the data from the `model` attribute which is bound to the component. (By the way if your .vue and .cshtml files are in the same Orchard Core module, then you can even skip the `area` attribute.) The only other consideration is that if your SFC has child components, those have to be declared in the Orchard Core resource manifest options. It would be like `_manifest.DefineSingleFileComponent("my-article").SetDependencies("my-child-component");`. Components that don't have children don't have to be declared this way.
 
-In case you are using a custom `nodejsExtensions.scripts` configuration, and this raises issues with the Vue templates' default place, you can just include your templates with the following `nodejsExtensions.assetsToCopy` entry:
-
-```json
-{
-  "sources": [ "Assets/Scripts/VueComponents" ],
-  "target": "wwwroot/vue"
-}
-```
-
-### Advantages of SFCs
-
-- Tooling! If you have an IDE plugin for Vue.js it will work better. Syntax highlighting, property autocomplete, Go to Definition for custom elements, and all other advantages of static Vue development.
-- The script and template are kept together, which makes understanding the individual component easier.
-- No need to escape the `@` on events.
+For more details and a demo of the full feature set check out the samples project!
 
 ### Limitations and Considerations
 
 - No other Razor features including string localizer with arguments.
 - Including a script element in your template will break it. Although you shouldn't do that anyway.
 - As you might expect from Orchard Core, the style element isn't supported either since you will be using themes. If you can think of a use-case that's applicable for OC, please open an issue.
+- Our compiler extracts the `<script>` block from the SFC into a JS module instead of using the official `@vue/compiler-sfc`. The rationale there is that we don't want to compile the template into the script anyway so using the official compiler has limited benefits and significant added complexity over simply extracting the script from the blocks as plain text. The only drawback is that SFC-specific syntax (e.g. `<script setup>`) won't work.
 
-Regarding the points: If you need anything more complicated, first reconsider your application design to see if your goals can be achieved in a more Vue.js logic. For example, pass the variables in your main app that hands them down via property binding. If you still need something else, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
+Regarding the first three points: If you need anything more complicated, first reconsider your application design to see if your goals can be achieved in a more Vue.js logic. For example, pass the variables in your main app that hands them down via property binding. If you are certain you need more server side features, either use a _cshtml_ templated app as outlined above or use shape overriding on the `VueComponent-{FileNameInPascalCase}` shape.
+
+## Migrating from Vue 2
+
+Most importantly, if you are not familiar with the breaking changes in Vue 3, please read the [official migration guide](https://v3-migration.vuejs.org/).
+
+Other changes:
+
+- The `Vue.applications` object is no longer available. A similar `window.VueApplications` is created, with a more straight-forward structure that's not grouped by component type, but directly accessible by name (`window.VueApplications[app.$appId] = app`).
+- The model passed to `<vue-component-app>` is now stored in the app's `viewModel` property. This means to access the view-model from JS you have to type `app.viewModel.propertyName` instead of `app.propertyName` as before.
+- The element where the app is mounted with `<vue-component-app>` is now stored in the app's `root` property. This should be used instead of `app.$el`.
+- If you are using the `vue-pagination` component provided by Lombiq.VueJs, the `page` component property has been renamed to `modelValue`. If you were using it with `v-model` then no changes are necessary.
+
+Also if your app still uses the `<vue-component>` tag helper directly, consider switching to `<vue-component-app>` to reduce future maintenance on your end.
 
 ## Dependencies
 

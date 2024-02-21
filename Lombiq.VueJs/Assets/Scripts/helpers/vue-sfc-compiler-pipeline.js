@@ -1,16 +1,16 @@
-const commonjs = require('@rollup/plugin-commonjs');
 const del = require('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
+const alias = require('@rollup/plugin-alias');
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
-const configureRollupAlias = require('./configure-rollup-alias');
 const rollupPipeline = require('./rollup-pipeline');
 const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
 const { getVueComponents } = require('./get-vue-files');
 const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
+const tryOpenJson = require('./try-open-json');
 
 // If this script is invoked from "npm explore lombiq-vuejs" then we have to navigate back to the current project root.
 leaveNodeModule();
@@ -24,7 +24,8 @@ const defaultOptions = {
 };
 
 function compile(options) {
-    const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
+    const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
+    const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
 
     if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
     const components = getVueComponents(opts.sfcRootPath);
@@ -45,7 +46,7 @@ function compile(options) {
         [
             vuePlugin(),
             json(),
-            configureRollupAlias(opts.vueJsNodeModulesPath, opts.isProduction, opts.rollupAlias),
+            alias(opts.rollupAlias),
             nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }), // #spell-check-ignore-line
             replace({
                 values: {
@@ -54,7 +55,6 @@ function compile(options) {
                 },
                 preventAssignment: true,
             }),
-            commonjs(),
         ],
         null,
         (fileName) => fileName.split('.')[0]);
