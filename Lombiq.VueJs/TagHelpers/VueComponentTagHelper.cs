@@ -62,7 +62,7 @@ public class VueComponentTagHelper : TagHelper
         output.TagName = null;
     }
 
-    private IEnumerable<string> FindResourceNames()
+    private HashSet<string> FindResourceNames()
     {
         var resourceNames = (Children?.Split(',') ?? Enumerable.Empty<string>())
             .SelectWhere(child => child.Trim(), child => !string.IsNullOrEmpty(child))
@@ -90,7 +90,7 @@ public class VueComponentTagHelper : TagHelper
             .Where(dependency => !resourceNames.Contains(dependency))
             .ToHashSet();
 
-        if (!newDependencies.Any()) return;
+        if (newDependencies.Count == 0) return;
 
         resourceNames.AddRange(newDependencies);
         AddShapesRecursively(resourceNames, newDependencies, componentDependencies);
