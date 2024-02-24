@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Html;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
@@ -20,6 +19,12 @@ namespace Lombiq.VueJs.Services;
 /// </remarks>
 public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : IVueSingleFileComponentShapeAmender
 {
+    private static readonly JsonSerializerOptions _camelCaseJsonSerializerOptions = new()
+    {
+        WriteIndented = false,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
+
     /// <summary>
     /// Gets the value used to compare in <see cref="PrependAsync"/>. If this value is <see langword="null"/> then <see
     /// cref="PrependAsync"/> will be called on every Vue.js shape, otherwise only if its name is the value of <see
@@ -40,18 +45,15 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
     {
         if (ShapeName != null && ShapeName != shapeName) return Enumerable.Empty<IHtmlContent>();
 
-        var values = await GetPropertyValueAsync(shapeName);
-        var json = JsonConvert.SerializeObject(
-            values,
-            Formatting.None,
-            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        var propertyName = JsonSerializer.Serialize(PropertyName);
+        var json = JsonSerializer.SerializeToNode(await GetPropertyValueAsync(shapeName), _camelCaseJsonSerializerOptions);
 
         return new[]
         {
             new HtmlString(
                 "<script>" +
                 "if (!window.Vue.$orchardCore) window.Vue.$orchardCore = {};" +
-                $"window.Vue.$orchardCore[{JsonConvert.SerializeObject(PropertyName)}] = {json};" +
+                $"window.Vue.$orchardCore[{propertyName}] = {json};" +
                 "</script>"),
         };
     }
