@@ -7,9 +7,9 @@ using OrchardCore.Modules.Manifest;
     Version = "0.0.1",
     Description = "Samples for Lombiq Vue.js.",
     Category = "Vue.js",
-    Dependencies =
-    [
+    Dependencies = new[]
+    {
         Lombiq.VueJs.Constants.FeatureIds.Area,
         "OrchardCore.ContentFields",
-    ]
+    }
 )]
