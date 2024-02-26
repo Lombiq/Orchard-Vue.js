@@ -3,7 +3,6 @@ using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
-using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Samples.Migrations;
 
@@ -14,9 +13,9 @@ public class BusinessCardMigrations : DataMigration
     public BusinessCardMigrations(IContentDefinitionManager contentDefinitionManager) =>
         _contentDefinitionManager = contentDefinitionManager;
 
-    public async Task<int> CreateAsync()
+    public int Create()
     {
-        var businessCardPart = await _contentDefinitionManager.AlterPartDefinitionAsync<BusinessCard>(partBuilder => partBuilder
+        var businessCardPart = _contentDefinitionManager.AlterPartDefinition<BusinessCard>(partBuilder => partBuilder
             .WithField(model => model.FirstName, field => field
                 .WithDisplayName("First name")
                 .WithSettings(new TextFieldSettings { Required = true }))
@@ -28,7 +27,7 @@ public class BusinessCardMigrations : DataMigration
             .WithField(model => model.Phone, field => field
                 .WithSettings(new TextFieldSettings { Required = true })));
 
-        await _contentDefinitionManager.AlterTypeDefinitionAsync(nameof(BusinessCard), typeBuilder => typeBuilder
+        _contentDefinitionManager.AlterTypeDefinition(nameof(BusinessCard), typeBuilder => typeBuilder
             .DisplayedAs("Business card")
             .Creatable()
             .Listable()
