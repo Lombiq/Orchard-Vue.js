@@ -15,7 +15,7 @@ namespace Lombiq.VueJs.Services;
 /// <remarks>
 /// <para>
 /// For example if you set the value of <see cref="PropertyName"/> to <c>myComponent</c> then in Javascript the result
-/// of <see cref="GetPropertyValueAsync"/> will be available as <c>window.Vue.$orchardCore.myComponent</c>.
+/// of <see cref="GetPropertyValueAsync"/> will be available as <c>window.VueOrchardCore.myComponent</c>.
 /// </para>
 /// </remarks>
 public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : IVueSingleFileComponentShapeAmender
@@ -50,8 +50,8 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
         {
             new HtmlString(
                 "<script>" +
-                "if (!window.Vue.$orchardCore) window.Vue.$orchardCore = {};" +
-                $"window.Vue.$orchardCore[{JsonConvert.SerializeObject(PropertyName)}] = {json};" +
+                "if (!window.VueOrchardCore) window.VueOrchardCore = {};" +
+                $"window.VueOrchardCore[{JsonConvert.SerializeObject(PropertyName)}] = {json};" +
                 "</script>"),
         };
     }

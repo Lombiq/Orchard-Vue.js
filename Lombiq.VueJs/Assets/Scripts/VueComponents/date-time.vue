@@ -6,8 +6,8 @@
 export default {
     props: {
         date: { required: true },
-        culture: { type: String, default: () => window.Vue.$orchardCore.dateTime.culture },
-        timeZone: { type: String, default: () => window.Vue.$orchardCore.dateTime.timeZone },
+        culture: { type: String, default: () => window.VueOrchardCore.dateTime.culture },
+        timeZone: { type: String, default: () => window.VueOrchardCore.dateTime.timeZone },
         options: {
             // Defaults to "short date" format if this property is not passed.
             default: () => ({

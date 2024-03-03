@@ -8,7 +8,7 @@
 <script>
 export default {
     props: {
-        baseUrl: { default: window.Vue.$orchardCore.contentItemDisplay.baseUrl },
+        baseUrl: { default: window.VueOrchardCore.contentItemDisplay.baseUrl },
         contentItem: { },
         contentItemId: { },
         displayText: { },
