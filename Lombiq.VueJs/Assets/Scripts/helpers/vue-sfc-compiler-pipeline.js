@@ -20,6 +20,7 @@ const defaultOptions = {
     sfcDestinationPath: path.join('wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
+    rollupNodeResolve: { preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }, // #spell-check-ignore-line
     isProduction: false,
 };
 
@@ -47,7 +48,7 @@ function compile(options) {
             vuePlugin(),
             json(),
             alias(opts.rollupAlias),
-            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }), // #spell-check-ignore-line
+            nodeResolve(opts.rollupNodeResolve),
             replace({
                 values: {
                     'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
