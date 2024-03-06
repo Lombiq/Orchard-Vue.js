@@ -42,7 +42,7 @@ function processRollupNodeResolve(opts) {
 
 function compile(options) {
     const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
-    const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
+    const opts = { ...defaultOptions, ...fileOptions, ...(options ?? { }) };
     processRollupNodeResolve(opts);
 
     if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
