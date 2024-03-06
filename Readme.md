@@ -53,6 +53,33 @@ The packages will be automatically installed on build (i.e. `dotnet build`). You
 
 The build script can be configured by placing a JSON file (called _vue-sfc-compiler-pipeline.json_) in the project root. It can contain the same properties you can see in the `defaultOptions` variables in [vue-sfc-compiler-pipeline.js](Lombiq.VueJs/Assets/scripts/helpers/vue-sfc-compiler-pipeline.js). Any property set in the JSON file overrides the default value as the two objects are merged.
 
+When configuring the `rollupNodeResolve` option (for [`@rollup/plugin-node-resolve`](https://www.npmjs.com/package/@rollup/plugin-node-resolve)), normally you could only pass in an array of exact matches due to the limitation of the JSON format. Instead, you can use `rollupNodeResolve.resolveOnlyRules` which is an object array in the following format:
+
+```json
+{
+  "rollupNodeResolve": {
+    "preferBuiltins": true,
+    "browser": true,
+    "mainFields": ["module", "jsnext:main"],
+    "resolveOnlyRules": [
+      {
+        "regex": false,
+        "include": false,
+        "value": "vue"
+      },
+      {
+        "regex": true,
+        " ": false,
+        "value": "^vuetify"
+      }
+    ]
+  },
+  "isProduction": false
+}
+```
+
+Here we excluded `vue` and packages starting with `vuetify` (e.g. `vuetify/components`) from the resolution, so they are treated as external. Then you can add `vuetify` using the resource manifest as a script module.
+
 ## Using Vue.js Single File Components
 
 The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that, it's pure Vue, yet you can still make use of shape overriding if needed.
