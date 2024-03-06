@@ -24,9 +24,26 @@ const defaultOptions = {
     isProduction: false,
 };
 
+function processRollupNodeResolve(opts) {
+    if (!opts.rollupNodeResolve) opts.rollupNodeResolve = {};
+
+    if (Array.isArray(opts.rollupNodeResolve.resolveOnlyRules)) {
+        const rules = opts.rollupNodeResolve.resolveOnlyRules;
+
+        opts.rollupNodeResolve.resolveOnly = function resolveOnly(item) {
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                if (rule.regex && item.match(new RegExp(rule.value))) return !!rule.include;
+                if (!rule.regex && item === rule.value) return !!rule.include;
+            }
+        };
+    }
+}
+
 function compile(options) {
     const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
     const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
+    processRollupNodeResolve(opts);
 
     if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
     const components = getVueComponents(opts.sfcRootPath);
