@@ -36,6 +36,8 @@ function processRollupNodeResolve(opts) {
                 if (rule.regex && item.match(new RegExp(rule.value))) return !!rule.include;
                 if (!rule.regex && item === rule.value) return !!rule.include;
             }
+
+            return true;
         };
     }
 }
