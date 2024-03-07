@@ -13,6 +13,12 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
     const { name, model } = JSON.parse(element.dataset.vue);
     const component = (await import(name + '.vue')).default;
 
+    const plugins = await Promise.all(element
+        .dataset
+        .plugins
+        .split(',')
+        .map(async word => (await import(word.trim())).default));
+
     const hasEmit = Array.isArray(component?.emit);
     const vModel = Object
         .keys(model)
@@ -20,7 +26,7 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
         .filter(pair => !hasEmit || component.emit.includes(pair.eventName))
         .map(pair => ` @${pair.eventName}="viewModel.${pair.property} = $event"`);
 
-    createApp({
+    const app = createApp({
         data: function data() {
             return { viewModel: model, root: element };
         },
@@ -30,5 +36,9 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
             window.VueApplications[element.id] = this;
             this.$appId = element.id;
         },
-    }).mount(element);
+    })
+
+    plugins.forEach((plugin) => app.use(plugin));
+
+    app.mount(element);
 });

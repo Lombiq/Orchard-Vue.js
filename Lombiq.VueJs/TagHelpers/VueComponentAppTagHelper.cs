@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using OrchardCore.DisplayManagement;
 using OrchardCore.ResourceManagement;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -32,6 +33,10 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
 
+
+    [HtmlAttributeName("plugins")]
+    public string Plugins { get; set; }
+
     public VueComponentAppTagHelper(
         IDisplayHelper displayHelper,
         IHttpContextAccessor hca,
@@ -54,6 +59,7 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
                 ["id"] = string.IsNullOrWhiteSpace(Id) ? $"{Name}_{Guid.NewGuid():D}" : Id,
                 ["class"] = $"{Class} lombiq-vue".Trim(),
                 ["data-vue"] = JsonSerializer.Serialize(new { Name, Model }, _jsonSerializerOptions),
+                ["data-plugins"] = Plugins ?? string.Empty,
             },
             TagRenderMode = TagRenderMode.Normal,
         });
