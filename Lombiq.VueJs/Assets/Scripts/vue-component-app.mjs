@@ -5,7 +5,10 @@ window.VueApplications = window.VueApplications ?? { };
 function toKebabCase(camelCase) {
     return Array
         .from(camelCase)
-        .map((letter) => { const lowerCase = letter.toLowerCase(); return letter === lowerCase ? letter : '-' + lowerCase })
+        .map((letter) => {
+            const lowerCase = letter.toLowerCase();
+            return letter === lowerCase ? letter : '-' + lowerCase;
+        })
         .join('');
 }
 
@@ -23,9 +26,9 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
     const hasEmit = Array.isArray(component?.emit);
     const vModel = Object
         .keys(model)
-        .map(property => ({ property: property, eventName: 'update:' + toKebabCase(property) }))
-        .filter(pair => !hasEmit || component.emit.includes(pair.eventName))
-        .map(pair => ` @${pair.eventName}="viewModel.${pair.property} = $event"`);
+        .map((property) => ({ property: property, eventName: 'update:' + toKebabCase(property) }))
+        .filter((pair) => !hasEmit || component.emit.includes(pair.eventName))
+        .map((pair) => ` @${pair.eventName}="viewModel.${pair.property} = $event"`);
 
     const app = createApp({
         data: function data() {
@@ -37,7 +40,7 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
             window.VueApplications[element.id] = this;
             this.$appId = element.id;
         },
-    })
+    });
 
     plugins.forEach((plugin) => app.use(plugin));
 
