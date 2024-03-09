@@ -4,7 +4,7 @@
   <Import Project="..\Lombiq.VueJs\Lombiq.VueJs.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
