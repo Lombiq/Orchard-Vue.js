@@ -20,7 +20,7 @@ const defaultOptions = {
     sfcDestinationPath: path.join('wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
-    rollupNodeResolve: { preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }, // #spell-check-ignore-line
+    rollupNodeResolve: { preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] },
     isProduction: false,
 };
 
