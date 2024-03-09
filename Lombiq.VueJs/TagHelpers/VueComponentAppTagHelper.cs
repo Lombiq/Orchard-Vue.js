@@ -32,7 +32,6 @@ public class VueComponentAppTagHelper : VueComponentTagHelper
     [HtmlAttributeName("model")]
     public object Model { get; set; } = new { };
 
-
     [HtmlAttributeName("plugins")]
     public string Plugins { get; set; }
 
