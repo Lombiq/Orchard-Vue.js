@@ -17,7 +17,8 @@ document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueCom
         .dataset
         .plugins
         .split(',')
-        .map(async word => (await import(word.trim())).default));
+        .filter((word) => word?.trim())
+        .map(async (word) => (await import(word.trim())).default));
 
     const hasEmit = Array.isArray(component?.emit);
     const vModel = Object
