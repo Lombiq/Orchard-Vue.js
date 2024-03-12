@@ -20,12 +20,32 @@ const defaultOptions = {
     sfcDestinationPath: path.join('wwwroot', 'vue'),
     vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
     rollupAlias: {},
+    rollupNodeResolve: { preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] },
     isProduction: false,
 };
 
+function processRollupNodeResolve(opts) {
+    if (!opts.rollupNodeResolve) opts.rollupNodeResolve = {};
+
+    if (Array.isArray(opts.rollupNodeResolve.resolveOnlyRules)) {
+        const rules = opts.rollupNodeResolve.resolveOnlyRules;
+
+        opts.rollupNodeResolve.resolveOnly = function resolveOnly(item) {
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                if (rule.regex && item.match(new RegExp(rule.value))) return !!rule.include;
+                if (!rule.regex && item === rule.value) return !!rule.include;
+            }
+
+            return true;
+        };
+    }
+}
+
 function compile(options) {
     const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
-    const opts = options ? { ...defaultOptions, ...fileOptions, ...options } : defaultOptions;
+    const opts = { ...defaultOptions, ...fileOptions, ...(options ?? { }) };
+    processRollupNodeResolve(opts);
 
     if (!fs.existsSync(opts.sfcRootPath)) return Promise.resolve([]);
     const components = getVueComponents(opts.sfcRootPath);
@@ -47,7 +67,7 @@ function compile(options) {
             vuePlugin(),
             json(),
             alias(opts.rollupAlias),
-            nodeResolve({ preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] }), // #spell-check-ignore-line
+            nodeResolve(opts.rollupNodeResolve),
             replace({
                 values: {
                     'process.env.NODE_ENV': JSON.stringify(opts.isProduction ? 'production' : 'development'),
