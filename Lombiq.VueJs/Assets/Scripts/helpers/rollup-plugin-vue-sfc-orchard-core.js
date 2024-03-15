@@ -109,11 +109,11 @@ module.exports = function vuePlugin() {
             const className = 'VueComponent-' + pascalCaseName;
 
             // Inject name and template properties. The "(?<!\/\/.*)" is a negative lookbehind to ignore comments.
-            const pattern = /(?<!\/\/.*)export\s+default\s*{/;
+            const pattern = /(?<!\/\/.*)export\s+default([^{]*){/;
             if (!code.match(pattern)) throw new Error("Couldn't match 'export default {' in the source code!");
             code = code.replace(
                 pattern,
-                `export default { name: '${componentName}', template: document.querySelector('.${className}').innerHTML,` +
+                `export default$1{ name: '${componentName}', template: document.querySelector('.${className}').innerHTML,` +
                 // This line is intentionally compressed to simplify the mapping.
                 ' /* eslint-disable-line */' +
                 // We can't verify this rule, because line breaks added by the code will always be LF even on Windows
