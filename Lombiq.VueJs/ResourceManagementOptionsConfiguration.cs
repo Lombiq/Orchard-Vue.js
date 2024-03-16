@@ -1,18 +1,18 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Lombiq.HelpfulLibraries.SourceGenerators;
+using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 using static Lombiq.VueJs.Constants.FeatureIds;
 using static Lombiq.VueJs.Constants.ResourceNames;
 
 namespace Lombiq.VueJs;
 
-public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
+[ConstantFromJson("VueVersion", "package.json", "vue")]
+public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
 {
     private const string Root = $"~/{Area}/";
     private const string Js = Root + "js/";
     private const string Vendors = Root + "vendors/";
 
-    // Always keep the version in sync with the value in package.json.
-    private const string VueVersion = "3.4.21";
     private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
 
     private static readonly ResourceManifest _manifest = new();
