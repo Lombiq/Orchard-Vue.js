@@ -24,7 +24,7 @@
         <p>[[{ Does HTML localization escape HTML? <span class="not-html" hidden>YES!</span> <span class="encoded-html">NO!</span> }]]</p>
 
         <!-- Besides that special case, you can use custom services that implement IVueTemplateConverter. For example
-             here we use the buil-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
+             here we use the built-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
              special case for HTML, you must not have a space between the "[[" and the "{" characters. This ensures,
              that older well-formatted strings won't be affected.
              Note that these expressions are substituted server-side, so including "{{ ... }}" from Liquid won't cause
