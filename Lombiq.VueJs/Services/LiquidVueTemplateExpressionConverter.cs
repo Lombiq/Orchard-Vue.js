@@ -11,5 +11,5 @@ public class LiquidVueTemplateExpressionConverter : IVueTemplateExpressionConver
         "liquid".EqualsOrdinalIgnoreCase(name);
 
     public ValueTask<string> ConvertAsync(string name, string input, DisplayContext displayContext) =>
-        throw new NotImplementedException();
+        ValueTask.FromResult("dummy for liquid");
 }

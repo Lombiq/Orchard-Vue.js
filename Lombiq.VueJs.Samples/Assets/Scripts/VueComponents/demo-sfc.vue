@@ -33,6 +33,13 @@
              server-side, so including "{{ ... }}" from Liquid won't cause problems. -->
         [[{liquid} <div>The current shape is:</div> <pre>{{ Value | json: true }}</pre> ]]
 
+        <!-- Example of the other built-in converter, for Markdown. -->
+        [[{markdown}
+## Markdown Example
+
+Here is some _Markdown_ content. For more info, see [the docs](https://docs.orchardcore.net/en/main/docs/reference/modules/Markdown/).
+        ]]
+
         <!-- By the way HTML comments are also stripped out both to save on bandwidth and for security. -->
     </div>
 </template>

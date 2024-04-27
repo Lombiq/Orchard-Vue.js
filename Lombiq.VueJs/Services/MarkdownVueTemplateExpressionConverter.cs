@@ -11,5 +11,5 @@ public class MarkdownVueTemplateExpressionConverter : IVueTemplateExpressionConv
         "markdown".EqualsOrdinalIgnoreCase(name);
 
     public ValueTask<string> ConvertAsync(string name, string input, DisplayContext displayContext) =>
-        throw new NotImplementedException();
+        ValueTask.FromResult("dummy for markdown");
 }
