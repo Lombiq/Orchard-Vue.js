@@ -112,12 +112,12 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             // Handle HTML localization.
             if (expression[2] == '{' && expression[^3] == '}')
             {
-                var value = expression[2..^2].Trim();
+                var value = expression[3..^3].Trim();
                 html = htmlLocalizerLazy.Value[value].Html();
             }
             else
             {
-                var value = expression[3..^3].Trim();
+                var value = expression[2..^2].Trim();
                 html = WebUtility.HtmlEncode(stringLocalizerLazy.Value[value]);
             }
 
