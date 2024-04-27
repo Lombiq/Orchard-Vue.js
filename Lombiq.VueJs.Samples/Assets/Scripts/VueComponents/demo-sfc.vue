@@ -21,7 +21,7 @@
 
         <!-- You can use different converters inside the "[[ ... ]]" to achieve different results. For example the
              the "[[{ ... }]]" expression runs the contents through IHtmlLocalizer, and treats it like encoded HTML. -->
-        <p>[[{ Does HTML localization escape HTML? <span class="not-html" hidden>YES!</span> NO! }]]</p>
+        <p>[[{ Does HTML localization escape HTML? <span class="not-html" hidden>YES!</span> <span class="encoded-html">NO!</span> }]]</p>
 
         <!-- Besides that special case, you can use custom services that implement IVueTemplateConverter. For example
              here we use the buil-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
@@ -30,7 +30,7 @@
              Note that these expressions are substituted server-side, so including "{{ ... }}" from Liquid won't cause
              problems. -->
         [[{liquid}
-        <div class="{{ "This is some text" | html_class }}">
+        <div class="{{ "A Liquid Example" | html_class }}">
             <h2>{{ "Liquid example! (localized)" | t }}</h2>
             The current time is: {{ "now" | utc | date: "%c" }}
         </div> ]]

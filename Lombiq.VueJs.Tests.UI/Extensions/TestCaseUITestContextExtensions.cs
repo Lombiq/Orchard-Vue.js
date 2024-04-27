@@ -51,6 +51,15 @@ public static class TestCaseUITestContextExtensions
 
         // Verify localizer HTML escaping.
         context.Missing(By.ClassName("not-html"));
+        context.Exists(By.ClassName("encoded-html"));
+
+        // Verify Liquid and Markdown working.
+        context.Get(By.CssSelector(".a-liquid-example h2")).Text.ShouldContain("Liquid example! (localized)");
+        context.Get(By.Id("markdown-example")).Text.ShouldContain("Markdown Example");
+        context
+            .Get(By.LinkText("the docs"))
+            .GetAttribute("href")
+            .ShouldBe("https://docs.orchardcore.net/en/main/docs/reference/modules/Markdown/");
     }
 
     public static async Task TestVueSfcEnhancedListAsync(this UITestContext context)
