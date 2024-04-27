@@ -28,9 +28,9 @@
              special case for HTML, you must not have a space between the "[[" and the "{" characters. This ensures,
              that older well-formatted strings won't be affected. -->
 
-        <!-- Liquid has access to the DisplayContext. Any other IVueTemplateConverter implementation should also expose
-             it or its properties to the expression. Note that these expressions are substituted server-side, so
-             including "{{ ... }}" from Liquid won't cause problems. -->
+        <!-- Liquid has access to the DisplayContext. Any other IVueTemplateExpressionConverter implementation should
+             also expose it or its properties to the expression. Note that these expressions are substituted
+             server-side, so including "{{ ... }}" from Liquid won't cause problems. -->
         [[{liquid} <div>The current shape is:</div> <pre>{{ Value | json: true }}</pre> ]]
 
         <!-- By the way HTML comments are also stripped out both to save on bandwidth and for security. -->

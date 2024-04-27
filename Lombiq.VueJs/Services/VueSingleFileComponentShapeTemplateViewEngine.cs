@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,8 +24,9 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     private readonly IMemoryCache _memoryCache;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
     private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
-    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
     private readonly ILogger<VueSingleFileComponentShapeTemplateViewEngine> _logger;
+    private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
+    private readonly IEnumerable<IVueTemplateExpressionConverter> _converters;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
 
@@ -33,15 +35,17 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         IMemoryCache memoryCache,
         IStringLocalizerFactory stringLocalizerFactory,
         IHtmlLocalizerFactory htmlLocalizerFactory,
+        ILogger<VueSingleFileComponentShapeTemplateViewEngine> logger,
         IEnumerable<IVueSingleFileComponentShapeAmender> amenders,
-        ILogger<VueSingleFileComponentShapeTemplateViewEngine> logger)
+        IEnumerable<IVueTemplateExpressionConverter> converters)
     {
         _fileProviderAccessor = fileProviderAccessor;
         _memoryCache = memoryCache;
         _stringLocalizerFactory = stringLocalizerFactory;
         _htmlLocalizerFactory = htmlLocalizerFactory;
-        _amenders = amenders;
         _logger = logger;
+        _amenders = amenders;
+        _converters = converters;
     }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
@@ -82,9 +86,9 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         StringBuilder builder,
         string template,
         IList<Range> localizationRanges,
-        DisplayContext displayContext)
+        DisplayContext context)
     {
-        var shapeName = displayContext.Value.Metadata.Type;
+        var shapeName = context.Value.Metadata.Type;
         var stringLocalizerLazy = new Lazy<IStringLocalizer>(() => _stringLocalizerFactory.Create("Vue.js SFC", shapeName));
         var htmlLocalizerLazy = new Lazy<IHtmlLocalizer>(() => _htmlLocalizerFactory.Create("Vue.js SFC HTML", shapeName));
 
@@ -114,6 +118,20 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             {
                 var value = expression[3..^3].Trim();
                 html = htmlLocalizerLazy.Value[value].Html();
+            }
+            else if (expression[2] == '{')
+            {
+                var (name, _, input) = expression[3..^2].Partition("}");
+                name = name.Trim();
+                input = input.Trim();
+
+                if (_converters.FirstOrDefault(converter => converter.IsApplicable(name, input, context)) is not { } converter)
+                {
+                    throw new InvalidOperationException($"Unknown converter type \"{name}\".");
+                }
+
+                html = await converter.ConvertAsync(name, input, context) ?? string.Empty;
+
             }
             else
             {

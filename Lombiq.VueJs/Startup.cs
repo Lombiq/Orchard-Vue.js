@@ -27,5 +27,8 @@ public class Startup : StartupBase
 
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
         services.AddAsyncResultFilter<ScriptModuleResourceFilter>();
+
+        services.AddScoped<IVueTemplateExpressionConverter, LiquidVueTemplateExpressionConverter>();
+        services.AddScoped<IVueTemplateExpressionConverter, MarkdownVueTemplateExpressionConverter>();
     }
 }
