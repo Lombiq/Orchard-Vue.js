@@ -1,5 +1,3 @@
-using AngleSharp.Common;
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
@@ -10,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
@@ -48,26 +47,53 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             .InvertRanges(template.Length)
             .Join(template);
 
-        var localizationRanges = template.GetParenthesisRanges("[[", "]]");
-
         var shapeName = displayContext.Value.Metadata.Type;
-        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
+        var builder = new StringBuilder($"<script type=\"x-template\" class=\"{shapeName}\">");
 
-        foreach (var range in localizationRanges.OrderByDescending(range => range.End.Value))
+        var localizationRanges = template.GetParenthesisRanges("[[", "]]");
+        if (localizationRanges.Count > 0)
         {
-            var (before, expression, after) = template.Partition(range);
-            var text = expression[2..^2].Trim();
-            template = before + WebUtility.HtmlEncode(stringLocalizer[text]) + after;
+            await LocalizeRangesAsync(builder, template, localizationRanges, displayContext);
+        }
+        else
+        {
+            builder.Append(template);
         }
 
-        template = StringHelper.CreateInvariant($"<script type=\"x-template\" class=\"{shapeName}\">{template}</script>");
+        builder.Append("</script>");
 
         var entries = new List<object>();
         foreach (var amender in _amenders) entries.AddRange(await amender.PrependAsync(shapeName));
-        entries.Add(new HtmlString(template));
+        entries.Add(new HtmlString(builder.ToString()));
         foreach (var amender in _amenders) entries.AddRange(await amender.AppendAsync(shapeName));
 
         return new HtmlContentBuilder(entries);
+    }
+
+    private async Task LocalizeRangesAsync(
+        StringBuilder builder,
+        string template,
+        IList<Range> localizationRanges,
+        DisplayContext displayContext)
+    {
+        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Metadata.Type);
+        var startIndex = new Index(0);
+
+        foreach (var range in localizationRanges)
+        {
+            // Insert content before this range.
+            builder.Append(template[startIndex..range.Start]);
+            startIndex = range.End;
+
+            var expression = template[range];
+            var text = expression[2..^2].Trim();
+            var html = WebUtility.HtmlEncode(stringLocalizer[text]);
+
+            builder.Append(html);
+        }
+
+        // Insert leftover content after the last range.
+        builder.Append(template[localizationRanges[^1].End..]);
     }
 
     private async Task<string> GetTemplateAsync(string relativePath)
