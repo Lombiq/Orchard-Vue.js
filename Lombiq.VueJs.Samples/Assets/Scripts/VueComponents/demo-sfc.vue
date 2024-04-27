@@ -18,6 +18,22 @@
         <!-- Here you can see a non-standard expression. The "[[ ... ]]" is unique to this OC
              module: it performs localization via IStringLocalizer at runtime. -->
         <demo-repeater :data="repeaterData">[[ Hello! ]]</demo-repeater>
+
+        <!-- You can use different converters inside the "[[ ... ]]" to achieve different results. For example the
+             the "[[{ ... }]]" expression runs the contents through IHtmlLocalizer, and treats it like encoded HTML. -->
+        <p>[[{ Does HTML localization escape HTML? <span class="not-html" hidden>YES!</span> NO! }]]</p>
+
+        <!-- Besides that special case, you can use custom services that implement IVueTemplateConverter. For example
+             here we use the buil-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
+             special case for HTML, you must not have a space between the "[[" and the "{" characters. This ensures,
+             that older well-formatted strings won't be affected. -->
+
+        <!-- Liquid has access to the DisplayContext. Any other IVueTemplateConverter implementation should also expose
+             it or its properties to the expression. Note that these expressions are substituted server-side, so
+             including "{{ ... }}" from Liquid won't cause problems. -->
+        [[{liquid} <div>The current shape is:</div> <pre>{{ Value | json: true }}</pre> ]]
+
+        <!-- By the way HTML comments are also stripped out both to save on bandwidth and for security. -->
     </div>
 </template>
 
