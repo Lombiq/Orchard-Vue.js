@@ -26,12 +26,14 @@
         <!-- Besides that special case, you can use custom services that implement IVueTemplateConverter. For example
              here we use the buil-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
              special case for HTML, you must not have a space between the "[[" and the "{" characters. This ensures,
-             that older well-formatted strings won't be affected. -->
-
-        <!-- Liquid has access to the DisplayContext. Any other IVueTemplateExpressionConverter implementation should
-             also expose it or its properties to the expression. Note that these expressions are substituted
-             server-side, so including "{{ ... }}" from Liquid won't cause problems. -->
-        [[{liquid} <div>The current shape is:</div> <pre>{{ Value | json: true }}</pre> ]]
+             that older well-formatted strings won't be affected.
+             Note that these expressions are substituted server-side, so including "{{ ... }}" from Liquid won't cause
+             problems. -->
+        [[{liquid}
+        <div class="{{ "This is some text" | html_class }}">
+            <h2>{{ "Liquid example! (localized)" | t }}</h2>
+            The current time is: {{ "now" | utc | date: "%c" }}
+        </div> ]]
 
         <!-- Example of the other built-in converter, for Markdown. -->
         [[{markdown}

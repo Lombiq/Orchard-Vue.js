@@ -131,7 +131,6 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
                 }
 
                 html = await converter.ConvertAsync(name, input, context) ?? string.Empty;
-
             }
             else
             {
