@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -137,7 +136,6 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
                 var value = expression[2..^2].Trim();
                 html = WebUtility.HtmlEncode(stringLocalizerLazy.Value[value]);
             }
-
 
             builder.Append(html);
         }

@@ -5,7 +5,7 @@ namespace Lombiq.VueJs.Services;
 
 /// <summary>
 /// A service that handles <c>[[{name} input ]]</c> expressions in Vue SFC templates. Used by <see
-/// cref="VueSingleFileComponentShapeTemplateViewEngine"/>.d
+/// cref="VueSingleFileComponentShapeTemplateViewEngine"/>.
 /// </summary>
 public interface IVueTemplateExpressionConverter
 {
