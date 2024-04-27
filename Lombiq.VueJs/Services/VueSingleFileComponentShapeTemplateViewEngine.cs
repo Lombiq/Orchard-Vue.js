@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
 using System;
@@ -20,7 +22,9 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
     private readonly IMemoryCache _memoryCache;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
     private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
+    private readonly ILogger<VueSingleFileComponentShapeTemplateViewEngine> _logger;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
 
@@ -28,12 +32,16 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         IShapeTemplateFileProviderAccessor fileProviderAccessor,
         IMemoryCache memoryCache,
         IStringLocalizerFactory stringLocalizerFactory,
-        IEnumerable<IVueSingleFileComponentShapeAmender> amenders)
+        IHtmlLocalizerFactory htmlLocalizerFactory,
+        IEnumerable<IVueSingleFileComponentShapeAmender> amenders,
+        ILogger<VueSingleFileComponentShapeTemplateViewEngine> logger)
     {
         _fileProviderAccessor = fileProviderAccessor;
         _memoryCache = memoryCache;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _htmlLocalizerFactory = htmlLocalizerFactory;
         _amenders = amenders;
+        _logger = logger;
     }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
@@ -76,9 +84,11 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         IList<Range> localizationRanges,
         DisplayContext displayContext)
     {
-        var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", displayContext.Value.Metadata.Type);
-        var startIndex = new Index(0);
+        var shapeName = displayContext.Value.Metadata.Type;
+        var stringLocalizerLazy = new Lazy<IStringLocalizer>(() => _stringLocalizerFactory.Create("Vue.js SFC", shapeName));
+        var htmlLocalizerLazy = new Lazy<IHtmlLocalizer>(() => _htmlLocalizerFactory.Create("Vue.js SFC HTML", shapeName));
 
+        var startIndex = new Index(0);
         foreach (var range in localizationRanges)
         {
             // Insert content before this range.
@@ -86,8 +96,31 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
             startIndex = range.End;
 
             var expression = template[range];
-            var text = expression[2..^2].Trim();
-            var html = WebUtility.HtmlEncode(stringLocalizer[text]);
+            string html;
+
+            // Include a logger warning if the inner spacing is missing. This will cause failures e.g. during UI tests,
+            // and so ensure correct formatting.
+            if (expression[2] is not '{' and not ' ')
+            {
+                _logger.LogWarning(
+                    "Vue SFC localization strings should follow the following formats: [[ text ]], [[{{ html }}]] or " +
+                    "[[{{converter}} input ]]. Please include the inner spacing to ensure future compatibility. Your " +
+                    "expression was: \"{Expression}\".",
+                    expression);
+            }
+
+            // Handle HTML localization.
+            if (expression[2] == '{' && expression[^3] == '}')
+            {
+                var value = expression[2..^2].Trim();
+                html = htmlLocalizerLazy.Value[value].Html();
+            }
+            else
+            {
+                var value = expression[3..^3].Trim();
+                html = WebUtility.HtmlEncode(stringLocalizerLazy.Value[value]);
+            }
+
 
             builder.Append(html);
         }
