@@ -1,3 +1,4 @@
+using AngleSharp.Common;
 using Lombiq.HelpfulLibraries.Common.Utilities;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Caching.Memory;
@@ -40,13 +41,14 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     {
         var template = await GetTemplateAsync(relativePath);
 
-        var localizationRanges = template
-            .AllIndexesOf("[[")
-            .Where(index => template[(index + 2)..].Contains("]]"))
-            .Select(index => new Range(
-                index,
-                template.IndexOfOrdinal(value: "]]", startIndex: index + 2) + 2))
-            .WithoutOverlappingRanges(isSortedByStart: true);
+        // Remove all HTML comments. This is done first, because HTML comments take precedence over everything else.
+        // This way the contents of comments are guaranteed to not be evaluated.
+        template = template
+            .GetParenthesisRanges("<!--", "-->")
+            .InvertRanges(template.Length)
+            .Join(template);
+
+        var localizationRanges = template.GetParenthesisRanges("[[", "]]");
 
         var shapeName = displayContext.Value.Metadata.Type;
         var stringLocalizer = _stringLocalizerFactory.Create("Vue.js SFC", shapeName);
