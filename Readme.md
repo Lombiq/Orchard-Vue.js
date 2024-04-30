@@ -82,7 +82,15 @@ Here we excluded `vue` and packages starting with `vuetify` (e.g. `vuetify/compo
 
 ## Using Vue.js Single File Components
 
-The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying localization for the custom `[[ ... ]]` expression that calls `IStringLocalizer`. Besides that, it's pure Vue, yet you can still make use of shape overriding if needed.
+The module identifies Single File Components in the _Assets/Scripts/VueComponents_ directory and harvests them as shapes. They have a custom _.vue_ file renderer that displays the content of the `<template>` element after applying server-side substitution. Besides that, it's pure Vue, yet you can still make use of shape overriding if needed.
+
+The following types of server-side substitution are available:
+
+- `[[ ... ]]`: Uses `IStringLocalizer` and encodes the result so it's safe to use in HTML.
+- `[[{ ... }]]`: Uses `IHtmlLocalizer` and results in raw HTML just like the `@T["..."]` in cshtml views. You can use this for localizing HTML that may contain formatting or structure.
+- `[[{converter_name} input ]]`: Finds an `IVueTemplateExpressionConverter` implementation to generate the replacement text. This module contains two implementations by default, but you can create your own as well.
+  - `[[{liquid} some Liquid expression ]]`: Uses [Liquid](https://docs.orchardcore.net/en/main/docs/reference/modules/Liquid/), including of the filters registered by Orchard Core.
+  - `[[{markdown} some Markdown expression ]]`: Uses [Markdown](https://docs.orchardcore.net/en/main/docs/reference/modules/Markdown/).
 
 See a demo video of using Vue.js Single File Components [here](https://www.youtube.com/watch?v=L0qjpQ6THZU).
 

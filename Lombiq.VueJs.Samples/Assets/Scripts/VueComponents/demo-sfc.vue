@@ -18,6 +18,31 @@
         <!-- Here you can see a non-standard expression. The "[[ ... ]]" is unique to this OC
              module: it performs localization via IStringLocalizer at runtime. -->
         <demo-repeater :data="repeaterData">[[ Hello! ]]</demo-repeater>
+
+        <!-- You can use different converters inside the "[[ ... ]]" to achieve different results. For example the
+             the "[[{ ... }]]" expression runs the contents through IHtmlLocalizer, and treats it like encoded HTML. -->
+        <p>[[{ Does HTML localization escape HTML? <span class="not-html" hidden>YES!</span> <span class="encoded-html">NO!</span> }]]</p>
+
+        <!-- Besides that special case, you can use custom services that implement IVueTemplateConverter. For example
+             here we use the built-in Liquid converter via the "[[{liquid} ... ]]" format. Note that both here and the
+             special case for HTML, you must not have a space between the "[[" and the "{" characters. This ensures,
+             that older well-formatted strings won't be affected.
+             Note that these expressions are substituted server-side, so including "{{ ... }}" from Liquid won't cause
+             problems. -->
+        [[{liquid}
+        <div class="{{ "A Liquid Example" | html_class }}">
+            <h2>{{ "Liquid example! (localized)" | t }}</h2>
+            The current time is: {{ "now" | utc | date: "%c" }}
+        </div> ]]
+
+        <!-- Example of the other built-in converter, for Markdown. -->
+        [[{markdown}
+## Markdown Example
+
+Here is some _Markdown_ content. For more info, see [the docs](https://docs.orchardcore.net/en/main/docs/reference/modules/Markdown/).
+        ]]
+
+        <!-- By the way HTML comments are also stripped out both to save on bandwidth and for security. -->
     </div>
 </template>
 
