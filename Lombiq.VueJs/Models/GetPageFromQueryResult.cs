@@ -3,10 +3,14 @@ using System.Text.Json.Serialization;
 
 namespace Lombiq.VueJs.Models;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class GetPageFromQueryResult
 {
+    [JsonPropertyName("items")]
     public IEnumerable<object> Items { get; set; }
+
+    [JsonPropertyName("pageSize")]
     public int PageSize { get; set; }
+
+    [JsonPropertyName("pageCount")]
     public int PageCount { get; set; }
 }
