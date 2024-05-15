@@ -1,3 +1,4 @@
+using Atata;
 using Lombiq.Tests.UI.Constants;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
@@ -131,7 +132,7 @@ public static class TestCaseUITestContextExtensions
         context.DoWithRetriesOrFail(
             () =>
             {
-                if (context.Exists(elementToWaitSelector))
+                if (context.Exists(elementToWaitSelector.Safely()))
                 {
                     assert(context.Get(elementToWaitSelector));
 
@@ -139,7 +140,8 @@ public static class TestCaseUITestContextExtensions
                 }
 
                 return false;
-            });
+            },
+            TimeSpan.FromSeconds(10));
 
     private enum Numeric { One = 1 }
 }
