@@ -1,11 +1,12 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.VueJs.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 public class UrlAndText
 {
+    [JsonPropertyName("url")]
     public string Url { get; set; }
+
+    [JsonPropertyName("text")]
     public string Text { get; set; }
 }
