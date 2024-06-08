@@ -24,7 +24,7 @@ public class VueComponentContentSecurityPolicyProvider : IContentSecurityPolicyP
     {
         if (_state.Active)
         {
-            ContentSecurityPolicyProvider.MergeDirectiveValues(securityPolicies, new[] { ScriptSrc }, UnsafeEval);
+            ContentSecurityPolicyProvider.MergeDirectiveValues(securityPolicies, [ScriptSrc], UnsafeEval);
         }
 
         return ValueTask.CompletedTask;

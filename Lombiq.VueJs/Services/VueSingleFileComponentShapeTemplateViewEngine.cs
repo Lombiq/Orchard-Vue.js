@@ -27,7 +27,7 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
     private readonly IEnumerable<IVueTemplateExpressionConverter> _converters;
 
-    public IEnumerable<string> TemplateFileExtensions { get; } = new[] { ".vue" };
+    public IEnumerable<string> TemplateFileExtensions { get; } = [".vue"];
 
     public VueSingleFileComponentShapeTemplateViewEngine(
         IShapeTemplateFileProviderAccessor fileProviderAccessor,
