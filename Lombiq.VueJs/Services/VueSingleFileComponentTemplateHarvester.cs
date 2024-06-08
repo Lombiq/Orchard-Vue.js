@@ -2,7 +2,6 @@ using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.Mvc.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Lombiq.VueJs.Services;
 
