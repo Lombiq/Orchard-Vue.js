@@ -35,11 +35,13 @@ public class VueSfcController : Controller
     // Here we show off a way of doing progressive enhancement. This first action has everything you need to access the
     // page without JS.
     // Open this from under /Lombiq.VueJs.Samples/VueSfc/EnhancedList
-    public ActionResult EnhancedList(int page = 1) => ModelState.IsValid ? View(new EnhancedListViewModel
-    {
-        Page = page,
-        Data = GetDataForPage(page),
-    }) : BadRequest(ModelState);
+    public ActionResult EnhancedList(int page = 1) =>
+        ModelState.IsValid ?
+        View(new EnhancedListViewModel
+        {
+            Page = page,
+            Data = GetDataForPage(page),
+        }) : BadRequest(ModelState);
 
     // This method returns JSON, providing an API equivalent for the EnhancedList action. The enhanced app will use that
     // to update results asynchronously. Both use the same source of data.
