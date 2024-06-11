@@ -45,14 +45,14 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
             Formatting.None,
             new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-        return new[]
-        {
+        return
+        [
             new HtmlString(
                 "<script>" +
                 "if (!window.Vue.$orchardCore) window.Vue.$orchardCore = {};" +
                 $"window.Vue.$orchardCore[{JsonConvert.SerializeObject(PropertyName)}] = {json};" +
                 "</script>"),
-        };
+        ];
     }
 
     /// <summary>
