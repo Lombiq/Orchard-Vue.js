@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
@@ -38,7 +37,7 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
     /// </summary>
     public async ValueTask<IEnumerable<IHtmlContent>> PrependAsync(string shapeName)
     {
-        if (ShapeName != null && ShapeName != shapeName) return Enumerable.Empty<IHtmlContent>();
+        if (ShapeName != null && ShapeName != shapeName) return [];
 
         var values = await GetPropertyValueAsync(shapeName);
         var json = JsonConvert.SerializeObject(
@@ -46,14 +45,14 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
             Formatting.None,
             new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-        return new[]
-        {
+        return
+        [
             new HtmlString(
                 "<script>" +
                 "if (!window.Vue.$orchardCore) window.Vue.$orchardCore = {};" +
                 $"window.Vue.$orchardCore[{JsonConvert.SerializeObject(PropertyName)}] = {json};" +
                 "</script>"),
-        };
+        ];
     }
 
     /// <summary>
