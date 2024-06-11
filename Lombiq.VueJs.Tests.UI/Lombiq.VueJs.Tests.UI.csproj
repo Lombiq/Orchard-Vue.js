@@ -13,7 +13,7 @@
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/blob/dev/Lombiq.VueJs.Tests.UI/Readme.md</PackageProjectUrl>
-    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="License.md" Pack="true" PackagePath="" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
