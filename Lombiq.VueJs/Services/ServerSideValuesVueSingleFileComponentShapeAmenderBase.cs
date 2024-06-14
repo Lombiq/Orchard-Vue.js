@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -43,19 +42,19 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
     /// </summary>
     public async ValueTask<IEnumerable<IHtmlContent>> PrependAsync(string shapeName)
     {
-        if (ShapeName != null && ShapeName != shapeName) return Enumerable.Empty<IHtmlContent>();
+        if (ShapeName != null && ShapeName != shapeName) return [];
 
         var propertyName = JsonSerializer.Serialize(PropertyName);
         var json = JsonSerializer.SerializeToNode(await GetPropertyValueAsync(shapeName), _camelCaseJsonSerializerOptions);
 
-        return new[]
-        {
+        return
+        [
             new HtmlString(
                 "<script>" +
                 "if (!window.Vue.$orchardCore) window.Vue.$orchardCore = {};" +
                 $"window.Vue.$orchardCore[{propertyName}] = {json};" +
                 "</script>"),
-        };
+        ];
     }
 
     /// <summary>
