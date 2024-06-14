@@ -23,8 +23,12 @@ public class QrCardController : Controller
             ApiUrl = Url.Action(nameof(GetBusinessCard)),
         });
 
-    public async Task<ActionResult> GetBusinessCard(string cardId) =>
-        await _contentManager.GetAsync(cardId) is { } businessCard
+    public async Task<ActionResult> GetBusinessCard(string cardId)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return await _contentManager.GetAsync(cardId) is { } businessCard
             ? Ok(businessCard)
             : NotFound();
+    }
 }
