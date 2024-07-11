@@ -14,7 +14,7 @@ We at [Lombiq](https://lombiq.com/) also used this module for the following proj
 
 If you just want to see the whole thing in action, check out the [Samples project](Lombiq.VueJs.Samples/Readme.md). Do you want to quickly try it out? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 
-> ⚠️ Starting version 4.0, this Orchard Core module is using Vue 3 and only supports SFC compilation. Resources are now imported as [Javascript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), so the Vue 3 used by your component is independent from Orchard Core's built-in `vuejs` [resource](https://docs.orchardcore.net/en/main/docs/resources/libraries/) and the two can exist on the same page. If you have an existing project that relies on a discontinued version of Vue.js, check out [our migration instructions below](#migrating-from-vue-2).
+> ⚠️ Starting version 5.0, this Orchard Core module is using Vue 3 and only supports SFC compilation. Resources are now imported as [Javascript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), so the Vue 3 used by your component is independent from Orchard Core's built-in `vuejs` [resource](https://docs.orchardcore.net/en/main/docs/resources/libraries/) and the two can exist on the same page. If you have an existing project that relies on a discontinued version of Vue.js, check out [our migration instructions below](#migrating-from-vue-2).
 
 ## Prerequisites
 
