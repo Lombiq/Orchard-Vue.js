@@ -44,6 +44,10 @@
         "target": "wwwroot/vendors/vue",
         "pattern": "vue.esm-browser.*"
       }
-    ]
+    ],
+    "scripts": {
+      "source": "Assets/Scripts",
+      "target": "wwwroot/js"
+    }
   }
 }
