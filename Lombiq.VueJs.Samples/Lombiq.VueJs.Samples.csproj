@@ -33,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.ContentFields" Version="2.0.0-preview-18297" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18297" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.0.0-preview-18297" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.0.0-preview-18297" />
+    <PackageReference Include="OrchardCore.ContentFields" Version="2.0.0-preview-18300" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18300" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.0.0-preview-18300" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.0.0-preview-18300" />
     <PackageReference Include="ZXing.Net.Bindings.ImageSharp.V2" Version="0.16.15" />
   </ItemGroup>
 
