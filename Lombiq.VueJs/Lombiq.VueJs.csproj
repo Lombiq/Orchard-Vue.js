@@ -56,9 +56,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.0.0-preview-18313" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18313" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.0.0-preview-18313" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.0.0-preview-18315" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18315" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.0.0-preview-18315" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
