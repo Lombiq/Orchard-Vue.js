@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Samples.Migrations;
 
-public class BusinessCardMigrations : DataMigration
+public sealed class BusinessCardMigrations : DataMigration
 {
     private readonly IContentDefinitionManager _contentDefinitionManager;
 
