@@ -17,6 +17,6 @@ public class Startup : StartupBase
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>()
             .AddScoped<IDataMigration, BusinessCardMigrations>()
             .AddTagHelpers<QrCodeTagHelper>()
-            .AddScoped<INavigationProvider, VueJsNavigationProvider>()
+            .AddNavigationProvider<VueJsNavigationProvider>()
             .AddLazyInjectionSupport();
 }
