@@ -8,7 +8,7 @@ using static Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDi
 
 namespace Lombiq.VueJs.Samples.Controllers;
 
-public class QrCardController : Controller
+public sealed class QrCardController : Controller
 {
     private readonly IContentManager _contentManager;
 
