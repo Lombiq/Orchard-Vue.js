@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   axios:
-    specifier: 1.6.0
-    version: 1.6.0
+    specifier: 1.7.4
+    version: 1.7.4
   source-map:
     specifier: ^0.7.3
     version: 0.7.4
@@ -339,8 +339,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node@22.6.1:
-    resolution: {integrity: sha512-V48tCfcKb/e6cVUigLAaJDAILdMP0fUW6BidkPK4GpGjXcfbnoHasCZDwz3N3yVt5we2RHm4XTQCpv0KJz9zqw==}
+  /@types/node@22.7.0:
+    resolution: {integrity: sha512-MOdOibwBs6KW1vfqz2uKMlxq5xAfAZ98SZjO8e3XnAbFnTJtAspqhWk7hrdSAs9/Y14ZWMiy7/MxMUzAOadYEw==}
     dependencies:
       undici-types: 6.19.8
     dev: true
@@ -348,7 +348,7 @@ packages:
   /@types/resolve@1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 22.6.1
+      '@types/node': 22.7.0
     dev: true
 
   /@vue/compiler-core@3.4.21:
@@ -595,8 +595,8 @@ packages:
       possible-typed-array-names: 1.0.0
     dev: true
 
-  /axios@1.6.0:
-    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
+  /axios@1.7.4:
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.0
@@ -1039,8 +1039,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-module-utils@2.11.0(eslint-import-resolver-node@0.3.9)(eslint@8.45.0):
-    resolution: {integrity: sha512-gbBE5Hitek/oG6MUVj6sFuzEjA/ClzNflVrLovHi/JgLdC7fiN5gLAY1WIPW1a0V5I999MnsrvVrCOGmmVqDBQ==}
+  /eslint-module-utils@2.11.1(eslint-import-resolver-node@0.3.9)(eslint@8.45.0):
+    resolution: {integrity: sha512-EwcbfLOhwVMAfatfqLecR2yv3dE5+kQ8kx+Rrt0DvDXEVwW86KQ/xbMDQhtp5l42VXukD5SOF8mQQHbaNtO0CQ==}
     engines: {node: '>=4'}
     peerDependencies:
       '@typescript-eslint/parser': '*'
@@ -1095,7 +1095,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.45.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.11.0(eslint-import-resolver-node@0.3.9)(eslint@8.45.0)
+      eslint-module-utils: 2.11.1(eslint-import-resolver-node@0.3.9)(eslint@8.45.0)
       has: 1.0.4
       is-core-module: 2.15.1
       is-glob: 4.0.3
