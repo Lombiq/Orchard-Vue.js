@@ -11,12 +11,12 @@ using OrchardCore.ResourceManagement;
 
 namespace Lombiq.VueJs.Samples;
 
-public class Startup : StartupBase
+public sealed class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services) =>
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>()
             .AddScoped<IDataMigration, BusinessCardMigrations>()
             .AddTagHelpers<QrCodeTagHelper>()
-            .AddScoped<INavigationProvider, VueJsNavigationProvider>()
+            .AddNavigationProvider<VueJsNavigationProvider>()
             .AddLazyInjectionSupport();
 }

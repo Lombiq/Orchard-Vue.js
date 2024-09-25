@@ -11,7 +11,7 @@ using OrchardCore.ResourceManagement;
 
 namespace Lombiq.VueJs;
 
-public class Startup : StartupBase
+public sealed class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {

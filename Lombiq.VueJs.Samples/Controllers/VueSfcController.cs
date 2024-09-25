@@ -11,7 +11,7 @@ namespace Lombiq.VueJs.Samples.Controllers;
 
 // This controller is for returning a Vue.js Single File Component (abbreviated as SFC going forward) in an MVC view.
 // However, you could use any other ways of doing it such as injecting as a shape or using widgets.
-public class VueSfcController : Controller
+public sealed class VueSfcController : Controller
 {
     private readonly IClock _clock;
     private readonly IStringLocalizer<VueSfcController> T;

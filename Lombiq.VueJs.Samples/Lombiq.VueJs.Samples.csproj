@@ -33,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.ContentFields" Version="1.8.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.8.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.8.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.8.0" />
+    <PackageReference Include="OrchardCore.ContentFields" Version="2.0.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.0.0" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.0.0" />
     <PackageReference Include="ZXing.Net.Bindings.ImageSharp.V2" Version="0.16.15" />
   </ItemGroup>
 
@@ -50,7 +50,7 @@
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
     <PackageReference Include="Lombiq.NodeJs.Extensions" Version="2.1.0" />
-    <PackageReference Include="Lombiq.HelpfulLibraries.Common" Version="10.0.0" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.Common" Version="11.0.0" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
