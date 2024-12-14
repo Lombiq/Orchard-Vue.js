@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 namespace Lombiq.VueJs.Services;
 
 /// <summary>
-/// Classes that inherit from this type will prepend some server-side calculated values in a Javascript block before the
+/// Classes that inherit from this type will prepend some server-side calculated values in a JavaScript block before the
 /// template. These are accessible through a new property attached to <c>window.Vue</c> (as Vue must already be imported
 /// in the header, it is guaranteed to be available here).
 /// </summary>
 /// <remarks>
 /// <para>
-/// For example if you set the value of <see cref="PropertyName"/> to <c>myComponent</c> then in Javascript the result
+/// For example if you set the value of <see cref="PropertyName"/> to <c>myComponent</c> then in JavaScript the result
 /// of <see cref="GetPropertyValueAsync"/> will be available as <c>window.Vue.$orchardCore.myComponent</c>.
 /// </para>
 /// </remarks>
@@ -37,7 +37,7 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
     protected abstract string PropertyName { get; }
 
     /// <summary>
-    /// Turns the value resolved by <see cref="GetPropertyValueAsync"/> into Javascript and appends it before the
+    /// Turns the value resolved by <see cref="GetPropertyValueAsync"/> into JavaScript and appends it before the
     /// template.
     /// </summary>
     public async ValueTask<IEnumerable<IHtmlContent>> PrependAsync(string shapeName)
@@ -58,7 +58,7 @@ public abstract class ServerSideValuesVueSingleFileComponentShapeAmenderBase : I
     }
 
     /// <summary>
-    /// When awaited, returns the object which will be turned into Javascript value.
+    /// When awaited, returns the object which will be turned into JavaScript value.
     /// </summary>
     protected abstract ValueTask<object> GetPropertyValueAsync(string shapeName);
 }
