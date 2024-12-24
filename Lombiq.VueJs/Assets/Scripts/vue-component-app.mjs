@@ -12,7 +12,7 @@ function toKebabCase(camelCase) {
         .join('');
 }
 
-document.querySelectorAll('.lombiq-vue').forEach(async function initializeVueComponentApp(element) {
+document.querySelectorAll(".lombiq-vue").forEach(async function initializeVueComponentApp(element) {
     const { name, model } = JSON.parse(element.dataset.vue);
     const component = (await import(name + '.vue')).default;
 
