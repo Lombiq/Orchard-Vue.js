@@ -1,7 +1,7 @@
 {
     '$schema': 'https://docs.renovatebot.com/renovate-schema.json',
     'extends': ['github>Lombiq/renovate-config:default-orchard-core-submodule.json5'],
-    "packageRules": [
+    packageRules: [
         {
             groupName: 'Vue',
             matchPackageNames: [
@@ -13,6 +13,10 @@
             matchPackageNames: [
                 '/.*rollup.*/',
             ],
+        },
+        {
+            groupName: 'All packages',
+            matchUpdateTypes: ['*'],
         },
     ],
 }
