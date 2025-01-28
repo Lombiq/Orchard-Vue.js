@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
+using OrchardCore.Modules.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,20 +52,24 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     {
         var template = await GetTemplateAsync(relativePath);
 
-        // Remove all HTML comments. This is done first, because HTML comments take precedence over everything else.
-        // This way the contents of comments are guaranteed to not be evaluated.
-        template = template
-            .GetParenthesisRanges("<!--", "-->")
-            .InvertRanges(template.Length)
-            .Join(template);
-
         var shapeName = displayContext.Value.Metadata.Type;
         var builder = new StringBuilder($"<script type=\"x-template\" class=\"{shapeName}\">");
 
         var localizationRanges = template.GetParenthesisRanges("[[", "]]");
         if (localizationRanges.Count > 0)
         {
-            await LocalizeRangesAsync(builder, template, localizationRanges, displayContext);
+            var fileName = Path.GetFileName(relativePath);
+
+            var stringLocalizerLazy = new Lazy<IStringLocalizer>(() => _stringLocalizerFactory.Create(fileName, relativePath));
+            var htmlLocalizerLazy = new Lazy<IHtmlLocalizer>(() => _htmlLocalizerFactory.Create(fileName + ".html", relativePath));
+
+            await LocalizeRangesAsync(
+                builder,
+                template,
+                localizationRanges,
+                displayContext,
+                stringLocalizerLazy,
+                htmlLocalizerLazy);
         }
         else
         {
@@ -85,12 +90,10 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         StringBuilder builder,
         string template,
         IList<Range> localizationRanges,
-        DisplayContext context)
+        DisplayContext context,
+        Lazy<IStringLocalizer> stringLocalizerLazy,
+        Lazy<IHtmlLocalizer> htmlLocalizerLazy)
     {
-        var shapeName = context.Value.Metadata.Type;
-        var stringLocalizerLazy = new Lazy<IStringLocalizer>(() => _stringLocalizerFactory.Create("Vue.js SFC", shapeName));
-        var htmlLocalizerLazy = new Lazy<IHtmlLocalizer>(() => _htmlLocalizerFactory.Create("Vue.js SFC HTML", shapeName));
-
         var startIndex = new Index(0);
         foreach (var range in localizationRanges)
         {
@@ -112,29 +115,18 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
                     expression);
             }
 
-            // Handle HTML localization.
-            if (expression[2] == '{' && expression[^3] == '}')
+            if (IsNamedConverterExpression(expression, out var name, out var value))
             {
-                var value = expression[3..^3].Trim();
-                html = htmlLocalizerLazy.Value[value].Html();
-            }
-            else if (expression[2] == '{')
-            {
-                var (name, _, input) = expression[3..^2].Partition("}");
-                name = name.Trim();
-                input = input.Trim();
-
-                if (_converters.FirstOrDefault(converter => converter.IsApplicable(name, input, context)) is not { } converter)
+                if (_converters.FirstOrDefault(converter => converter.IsApplicable(name, value, context)) is not { } converter)
                 {
                     throw new InvalidOperationException($"Unknown converter type \"{name}\".");
                 }
 
-                html = await converter.ConvertAsync(name, input, context) ?? string.Empty;
+                html = await converter.ConvertAsync(name, value, context) ?? string.Empty;
             }
             else
             {
-                var value = expression[2..^2].Trim();
-                html = WebUtility.HtmlEncode(stringLocalizerLazy.Value[value]);
+                html = ConvertLocalization(expression, stringLocalizerLazy, htmlLocalizerLazy);
             }
 
             builder.Append(html);
@@ -148,29 +140,69 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
     {
         var cacheName = CachePrefix + relativePath;
 
-        if (_memoryCache.TryGetValue(cacheName, out var cached) && cached is string cachedTemplate)
+        if (!_memoryCache.TryGetValue(cacheName, out var cached) || cached is not string { Length: > 0 } cachedTemplate)
         {
-            return cachedTemplate;
+            var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
+            var rawContent = string.Join('\n', await fileInfo.ReadAllLinesAsync());
+
+            return _memoryCache.Set(cacheName, ExtractTemplate(rawContent));
         }
 
-        var fileInfo = _fileProviderAccessor.FileProvider.GetFileInfo(relativePath);
+        return cachedTemplate;
+    }
 
-        string rawContent;
-
-        await using (var stream = fileInfo.CreateReadStream())
-        using (var reader = new StreamReader(stream))
-        {
-            rawContent = await reader.ReadToEndAsync();
-        }
+    /// <summary>
+    /// Gets the top template element from the <c>.vue</c> file contents.
+    /// </summary>
+    public static string ExtractTemplate(string rawContent)
+    {
+        // Remove all HTML comments. This is done first, because HTML comments take precedence over everything else.
+        // This way the contents of comments are guaranteed to not be evaluated.
+        rawContent = rawContent
+            .GetParenthesisRanges("<!--", "-->")
+            .InvertRanges(rawContent.Length)
+            .Join(rawContent);
 
         var templateStarts = StartOf(rawContent, element: "template");
         var scriptStarts = StartOf(rawContent, element: "script");
-
         var templateOuter = rawContent[templateStarts..scriptStarts];
-        var template = rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
 
-        _memoryCache.Set(cacheName, template);
-        return template;
+        return rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
+    }
+
+    /// <summary>
+    /// Use <see cref="IHtmlLocalizer"/> if the <paramref name="expression"/> fits the <c>[[{ ... }]]</c> pattern, or
+    /// use <see cref="IStringLocalizer"/> if it fits the <c>[[ ... ]]</c> pattern, to localize the text content inside
+    /// the brackets.
+    /// </summary>
+    public static string ConvertLocalization(
+        string expression,
+        Lazy<IStringLocalizer> stringLocalizerLazy,
+        Lazy<IHtmlLocalizer> htmlLocalizerLazy)
+    {
+        if (expression[2] == '{' && expression[^3] == '}')
+        {
+            var value = expression[3..^3].Trim();
+            return htmlLocalizerLazy.Value[value].Html();
+        }
+
+        return WebUtility.HtmlEncode(
+            stringLocalizerLazy.Value[expression[2..^2].Trim()]);
+    }
+
+    public static bool IsNamedConverterExpression(string expression, out string name, out string value)
+    {
+        if (expression[2] != '{' || expression[^3] == '}')
+        {
+            name = null;
+            value = null;
+            return false;
+        }
+
+        (name, _, value) = expression[3..^2].Partition("}");
+        name = name.Trim();
+        value = value.Trim();
+        return true;
     }
 
     private static int StartOf(string text, string element) =>
