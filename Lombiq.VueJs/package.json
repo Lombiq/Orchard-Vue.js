@@ -50,6 +50,10 @@
     "scripts": {
       "source": "Assets/Scripts",
       "target": "wwwroot/js"
+    },
+    "styles": {
+      "source": "Assets/Styles",
+      "target": "wwwroot/css"
     }
   }
 }
