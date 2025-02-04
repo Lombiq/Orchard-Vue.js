@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
 using OrchardCore.Modules.FileProviders;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,56 +69,6 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         return new HtmlContentBuilder(entries);
     }
 
-    private async Task LocalizeRangesAsync(
-        StringBuilder builder,
-        string template,
-        IList<Range> localizationRanges,
-        DisplayContext context,
-        Lazy<IStringLocalizer> stringLocalizerLazy,
-        Lazy<IHtmlLocalizer> htmlLocalizerLazy)
-    {
-        var startIndex = new Index(0);
-        foreach (var range in localizationRanges)
-        {
-            // Insert content before this range.
-            builder.Append(template[startIndex..range.Start]);
-            startIndex = range.End;
-
-            var expression = template[range];
-            string html;
-
-            // Include a logger warning if the inner spacing is missing. This will cause failures e.g. during UI tests,
-            // and so ensure correct formatting.
-            if (expression[2] is not '{' and not ' ')
-            {
-                _logger.LogWarning(
-                    "Vue SFC localization strings should follow the following formats: [[ text ]], [[{{ html }}]] or " +
-                    "[[{{converter}} input ]]. Please include the inner spacing to ensure future compatibility. Your " +
-                    "expression was: \"{Expression}\".",
-                    expression);
-            }
-
-            if (IsNamedConverterExpression(expression, out var name, out var value))
-            {
-                if (_converters.FirstOrDefault(converter => converter.IsApplicable(name, value, context)) is not { } converter)
-                {
-                    throw new InvalidOperationException($"Unknown converter type \"{name}\".");
-                }
-
-                html = await converter.ConvertAsync(name, value, context) ?? string.Empty;
-            }
-            else
-            {
-                html = ConvertLocalization(expression, stringLocalizerLazy, htmlLocalizerLazy);
-            }
-
-            builder.Append(html);
-        }
-
-        // Insert leftover content after the last range.
-        builder.Append(template[localizationRanges[^1].End..]);
-    }
-
     private async Task<string> GetTemplateAsync(string relativePath)
     {
         var cacheName = CachePrefix + relativePath;
@@ -156,41 +101,6 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         var templateOuter = rawContent[templateStarts..scriptStarts];
 
         return rawContent[(templateOuter.IndexOf('>') + 1)..templateOuter.LastIndexOfOrdinal("</")].Trim();
-    }
-
-    /// <summary>
-    /// Use <see cref="IHtmlLocalizer"/> if the <paramref name="expression"/> fits the <c>[[{ ... }]]</c> pattern, or
-    /// use <see cref="IStringLocalizer"/> if it fits the <c>[[ ... ]]</c> pattern, to localize the text content inside
-    /// the brackets.
-    /// </summary>
-    public static string ConvertLocalization(
-        string expression,
-        Lazy<IStringLocalizer> stringLocalizerLazy,
-        Lazy<IHtmlLocalizer> htmlLocalizerLazy)
-    {
-        if (expression[2] == '{' && expression[^3] == '}')
-        {
-            var value = expression[3..^3].Trim();
-            return htmlLocalizerLazy.Value[value].Html();
-        }
-
-        return WebUtility.HtmlEncode(
-            stringLocalizerLazy.Value[expression[2..^2].Trim()]);
-    }
-
-    public static bool IsNamedConverterExpression(string expression, out string name, out string value)
-    {
-        if (expression[2] != '{' || expression[^3] == '}')
-        {
-            name = null;
-            value = null;
-            return false;
-        }
-
-        (name, _, value) = expression[3..^2].Partition("}");
-        name = name.Trim();
-        value = value.Trim();
-        return true;
     }
 
     private static int StartOf(string text, string element) =>
