@@ -30,5 +30,7 @@ public sealed class Startup : StartupBase
 
         services.AddScoped<IVueTemplateExpressionConverter, LiquidVueTemplateExpressionConverter>();
         services.AddScoped<IVueTemplateExpressionConverter, MarkdownVueTemplateExpressionConverter>();
+
+        services.AddScoped<IVueSingleFileComponentProcessor, VueSingleFileComponentProcessor>();
     }
 }
