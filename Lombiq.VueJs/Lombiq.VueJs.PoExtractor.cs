@@ -52,7 +52,7 @@ public class VueSfcLocalizationProcessor : IProjectProcessor
 
     private async Task ProcessVueSfcAsync(string path, string basePath, LocalizableStringCollection strings)
     {
-        var contextPath = Path.GetRelativePath(Path.GetFullPath(basePath), Path.GetFullPath(path));
+        var displayPath = Path.GetRelativePath(Path.GetFullPath(basePath), Path.GetFullPath(path));
         var template = VueSingleFileComponentShapeTemplateViewEngine.ExtractTemplate(await File.ReadAllTextAsync(path));
         var relevantSegments = _processor
             .Process(template)
@@ -75,7 +75,7 @@ public class VueSfcLocalizationProcessor : IProjectProcessor
 
             _logger.LogInformation(
                 "Vue.js SFC string\n\tPath:\t{Path}\n\tType:\t{Type}\n\tValue:\t{Value}\n\tBase:\t{Base}\n",
-                contextPath,
+                displayPath,
                 name,
                 value,
                 localizer.BaseName);
@@ -83,10 +83,24 @@ public class VueSfcLocalizationProcessor : IProjectProcessor
             strings.Add(new()
             {
                 Context = localizer.BaseName,
-                Location = new() { SourceFile = path },
+                Location = FindLocation(path, displayPath, value),
                 Text = value,
             });
         }
+    }
+
+    private LocalizableStringLocation FindLocation(string path, string displayPath, string value)
+    {
+        var location = new LocalizableStringLocation { SourceFile = displayPath };
+        var file = File.ReadAllText(path);
+        var index = file.IndexOf(value, StringComparison.Ordinal);
+
+        if (index < 0) return location;
+
+        var precedingLines = file[..index].Split('\n');
+        location.SourceFileLine = precedingLines.Length;
+        location.Comment = precedingLines[^1].TrimStart() + value.RegexReplace(@"\s*\n+\s*", "¶"); // Multiline comments are not supported.
+        return location;
     }
 }
 
