@@ -1,4 +1,5 @@
 using Lombiq.VueJs.Services;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using OrchardCoreContrib.PoExtractor;
@@ -6,24 +7,26 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using static Lombiq.VueJs.Models.TemplateSegment;
 
 public class VueSfcLocalizationProcessor : IProjectProcessor
 {
+    private readonly ILogger<VueSingleFileComponentProcessor> _logger;
     private readonly IVueSingleFileComponentProcessor _processor;
 
-    public VueSfcLocalizationProcessor() =>
-        _processor = new VueSingleFileComponentProcessor(
-            [],
-            new VueSingleFileComponentProcessorConsoleLogger(),
-            new DummyStringLocalizerFactory());
+    public VueSfcLocalizationProcessor()
+    {
+        _logger = new VueSingleFileComponentProcessorConsoleLogger();
+        _processor = new VueSingleFileComponentProcessor([], _logger, new DummyStringLocalizerFactory());
+    }
 
-    public void Process(string path, string basePath, LocalizableStringCollection strings)
+    public void Process(string path, string basePath, LocalizableStringCollection localizableStrings)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
         ArgumentException.ThrowIfNullOrEmpty(basePath);
-        ArgumentNullException.ThrowIfNull(strings);
+        ArgumentNullException.ThrowIfNull(localizableStrings);
 
         var vuePaths = Directory.GetFiles(path, "*.vue", SearchOption.AllDirectories);
 
@@ -31,49 +34,59 @@ public class VueSfcLocalizationProcessor : IProjectProcessor
         {
             try
             {
-                ProcessVueSfcAsync(vuePath, basePath, strings).Wait();
+                ProcessVueSfcAsync(vuePath, basePath, localizableStrings).Wait();
+            }
+            catch (AggregateException exceptions)
+            {
+                foreach (var exception in exceptions.InnerExceptions)
+                {
+                    _logger.LogError(exception, "Processing Vue SFC file failed (Path: {Path}).", vuePath);
+                }
             }
             catch (Exception exception)
             {
-                Console.WriteLine("Processing Vue SFC file failed for: {0}\n{1}", vuePath, exception);
+                _logger.LogError(exception, "Processing Vue SFC file failed (Path: {Path}).", vuePath);
             }
         }
     }
 
     private async Task ProcessVueSfcAsync(string path, string basePath, LocalizableStringCollection strings)
     {
+        var contextPath = Path.GetRelativePath(Path.GetFullPath(basePath), Path.GetFullPath(path));
         var template = VueSingleFileComponentShapeTemplateViewEngine.ExtractTemplate(await File.ReadAllTextAsync(path));
         var relevantSegments = _processor
             .Process(template)
             .Where(segment => segment.IsLocalizable && segment.ConverterName is StringLocalizerConverterName or HtmlLocalizerConverterName)
             .ToList();
+        var converters = _processor.GetConverters(path);
 
         foreach (var (value, name, _) in relevantSegments)
         {
-            Console.WriteLine("{0}\n\tType:\t{1}\n\tValue:\t{2}\n\n\n\n", path, name, value);
-        }
+            var localizer = converters.FirstOrDefault(converter => converter.Name.EqualsOrdinalIgnoreCase(name)) switch
+            {
+                HtmlLocalizerVueTemplateExpressionConverter htmlConverter =>
+                    (DummyStringLocalizerFactory.DummyStringLocalizer)typeof(HtmlLocalizer)
+                        .GetField("_localizer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                        .GetValue(htmlConverter.HtmlLocalizer)!,
+                StringLocalizerVueTemplateExpressionConverter stringConverter =>
+                    (DummyStringLocalizerFactory.DummyStringLocalizer)stringConverter.StringLocalizer,
+                _ => throw new InvalidOperationException($"Unknown converter type \"{name}\"."),
+            };
 
-        // if (json is JsonObject jsonObject)
-        // {
-        //     foreach (var (name, value) in jsonObject)
-        //     {
-        //         var newPrefix = string.IsNullOrEmpty(prefix) ? name : $"{prefix}.{name}";
-        //         ProcessVueSfc(path, strings, value, newPrefix);
-        //     }
-        //
-        //     return;
-        // }
-        //
-        // if (json is JsonValue jsonValue)
-        // {
-        //     var value = jsonValue.GetObjectValue()?.ToString();
-        //     strings.Add(new()
-        //     {
-        //         Context = prefix,
-        //         Location = new() { SourceFile = path },
-        //         Text = value,
-        //     });
-        // }
+            _logger.LogInformation(
+                "Vue.js SFC string\n\tPath:\t{Path}\n\tType:\t{Type}\n\tValue:\t{Value}\n\tBase:\t{Base}\n",
+                contextPath,
+                name,
+                value,
+                localizer.BaseName);
+
+            strings.Add(new()
+            {
+                Context = localizer.BaseName,
+                Location = new() { SourceFile = path },
+                Text = value,
+            });
+        }
     }
 }
 
@@ -82,10 +95,15 @@ public class VueSingleFileComponentProcessorConsoleLogger : ILogger<VueSingleFil
     public IDisposable BeginScope<TState>(TState state)
         where TState : notnull => null;
 
-    public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Warning;
+    public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Information;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter) =>
-        Console.WriteLine("[{0}] {1}: {2}", logLevel, eventId, formatter(state, exception));
+        Console.WriteLine(
+            "[{0}] {1}: {2}{3}",
+            logLevel,
+            eventId,
+            formatter(state, exception),
+            exception is null ? string.Empty : $"\n\t{exception}");
 }
 
 public class DummyStringLocalizerFactory : IStringLocalizerFactory
@@ -96,16 +114,17 @@ public class DummyStringLocalizerFactory : IStringLocalizerFactory
     public IStringLocalizer Create(string baseName, string location) =>
         new DummyStringLocalizer(baseName, location);
 
-    private class DummyStringLocalizer : IStringLocalizer
+    public class DummyStringLocalizer : IStringLocalizer
     {
-        private readonly string _baseName;
-        private readonly string _location;
         private readonly Dictionary<(string, object[]), LocalizedString> _strings = new();
+
+        public string BaseName { get; }
+        public string Location { get; }
 
         public DummyStringLocalizer(string baseName, string location)
         {
-            _baseName = baseName;
-            _location = location;
+            BaseName = baseName;
+            Location = location;
         }
 
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
