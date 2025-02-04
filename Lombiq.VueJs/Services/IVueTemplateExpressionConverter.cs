@@ -1,4 +1,5 @@
 ﻿using OrchardCore.DisplayManagement.Implementation;
+using System;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
@@ -10,10 +11,17 @@ namespace Lombiq.VueJs.Services;
 public interface IVueTemplateExpressionConverter
 {
     /// <summary>
+    /// Gets the name of the converter. In most cases <see cref="IsApplicable"/> only checks if its <c>name</c>
+    /// parameter equals to this value (case-insensitively).
+    /// </summary>
+    string Name { get; }
+
+    /// <summary>
     /// Returns a value indicating whether this converter should handle the provided <paramref name="input"/>, typically
     /// based on the <paramref name="name"/>.
     /// </summary>
-    bool IsApplicable(string name, string input, DisplayContext displayContext);
+    bool IsApplicable(string name, string input, DisplayContext displayContext) =>
+        Name.EqualsOrdinalIgnoreCase(name);
 
     /// <summary>
     /// Returns the output that should be substituted instead of the provided expression.

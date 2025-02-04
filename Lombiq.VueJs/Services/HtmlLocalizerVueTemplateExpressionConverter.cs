@@ -10,11 +10,12 @@ public class HtmlLocalizerVueTemplateExpressionConverter : IVueTemplateExpressio
 {
     private readonly Lazy<IHtmlLocalizer> _htmlLocalizerLazy;
 
+    public IHtmlLocalizer HtmlLocalizer => _htmlLocalizerLazy.Value;
+
+    public string Name => TemplateSegment.HtmlLocalizerConverterName;
+
     internal HtmlLocalizerVueTemplateExpressionConverter(Lazy<IHtmlLocalizer> htmlLocalizerLazy) =>
         _htmlLocalizerLazy = htmlLocalizerLazy;
-
-    public bool IsApplicable(string name, string input, DisplayContext displayContext) =>
-        TemplateSegment.StringLocalizerConverterName.EqualsOrdinalIgnoreCase(name);
 
     public ValueTask<string> ConvertAsync(string name, string input, DisplayContext displayContext) =>
         ValueTask.FromResult(_htmlLocalizerLazy.Value[input].Html());

@@ -1,7 +1,6 @@
 ﻿using Fluid;
 using OrchardCore.DisplayManagement.Implementation;
 using OrchardCore.Liquid;
-using System;
 using System.Threading.Tasks;
 
 namespace Lombiq.VueJs.Services;
@@ -10,11 +9,10 @@ public class LiquidVueTemplateExpressionConverter : IVueTemplateExpressionConver
 {
     private readonly ILiquidTemplateManager _liquidTemplateManager;
 
+    public string Name => "liquid";
+
     public LiquidVueTemplateExpressionConverter(ILiquidTemplateManager liquidTemplateManager) =>
         _liquidTemplateManager = liquidTemplateManager;
-
-    public bool IsApplicable(string name, string input, DisplayContext displayContext) =>
-        "liquid".EqualsOrdinalIgnoreCase(name);
 
     public async ValueTask<string> ConvertAsync(string name, string input, DisplayContext displayContext) =>
         await _liquidTemplateManager.RenderStringAsync(
