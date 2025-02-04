@@ -42,7 +42,7 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         var builder = new StringBuilder($"<script type=\"x-template\" class=\"{shapeName}\">");
 
         var converters = _processor.GetConverters(relativePath);
-        foreach ((string value, string name, bool isLocalizable) in _processor.Process(template))
+        foreach (var (value, name, isLocalizable) in _processor.Process(template))
         {
             var html = value;
 

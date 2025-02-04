@@ -12,20 +12,20 @@ namespace Lombiq.VueJs.Services;
 public class VueSingleFileComponentProcessor : IVueSingleFileComponentProcessor
 {
     private readonly IEnumerable<IVueTemplateExpressionConverter> _converters;
-    private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
     private readonly ILogger<VueSingleFileComponentProcessor> _logger;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
 
     public VueSingleFileComponentProcessor(
         IEnumerable<IVueTemplateExpressionConverter> converters,
-        IHtmlLocalizerFactory htmlLocalizerFactory,
         ILogger<VueSingleFileComponentProcessor> logger,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        IHtmlLocalizerFactory htmlLocalizerFactory = null)
     {
         _converters = converters;
-        _htmlLocalizerFactory = htmlLocalizerFactory;
         _logger = logger;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _htmlLocalizerFactory = htmlLocalizerFactory ?? new HtmlLocalizerFactory(_stringLocalizerFactory);
     }
 
     public IEnumerable<TemplateSegment> Process(string template)
