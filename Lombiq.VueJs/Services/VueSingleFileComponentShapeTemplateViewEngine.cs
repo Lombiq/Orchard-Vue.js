@@ -22,30 +22,21 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
 
     private readonly IShapeTemplateFileProviderAccessor _fileProviderAccessor;
     private readonly IMemoryCache _memoryCache;
-    private readonly IStringLocalizerFactory _stringLocalizerFactory;
-    private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
-    private readonly ILogger<VueSingleFileComponentShapeTemplateViewEngine> _logger;
     private readonly IEnumerable<IVueSingleFileComponentShapeAmender> _amenders;
-    private readonly IEnumerable<IVueTemplateExpressionConverter> _converters;
+    private readonly IVueSingleFileComponentProcessor _processor;
 
     public IEnumerable<string> TemplateFileExtensions { get; } = [".vue"];
 
     public VueSingleFileComponentShapeTemplateViewEngine(
         IShapeTemplateFileProviderAccessor fileProviderAccessor,
         IMemoryCache memoryCache,
-        IStringLocalizerFactory stringLocalizerFactory,
-        IHtmlLocalizerFactory htmlLocalizerFactory,
-        ILogger<VueSingleFileComponentShapeTemplateViewEngine> logger,
         IEnumerable<IVueSingleFileComponentShapeAmender> amenders,
-        IEnumerable<IVueTemplateExpressionConverter> converters)
+        IVueSingleFileComponentProcessor processor)
     {
         _fileProviderAccessor = fileProviderAccessor;
         _memoryCache = memoryCache;
-        _stringLocalizerFactory = stringLocalizerFactory;
-        _htmlLocalizerFactory = htmlLocalizerFactory;
-        _logger = logger;
         _amenders = amenders;
-        _converters = converters;
+        _processor = processor;
     }
 
     public async Task<IHtmlContent> RenderAsync(string relativePath, DisplayContext displayContext)
@@ -55,25 +46,22 @@ public class VueSingleFileComponentShapeTemplateViewEngine : IShapeTemplateViewE
         var shapeName = displayContext.Value.Metadata.Type;
         var builder = new StringBuilder($"<script type=\"x-template\" class=\"{shapeName}\">");
 
-        var localizationRanges = template.GetParenthesisRanges("[[", "]]");
-        if (localizationRanges.Count > 0)
+        var converters = _processor.GetConverters(relativePath);
+        foreach ((string value, string name, bool isLocalizable) in _processor.Process(template))
         {
-            var fileName = Path.GetFileName(relativePath);
+            var html = value;
 
-            var stringLocalizerLazy = new Lazy<IStringLocalizer>(() => _stringLocalizerFactory.Create(fileName, relativePath));
-            var htmlLocalizerLazy = new Lazy<IHtmlLocalizer>(() => _htmlLocalizerFactory.Create(fileName + ".html", relativePath));
+            if (isLocalizable)
+            {
+                if (converters.FirstOrDefault(converter => converter.IsApplicable(name, value, displayContext)) is not { } converter)
+                {
+                    throw new InvalidOperationException($"Unknown converter type \"{name}\".");
+                }
 
-            await LocalizeRangesAsync(
-                builder,
-                template,
-                localizationRanges,
-                displayContext,
-                stringLocalizerLazy,
-                htmlLocalizerLazy);
-        }
-        else
-        {
-            builder.Append(template);
+                html = await converter.ConvertAsync(name, value, displayContext) ?? string.Empty;
+            }
+
+            builder.Append(html);
         }
 
         builder.Append("</script>");

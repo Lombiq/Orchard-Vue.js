@@ -1,15 +1,32 @@
 using Lombiq.VueJs.Models;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Lombiq.VueJs.Services;
 
 public class VueSingleFileComponentProcessor : IVueSingleFileComponentProcessor
 {
+    private readonly IEnumerable<IVueTemplateExpressionConverter> _converters;
+    private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
     private readonly ILogger<VueSingleFileComponentProcessor> _logger;
+    private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
-    public VueSingleFileComponentProcessor(ILogger<VueSingleFileComponentProcessor> logger) => _logger = logger;
+    public VueSingleFileComponentProcessor(
+        IEnumerable<IVueTemplateExpressionConverter> converters,
+        IHtmlLocalizerFactory htmlLocalizerFactory,
+        ILogger<VueSingleFileComponentProcessor> logger,
+        IStringLocalizerFactory stringLocalizerFactory)
+    {
+        _converters = converters;
+        _htmlLocalizerFactory = htmlLocalizerFactory;
+        _logger = logger;
+        _stringLocalizerFactory = stringLocalizerFactory;
+    }
 
     public IEnumerable<TemplateSegment> Process(string template)
     {
@@ -56,6 +73,19 @@ public class VueSingleFileComponentProcessor : IVueSingleFileComponentProcessor
 
         // Insert leftover content after the last range.
         yield return TemplateSegment.NonLocalizable(template[localizationRanges[^1].End..]);
+    }
+
+    public ICollection<IVueTemplateExpressionConverter> GetConverters(string relativePath)
+    {
+        var fileName = Path.GetFileName(relativePath);
+        return _converters
+            .Concat([
+                new StringLocalizerVueTemplateExpressionConverter(
+                    new(() => _stringLocalizerFactory.Create(fileName, relativePath))),
+                new HtmlLocalizerVueTemplateExpressionConverter(
+                    new(() => _htmlLocalizerFactory.Create(fileName + ".html", relativePath))),
+            ])
+            .ToList();
     }
 
     private static bool IsNamedConverterExpression(string expression, out string name, out string value)
