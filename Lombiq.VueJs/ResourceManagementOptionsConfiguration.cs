@@ -27,20 +27,13 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(VueVersion);
 
+        // Using only the prod version of Vue Router because the dev version requires @vue/devtools-api which is not
+        // available as an NPM package only on the CDN.
         _manifest
             .DefineScriptModule(VueRouter)
-            .SetUrl(Vendors + "vue-router/vue-router.esm-browser.prod.js", Vendors + "vue-router/vue-router.esm-browser.js")
-            .SetCdn(VueRouterCdnRoot + "vue-router.esm-browser.prod.js", VueCdnRoot + "vue-router.esm-browser.js")
+            .SetUrl(Vendors + "vue-router/vue-router.esm-browser.prod.js")
+            .SetCdn(VueRouterCdnRoot + "vue-router.esm-browser.prod.js")
             .SetVersion(VueRouterVersion);
-
-#if DEBUG
-        // This is only required for the vue-router in development mode. We need to use the CDN version because the
-        // NPM version is not compiled and should be used with a bundler.
-        _manifest
-            .DefineScriptModule("@vue/devtools-api")
-            .SetCdn("https://unpkg.com/@vue/devtools-api@6.2.1/lib/esm/index.js")
-            .SetVersion("6.2.1");
-#endif
 
         _manifest
             .DefineScriptModule(VueComponentApp)
