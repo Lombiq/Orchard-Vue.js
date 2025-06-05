@@ -35,7 +35,7 @@ module.exports = function rollupPipeline(
     outputOptions = null) {
     function configure(fileName, entryPath) {
         const defaultRollupOptions = {
-            onwarn: (warning, next) => { // #spell-check-ignore-line
+            onwarn: (warning, next) => {
                 if (warning.code === 'THIS_IS_UNDEFINED') return;
                 next(warning);
             },

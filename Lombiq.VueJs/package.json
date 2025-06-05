@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "axios": "1.7.9",
+    "axios": "1.8.2",
     "source-map": "^0.7.4",
     "vue": "3.5.13"
   },
@@ -50,6 +50,10 @@
     "scripts": {
       "source": "Assets/Scripts",
       "target": "wwwroot/js"
+    },
+    "styles": {
+      "source": "Assets/Styles",
+      "target": "wwwroot/css"
     }
   }
 }
