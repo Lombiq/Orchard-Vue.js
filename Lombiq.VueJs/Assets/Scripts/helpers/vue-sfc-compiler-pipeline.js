@@ -1,4 +1,3 @@
-const del = import('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
 const alias = require('@rollup/plugin-alias');
@@ -81,8 +80,10 @@ function compile(options) {
 }
 
 async function clean(options) {
+    const { deleteAsync } = await import('del');
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
-    return del(opts.sfcDestinationPath, { force: true });
+
+    return await deleteAsync(opts.sfcDestinationPath, { force: true });
 }
 
 module.exports = { compile, clean };
