@@ -83,7 +83,7 @@ async function clean(options) {
     const { deleteAsync } = await import('del');
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-    return await deleteAsync(opts.sfcDestinationPath, { force: true });
+    return deleteAsync(opts.sfcDestinationPath, { force: true });
 }
 
 module.exports = { compile, clean };
