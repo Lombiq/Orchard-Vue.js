@@ -1,4 +1,4 @@
-const del = require('del');
+const del = import('del');
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
 const alias = require('@rollup/plugin-alias');
