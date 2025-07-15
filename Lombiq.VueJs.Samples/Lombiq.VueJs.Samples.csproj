@@ -38,7 +38,7 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="2.1.0" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="2.1.0" />
     <!-- Only needed to override the vulnerable version referenced by ZXing.Net.Bindings.ImageSharp.V3. -->
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.9" />
     <PackageReference Include="ZXing.Net.Bindings.ImageSharp.V3" Version="0.16.16" />
   </ItemGroup>
 
@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="2.1.1" />
+    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="2.2.0" />
     <PackageReference Include="Lombiq.HelpfulLibraries.Common" Version="12.2.0" />
   </ItemGroup>
 
