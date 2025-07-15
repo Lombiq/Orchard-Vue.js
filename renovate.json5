@@ -16,9 +16,5 @@
                 '/.*rollup.*/',
             ],
         },
-        {
-            groupName: 'All packages',
-            matchUpdateTypes: ['*'],
-        },
     ],
 }
