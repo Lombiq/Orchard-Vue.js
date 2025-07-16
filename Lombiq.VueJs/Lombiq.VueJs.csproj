@@ -85,4 +85,10 @@
   <ItemGroup>
     <AdditionalFiles Include="package.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\renovate.json5">
+      <Link>renovate.json5</Link>
+    </None>
+  </ItemGroup>
 </Project>
