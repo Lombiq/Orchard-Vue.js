@@ -16,13 +16,5 @@
                 '/.*rollup.*/',
             ],
         },
-        // Can't be updated until breaking changes are fixed in https://github.com/Lombiq/NodeJs-Extensions/issues/116.
-        {
-            groupName: 'ESLint',
-            matchPackageNames: [
-                'eslint*',
-            ],
-            enabled: false,
-        },
     ],
 }
