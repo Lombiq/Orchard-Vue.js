@@ -28,7 +28,7 @@
         </div>
         <div class="row justify-content-center mb-3" v-if="scanError">
             <div class="col-md-6 col-sm message-error">
-                <span v-if="scanError == 'InvalidCard'">[[ This QR code does not represent a business card. ]]</span>
+                <span v-if="scanError === 'InvalidCard'">[[ This QR code does not represent a business card. ]]</span>
             </div>
         </div>
         <div class="row justify-content-center mb-3" v-if="!error && !loading">
