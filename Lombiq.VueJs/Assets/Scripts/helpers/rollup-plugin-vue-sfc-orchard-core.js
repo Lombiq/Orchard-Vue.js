@@ -2,7 +2,7 @@ const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
 
-const { lintScript } = require('.nx/scripts/lint-code');
+const { lintCode } = require('.nx/scripts/lint-code');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
@@ -104,7 +104,7 @@ module.exports = function vuePlugin() {
             code += '\n';
 
             // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
-            await lintScript(code, id, firstRow);
+            await lintCode(code, id, firstRow);
 
             return { code, map };
         },
