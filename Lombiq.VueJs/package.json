@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "axios": "1.10.0",
+    "axios": "1.11.0",
     "source-map": "0.7.4",
-    "vue": "3.5.17",
+    "vue": "3.5.18",
     "vue-router": "4.5.1"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "fancy-log": "2.0.0",
     "fs": "0.0.1-security",
     "glob": "11.0.3",
-    "npm-run-all2": "5.0.0",
+    "npm-run-all2": "8.0.4",
     "rollup": "4.45.1",
     "rollup-plugin-eslint": "7.0.0",
     "terser": "5.43.1"
