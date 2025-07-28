@@ -51,7 +51,7 @@ The packages will be automatically installed on build (i.e. `dotnet build`). You
 
 ### Configuration
 
-The build script can be configured by placing a JSON file (called _vue-sfc-compiler-pipeline.json_) in the project root. It can contain the same properties you can see in the `defaultOptions` variables in [vue-sfc-compiler-pipeline.js](Lombiq.VueJs/Assets/scripts/helpers/vue-sfc-compiler-pipeline.js). Any property set in the JSON file overrides the default value as the two objects are merged.
+The build script can be configured by placing a JSON file (called _vue-sfc-compiler-pipeline.json_) in the project root. It can contain the same properties you can see in the `defaultOptions` variables in [vue-sfc-compiler-pipeline.js](Lombiq.VueJs/helpers/vue-sfc-compiler-pipeline.js). Any property set in the JSON file overrides the default value as the two objects are merged.
 
 When configuring the `rollupNodeResolve` option (for [`@rollup/plugin-node-resolve`](https://www.npmjs.com/package/@rollup/plugin-node-resolve)), normally you could only pass in an array of exact matches due to the limitation of the JSON format. Instead, you can use `rollupNodeResolve.resolveOnlyRules` which is an object array in the following format:
 

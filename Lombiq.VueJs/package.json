@@ -2,6 +2,7 @@
   "name": "lombiq-vuejs",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "dependencies": {
     "axios": "1.10.0",
     "source-map": "0.7.4",
@@ -28,8 +29,8 @@
     "clean": "run-p --print-name --continue-on-error \"clean:*\"",
     "watch": "echo \"Watch is currently not supported (see https://github.com/Lombiq/Orchard-Vue.js/issues/64 for progress).\"",
     "-": "-------------------------------------------------- VUE SFC -------------------------------------------------",
-    "build:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' compile",
-    "clean:vue-sfc": "node './Assets/Scripts/helpers/vue-sfc-compiler-pipeline.js' clean"
+    "build:vue-sfc": "node './helpers/vue-sfc-compiler-pipeline.js' compile",
+    "clean:vue-sfc": "node './helpers/vue-sfc-compiler-pipeline.js' clean"
   },
   "nodejsExtensions": {
     "assetsToCopy": [
