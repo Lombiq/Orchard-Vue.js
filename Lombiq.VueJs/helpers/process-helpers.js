@@ -1,8 +1,8 @@
-const fs = require('fs');
-const { handleErrorObject, handleErrorMessage, handleWarningMessage } = require('.nx/scripts/handle-error');
-const getProjectDirectory = require('.nx/scripts/get-project-directory');
+import fs from 'fs';
+import nodejsExtensions from 'nodejs-extensions'
+const { handleErrorObject, handleErrorMessage, handleWarningMessage } = nodejsExtensions.handleError;
 
-async function executeFunctionByCommandLineArgument(functions) {
+export async function executeFunctionByCommandLineArgument(functions) {
     const [functionName, argumentOptionsJson] = process.argv.slice(2);
     const argumentOptions = argumentOptionsJson ? JSON.parse(argumentOptionsJson) : undefined;
 
@@ -33,8 +33,8 @@ async function executeFunctionByCommandLineArgument(functions) {
     }
 }
 
-function leaveNodeModule() {
-    const projectDirectory = getProjectDirectory();
+export function leaveNodeModule() {
+    const projectDirectory = nodejsExtensions.getProjectDirectory();
 
     if (!projectDirectory) {
         handleWarningMessage(
@@ -49,8 +49,3 @@ function leaveNodeModule() {
             `The project directory according to get-project-directory.js (${projectDirectory}) is not found.`);
     }
 }
-
-module.exports = {
-    executeFunctionByCommandLineArgument,
-    leaveNodeModule,
-};

@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function tryOpenAndParse(path) {
+export function tryOpenAndParse(path) {
     let text;
 
     try { text = fs.readFileSync(path); }
@@ -8,5 +8,3 @@ function tryOpenAndParse(path) {
 
     return JSON.parse(text);
 }
-
-module.exports = tryOpenAndParse;

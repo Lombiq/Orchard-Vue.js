@@ -1,11 +1,9 @@
-const { readdirSync } = require('fs');
+import { readdirSync } from 'fs';
 
 const asDirent = { withFileTypes: true };
 
-function readDirectoryFunction(filter) {
-    return (rootPath) => readdirSync(rootPath, asDirent).filter(filter).map((dirent) => dirent.name);
+export function getVueComponents(rootPath)
+{
+    const filter = (dirent) => dirent.name.endsWith('.vue') && dirent.isFile();
+    return readdirSync(rootPath, asDirent).filter(filter).map((dirent) => dirent.name);
 }
-
-module.exports = {
-    getVueComponents: readDirectoryFunction((dirent) => dirent.name.endsWith('.vue') && dirent.isFile()),
-};

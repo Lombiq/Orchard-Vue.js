@@ -1,6 +1,7 @@
-const path = require('path');
-const sourceMap = require('source-map');
-const readFile = require('fs').promises.readFile;
+import path from 'path';
+import sourceMap from 'source-map';
+import { promises as fsPromises } from 'fs';
+import { lintCode } from 'nodejs-extensions/lint-code';
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
@@ -31,7 +32,7 @@ function lastItem(array) {
     return array[array.length - 1];
 }
 
-module.exports = function vuePlugin() {
+export function vuePlugin() {
     return {
         name: 'rollup-plugin-vue-sfc-orchard-core',
         resolveId: async function (source, importer) {
@@ -50,7 +51,7 @@ module.exports = function vuePlugin() {
             const filePath = id.replace(/\?vue-sfc(-entry)?$/, '');
 
             // Get and trim the source code.
-            const source = await readFile(filePath, 'utf8');
+            const source = await fsPromises.readFile(filePath, 'utf8');
             let code = onlyScript(source).trim();
 
             // Reappend leading space.
@@ -102,11 +103,9 @@ module.exports = function vuePlugin() {
             code += '\n';
 
             // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
-
-            const { lintCode } = await import('./.nx/scripts/lint-code');
             await lintCode(code, id, firstRow);
 
             return { code, map };
         },
     };
-};
+}

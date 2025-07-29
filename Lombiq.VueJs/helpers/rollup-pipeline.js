@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { minify } = require('terser');
-const { rollup } = require('rollup');
+import fs from 'fs';
+import path from 'path';
+import { minify } from 'terser';
+import { rollup } from 'rollup';
 
-const { handleErrorObject, handlePromiseRejectionAsError } = require('.nx/scripts/handle-error');
+import { handleErrorObject, handlePromiseRejectionAsError } from 'nodejs-extensions/handle-error';
 
 function createDirectory(directoryPath) {
     return fs.existsSync(directoryPath) ? Promise.resolve() : fs.promises.mkdir(directoryPath, { recursive: true });
@@ -26,7 +26,7 @@ function handleRollupError(error) {
     });
 }
 
-module.exports = function rollupPipeline(
+export function rollupPipeline(
     destinationPath,
     filesAndEntryPaths,
     rollupPlugins,
@@ -107,4 +107,4 @@ module.exports = function rollupPipeline(
         }));
 
     return handlePromiseRejectionAsError(pipelinePromise, true);
-};
+}

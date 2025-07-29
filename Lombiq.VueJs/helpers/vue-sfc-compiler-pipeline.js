@@ -1,15 +1,15 @@
-const fs = require('fs');
-const json = require('@rollup/plugin-json');
-const alias = require('@rollup/plugin-alias');
-const path = require('path');
-const replace = require('@rollup/plugin-replace');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
+import fs from 'fs';
+import json from '@rollup/plugin-json';
+import alias from '@rollup/plugin-alias';
+import path from 'path';
+import replace from '@rollup/plugin-replace';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
-const rollupPipeline = require('./rollup-pipeline');
-const vuePlugin = require('./rollup-plugin-vue-sfc-orchard-core');
-const { getVueComponents } = require('./get-vue-files');
-const { executeFunctionByCommandLineArgument, leaveNodeModule } = require('./process-helpers');
-const tryOpenJson = require('./try-open-json');
+import { rollupPipeline } from './rollup-pipeline.js';
+import { vuePlugin } from './rollup-plugin-vue-sfc-orchard-core.js';
+import { getVueComponents } from './get-vue-files.js';
+import { executeFunctionByCommandLineArgument, leaveNodeModule } from './process-helpers.js';
+import { tryOpenAndParse } from './try-open-json.js';
 
 // If this script is invoked from "npm explore lombiq-vuejs" then we have to navigate back to the current project root.
 leaveNodeModule();
@@ -17,7 +17,7 @@ leaveNodeModule();
 const defaultOptions = {
     sfcRootPath: path.join('Assets', 'Scripts', 'VueComponents'),
     sfcDestinationPath: path.join('wwwroot', 'vue'),
-    vueJsNodeModulesPath: path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+    vueJsNodeModulesPath: path.resolve(import.meta.dirname, '..', 'node_modules'),
     rollupAlias: {},
     rollupNodeResolve: { preferBuiltins: true, browser: true, mainFields: ['module', 'jsnext:main'] },
     isProduction: false,
@@ -41,8 +41,8 @@ function processRollupNodeResolve(opts) {
     }
 }
 
-function compile(options) {
-    const fileOptions = tryOpenJson('vue-sfc-compiler-pipeline.json');
+export function compile(options) {
+    const fileOptions = tryOpenAndParse('vue-sfc-compiler-pipeline.json');
     const opts = { ...defaultOptions, ...fileOptions, ...(options ?? { }) };
     processRollupNodeResolve(opts);
 
@@ -79,12 +79,11 @@ function compile(options) {
         (fileName) => fileName.split('.')[0]);
 }
 
-async function clean(options) {
+export async function clean(options) {
     const { deleteAsync } = await import('del');
     const opts = options ? { ...defaultOptions, ...options } : defaultOptions;
 
     return deleteAsync(opts.sfcDestinationPath, { force: true });
 }
 
-module.exports = { compile, clean };
-executeFunctionByCommandLineArgument(module.exports);
+executeFunctionByCommandLineArgument({ compile, clean });
