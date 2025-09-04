@@ -27,7 +27,7 @@
     "npm-run-all2": "8.0.4",
     "rollup": "4.49.0",
     "rollup-plugin-eslint": "7.0.0",
-    "terser": "5.43.1"
+    "terser": "5.44.0"
   },
   "scripts": {
     "build": "run-p --print-name --continue-on-error \"build:*\"",
