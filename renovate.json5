@@ -9,12 +9,18 @@
             matchPackageNames: [
                 'vue*',
             ],
+            // Keeping minor and patch updates together with all other such non-breaking updates to prevent having too
+            // many pull requests.
+            matchUpdateTypes: ['major'],
         },
         {
             groupName: 'Rollup',
             matchPackageNames: [
                 '/.*rollup.*/',
             ],
+            // Keeping minor and patch updates together with all other such non-breaking updates to prevent having too
+            // many pull requests.
+            matchUpdateTypes: ['major'],
         },
         // Can't be updated until breaking changes are fixed in https://github.com/Lombiq/NodeJs-Extensions/issues/116.
         {
