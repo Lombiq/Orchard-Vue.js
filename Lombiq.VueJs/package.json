@@ -25,7 +25,7 @@
     "fs": "0.0.1-security",
     "glob": "11.0.3",
     "npm-run-all2": "8.0.4",
-    "rollup": "4.50.1",
+    "rollup": "4.50.2",
     "rollup-plugin-eslint": "7.0.0",
     "terser": "5.44.0"
   },
