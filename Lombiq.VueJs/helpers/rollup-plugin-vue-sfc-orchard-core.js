@@ -103,7 +103,19 @@ export function vuePlugin() {
             code += '\n';
 
             // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
-            await lintCode(code, id, firstRow);
+            const overrideConfig = 	{
+                linterOptions: {
+                    reportUnusedDisableDirectives: 'off',
+                },
+
+                files: [
+                    "**/*.js",
+                    "**/*.mjs",
+                    "**/*.cjs",
+                    "**/*.vue",
+                ],
+            };
+            await lintCode(code, id, firstRow, overrideConfig);
 
             return { code, map };
         },
