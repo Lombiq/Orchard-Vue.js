@@ -34,8 +34,8 @@ function lastItem(array) {
     return array[array.length - 1];
 }
 
-async function lintScript(code, id, firstRow) {
-    const eslint = new ESLint({ errorOnUnmatchedPattern: false });
+async function lintScript(code, id, firstRow = 1, overrideConfig = {}) {
+    const eslint = new ESLint({ errorOnUnmatchedPattern: false, overrideConfig: { ...overrideConfig } });
     const results = await eslint.lintText(code, { filePath: id });
 
     if (!Array.isArray(results) || results.length === 0) return;
@@ -125,7 +125,15 @@ module.exports = function vuePlugin() {
             code += '\n';
 
             // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
-            await lintScript(code, id, firstRow);
+            const overrideConfig = {
+                files: [
+                    '**/*.js',
+                    '**/*.mjs',
+                    '**/*.cjs',
+                    '**/*.vue',
+                ],
+            };
+            await lintScript(code, id, firstRow, overrideConfig);
 
             return { code, map };
         },
