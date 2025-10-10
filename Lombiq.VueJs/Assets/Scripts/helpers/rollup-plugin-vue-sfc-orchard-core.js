@@ -33,6 +33,19 @@ function lastItem(array) {
     return array[array.length - 1];
 }
 
+function formatterBeforeHandle(data) {
+    // Workaround to handle a known platform-specific limitation. The compiler adds an "eslint-disable" directive at the
+    // start of the script because it's necessary for Windows, but that raises an "unused directive" warning on other
+    // operating systems.
+    if (data.path.endsWith('.vue') &&
+        data.message.includes('eslint-disable') &&
+        data.message.includes('linebreak-style')) {
+        return false;
+    }
+
+    return data;
+}
+
 module.exports = function vuePlugin() {
     return {
         name: 'rollup-plugin-vue-sfc-orchard-core',
@@ -112,7 +125,7 @@ module.exports = function vuePlugin() {
                     '**/*.vue',
                 ],
             };
-            await lintCode(code, id, firstRow, overrideConfig);
+            await lintCode(code, id, firstRow, overrideConfig, formatterBeforeHandle);
 
             return { code, map };
         },
