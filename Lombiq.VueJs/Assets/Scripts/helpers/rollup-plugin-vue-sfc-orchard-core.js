@@ -1,9 +1,8 @@
 const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
-const { ESLint } = require('eslint');
 
-const { formatter } = require('.nx/scripts/eslint-msbuild-formatter');
+const { lintCode } = require('.nx/scripts/lint-code');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
@@ -32,26 +31,6 @@ function onlyScript(source) {
 
 function lastItem(array) {
     return array[array.length - 1];
-}
-
-async function lintScript(code, id, firstRow = 1, overrideConfig = {}) {
-    const eslint = new ESLint({ errorOnUnmatchedPattern: false, overrideConfig: { ...overrideConfig } });
-    const results = await eslint.lintText(code, { filePath: id });
-
-    if (!Array.isArray(results) || results.length === 0) return;
-
-    for (let i = 0; i < results.length; i++) {
-        const result = results[i];
-
-        result.filePath = result.filePath.replace(/\.vue\?vue-sfc-entry$/, '.vue');
-
-        for (let j = 0; j < result.messages.length; j++) {
-            const message = result.messages[j];
-            message.line += firstRow - 1;
-        }
-    }
-
-    formatter(results);
 }
 
 module.exports = function vuePlugin() {
@@ -133,7 +112,7 @@ module.exports = function vuePlugin() {
                     '**/*.vue',
                 ],
             };
-            await lintScript(code, id, firstRow, overrideConfig);
+            await lintCode(code, id, firstRow, overrideConfig);
 
             return { code, map };
         },
