@@ -1,9 +1,8 @@
 const path = require('path');
 const sourceMap = require('source-map');
 const readFile = require('fs').promises.readFile;
-const { ESLint } = require('eslint');
 
-const { formatter } = require('.nx/scripts/eslint-msbuild-formatter');
+const { lintCode } = require('.nx/scripts/lint-code');
 
 function onlyScript(source) {
     for (let i = 0; i < source.length; i++) {
@@ -34,24 +33,17 @@ function lastItem(array) {
     return array[array.length - 1];
 }
 
-async function lintScript(code, id, firstRow) {
-    const eslint = new ESLint({ errorOnUnmatchedPattern: false });
-    const results = await eslint.lintText(code, { filePath: id });
-
-    if (!Array.isArray(results) || results.length === 0) return;
-
-    for (let i = 0; i < results.length; i++) {
-        const result = results[i];
-
-        result.filePath = result.filePath.replace(/\.vue\?vue-sfc-entry$/, '.vue');
-
-        for (let j = 0; j < result.messages.length; j++) {
-            const message = result.messages[j];
-            message.line += firstRow - 1;
-        }
+function formatterBeforeHandle(data) {
+    // Workaround to handle a known platform-specific limitation. The compiler adds an "eslint-disable" directive at the
+    // start of the script because it's necessary for Windows, but that raises an "unused directive" warning on other
+    // operating systems.
+    if (data.path.endsWith('.vue') &&
+        data.message.includes('eslint-disable') &&
+        data.message.includes('linebreak-style')) {
+        return false;
     }
 
-    formatter(results);
+    return data;
 }
 
 module.exports = function vuePlugin() {
@@ -125,7 +117,15 @@ module.exports = function vuePlugin() {
             code += '\n';
 
             // Run ESLint. We do it here instead of the Rollup plugin pipeline to limit analysis to the .vue file only.
-            await lintScript(code, id, firstRow);
+            const overrideConfig = {
+                files: [
+                    '**/*.js',
+                    '**/*.mjs',
+                    '**/*.cjs',
+                    '**/*.vue',
+                ],
+            };
+            await lintCode(code, id, firstRow, overrideConfig, formatterBeforeHandle);
 
             return { code, map };
         },
