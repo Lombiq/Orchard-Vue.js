@@ -6,13 +6,13 @@
     "axios": "1.12.2",
     "source-map": "0.7.6",
     "vue": "3.5.22",
-    "vue-router": "4.5.1"
+    "vue-router": "4.6.3"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "5.1.1",
-    "@rollup/plugin-commonjs": "28.0.6",
+    "@rollup/plugin-commonjs": "28.0.8",
     "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.2",
+    "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-replace": "6.0.2",
     "del": "8.0.1",
     "eslint": "9.37.0",
