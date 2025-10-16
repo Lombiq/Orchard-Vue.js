@@ -15,8 +15,8 @@ dependencies:
     specifier: 3.5.22
     version: 3.5.22
   vue-router:
-    specifier: 4.6.2
-    version: 4.6.2(vue@3.5.22)
+    specifier: 4.6.3
+    version: 4.6.3(vue@3.5.22)
 
 devDependencies:
   '@rollup/plugin-alias':
@@ -3311,8 +3311,8 @@ packages:
     resolution: {integrity: sha512-ocyWc3bAHBB/guyqJQVI5o4BZkPhznPYUG2ea80Gond/BgNWpap8TOmLSeeQG7bnh2KMISxskdADG59j7zruhw==}
     dev: true
 
-  /vue-router@4.6.2(vue@3.5.22):
-    resolution: {integrity: sha512-my83mxQKXyCms9EegBXZldehOihxBjgSjZqrZwgg4vBacNGl0oBCO+xT//wgOYpLV1RW93ZfqxrjTozd+82nbA==}
+  /vue-router@4.6.3(vue@3.5.22):
+    resolution: {integrity: sha512-ARBedLm9YlbvQomnmq91Os7ck6efydTSpRP3nuOKCvgJOHNrhRoJDSKtee8kcL1Vf7nz6U+PMBL+hTvR3bTVQg==}
     peerDependencies:
       vue: ^3.5.0
     dependencies:
