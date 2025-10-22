@@ -10,7 +10,6 @@ namespace Lombiq.VueJs.Resources;
 public partial class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfiguratorBase
 {
     private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
-    private const string VueRouterCdnRoot = $"https://unpkg.com/vue-router@{VueRouterVersion}/dist/";
 
     protected override string Area => FeatureIds.Area;
 
@@ -22,10 +21,8 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(VueVersion);
 
-        // Using only the prod version of Vue Router because the dev version requires @vue/devtools-api which is not
-        // available as an NPM package only on the CDN.
-        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.esm-browser.prod.js", Vue3)
-            .SetCdn(VueRouterCdnRoot + "vue-router.esm-browser.prod.js")
+        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3)
+            .SetCdn($"https://unpkg.com/vue-router@{VueRouterVersion}/dist/vue-router.mjs")
             .SetVersion(VueRouterVersion);
     }
 }
