@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Condition="'$(NuGetBuild)' != 'true' and Exists('..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props')"
+          Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -50,6 +51,7 @@
     <PackageReference Include="Lombiq.Npm.Targets" Version="1.5.0" />
   </ItemGroup>
 
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+  <Import Condition="'$(NuGetBuild)' != 'true' and Exists('..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets')"
+          Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
 </Project>
