@@ -91,4 +91,8 @@
       <Link>renovate.json5</Link>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lombiq.VueJs.Resources\Lombiq.VueJs.Resources.csproj" />
+  </ItemGroup>
 </Project>

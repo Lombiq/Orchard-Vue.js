@@ -10,36 +10,15 @@ namespace Lombiq.VueJs;
 [ConstantFromJson("VueRouterVersion", "package.json", "vue-router")]
 public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
 {
-    private const string Root = $"~/{Area}/";
-    private const string Js = Root + "js/";
-    private const string Vendors = Root + "vendors/";
-
-    private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
-    private const string VueRouterCdnRoot = $"https://unpkg.com/vue-router@{VueRouterVersion}/dist/";
+    private const string Js = $"~/{Area}/js/";
 
     private static readonly ResourceManifest _manifest = new();
 
-    static ResourceManagementOptionsConfiguration()
-    {
-        _manifest
-            .DefineScriptModule(Vue3)
-            .SetUrl(Vendors + "vue/vue.esm-browser.prod.js", Vendors + "vue/vue.esm-browser.js")
-            .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
-            .SetVersion(VueVersion);
-
-        // Using only the prod version of Vue Router because the dev version requires @vue/devtools-api which is not
-        // available as an NPM package only on the CDN.
-        _manifest
-            .DefineScriptModule(VueRouter)
-            .SetUrl(Vendors + "vue-router/vue-router.esm-browser.prod.js")
-            .SetCdn(VueRouterCdnRoot + "vue-router.esm-browser.prod.js")
-            .SetVersion(VueRouterVersion);
-
+    static ResourceManagementOptionsConfiguration() =>
         _manifest
             .DefineScriptModule(VueComponentApp)
             .SetAttribute("defer", string.Empty)
             .SetUrl(Js + "vue-component-app.min.mjs", Js + "vue-component-app.mjs");
-    }
 
     public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
 }
