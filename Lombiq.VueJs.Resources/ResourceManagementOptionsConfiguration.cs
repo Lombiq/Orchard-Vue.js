@@ -26,5 +26,7 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
         context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
             .SetCdn($"https://unpkg.com/vue-router@{VueRouterVersion}/dist/vue-router.mjs")
             .SetVersion(VueRouterVersion);
+
+        context.DefineScript(SetupEnvironment, "setup-environment.js");
     }
 }
