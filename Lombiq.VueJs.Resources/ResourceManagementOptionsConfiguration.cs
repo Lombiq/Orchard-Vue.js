@@ -15,13 +15,15 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
 
     protected override void Configure(ResourceManagementContext context)
     {
+        context.DefineScriptModule(VueDevtoolsApi, "dummy-vue-devtools-api.mjs");
+
         context.DefineVendorScriptModule(
                 Vue3,
                 (Production: "vue/vue.esm-browser.prod.js", Debug: "vue/vue.esm-browser.js"))
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(VueVersion);
 
-        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3)
+        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
             .SetCdn($"https://unpkg.com/vue-router@{VueRouterVersion}/dist/vue-router.mjs")
             .SetVersion(VueRouterVersion);
     }
