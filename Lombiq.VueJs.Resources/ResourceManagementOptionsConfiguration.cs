@@ -1,5 +1,6 @@
 using Lombiq.HelpfulLibraries.Attributes;
 using Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement;
+using Lombiq.VueJs.Resources.Constants;
 using static Lombiq.VueJs.Resources.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Resources;
@@ -11,7 +12,7 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
     private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
     private const string VueRouterCdnRoot = $"https://unpkg.com/vue-router@{VueRouterVersion}/dist/";
 
-    protected override string Area => Base;
+    protected override string Area => FeatureIds.Area;
 
     protected override void Configure(ResourceManagementContext context)
     {
