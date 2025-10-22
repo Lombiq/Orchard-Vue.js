@@ -64,5 +64,6 @@
       "source": "Assets/Styles",
       "target": "wwwroot/css"
     }
-  }
+  },
+  "packageManager": "pnpm@9.15.9"
 }
