@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\validate-pull-request.yml = .github\workflows\validate-pull-request.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.VueJs.Resources", "Lombiq.VueJs.Resources\Lombiq.VueJs.Resources.csproj", "{74E085F2-A37A-442C-B7DF-299AB4766419}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D8390A4-013C-42D7-B25D-E02A8CBC03C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E085F2-A37A-442C-B7DF-299AB4766419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E085F2-A37A-442C-B7DF-299AB4766419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E085F2-A37A-442C-B7DF-299AB4766419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E085F2-A37A-442C-B7DF-299AB4766419}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D108B007-04AE-4993-890C-49CA3E0A7645} = {E0F685EE-E0CE-43E2-B013-E76F3E8F659A}
