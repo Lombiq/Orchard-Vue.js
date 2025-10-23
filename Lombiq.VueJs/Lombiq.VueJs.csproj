@@ -36,7 +36,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="../Readme.md" Link="Readme.md" />
     <None Include="package.json" Pack="true" PackagePath="" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="build/**" Pack="true" PackagePath="build/" />
