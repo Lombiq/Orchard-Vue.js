@@ -9,6 +9,7 @@
     "vue-router": "4.6.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
     "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-commonjs": "28.0.8",
     "@rollup/plugin-json": "6.1.0",
@@ -63,5 +64,6 @@
       "source": "Assets/Styles",
       "target": "wwwroot/css"
     }
-  }
+  },
+  "packageManager": "pnpm@9.15.9"
 }
