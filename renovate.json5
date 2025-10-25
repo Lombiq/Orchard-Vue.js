@@ -5,6 +5,13 @@
     ],
     packageRules: [
         {
+            // As the Lombiq.VueJs project is deprecated, its dependencies should not be updated besides security fixes.
+            groupName: 'Legacy Lombiq.VueJs',
+            matchFileNames: ['Lombiq.VueJs/**'],
+            matchManagers: ['npm'],
+            matchUpdateTypes: ['major'],
+        },
+        {
             groupName: 'Vue',
             matchPackageNames: [
                 'vue*',

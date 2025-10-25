@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <Import Condition="'$(NuGetBuild)' != 'true' and Exists('..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props')"
+          Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**;Tests\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Lombiq Vue.js module for Orchard Core - Resources</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2019, Lombiq Technologies Ltd.</Copyright>
+    <Description>Lombiq Vue.js module for Orchard Core - Resources: Adds some Vue.js 3 packages to Orchard Core as ES Modules.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/blob/dev/Lombiq.VueJs.Resources/Readme.md</PackageProjectUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+    <None Remove="node_modules\**" />
+    <AdditionalFiles Include="package.json" />
+    <Vendor Include="node_modules/vue" />
+    <Vendor Include="node_modules/vue-router" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
+    <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.Attributes\Lombiq.HelpfulLibraries.Attributes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.OrchardCore\Lombiq.HelpfulLibraries.OrchardCore.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.SourceGenerators\Lombiq.HelpfulLibraries.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.HelpfulLibraries.Attributes" Version="12.3.1-alpha.2.osoe-1171" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.3.1-alpha.2.osoe-1171" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.SourceGenerators" Version="12.3.1-alpha.2.osoe-1171" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="Lombiq.Npm.Targets" Version="1.5.0" />
+  </ItemGroup>
+
+  <Import Condition="'$(NuGetBuild)' != 'true' and Exists('..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets')"
+          Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+
+</Project>
