@@ -7,9 +7,9 @@
         {
             // As the Lombiq.VueJs project is deprecated, its dependencies should not be updated besides security fixes.
             groupName: 'Legacy Lombiq.VueJs',
-            matchFileNames: ['Lombiq.VueJs/**'],
+            matchFileNames: ['Lombiq.VueJs/**', 'Lombiq.VueJs.Samples/**'],
             matchManagers: ['npm'],
-            matchUpdateTypes: ['major'],
+            matchUpdateTypes: ['major', 'minor'],
             enabled: false,
         },
         {
