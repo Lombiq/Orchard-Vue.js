@@ -10,6 +10,7 @@
             matchFileNames: ['Lombiq.VueJs/**'],
             matchManagers: ['npm'],
             matchUpdateTypes: ['major'],
+            enabled: false,
         },
         {
             groupName: 'Vue',
@@ -28,14 +29,6 @@
             // Keeping minor and patch updates together with all other such non-breaking updates to prevent having too
             // many pull requests.
             matchUpdateTypes: ['major'],
-        },
-        // Can't be updated until breaking changes are fixed in https://github.com/Lombiq/NodeJs-Extensions/issues/116.
-        {
-            groupName: 'ESLint',
-            matchPackageNames: [
-                'eslint*',
-            ],
-            enabled: false,
         },
     ],
 }
