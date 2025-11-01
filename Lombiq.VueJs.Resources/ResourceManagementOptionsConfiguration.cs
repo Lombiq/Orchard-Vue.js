@@ -5,11 +5,10 @@ using static Lombiq.VueJs.Resources.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Resources;
 
-[ConstantFromJson("VueVersion", "package.json", "vue")]
-[ConstantFromJson("VueRouterVersion", "package.json", "vue-router")]
+[LibManVersions]
 public partial class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfiguratorBase
 {
-    private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
+    private const string VueCdnRoot = $"https://unpkg.com/vue@{LibMan_vue}/dist/";
 
     protected override string Area => FeatureIds.Area;
 
@@ -21,11 +20,11 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
                 Vue3,
                 (Production: "vue/vue.esm-browser.prod.js", Debug: "vue/vue.esm-browser.js"))
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
-            .SetVersion(VueVersion);
+            .SetVersion(LibMan_vue);
 
         context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
-            .SetCdn($"https://unpkg.com/vue-router@{VueRouterVersion}/dist/vue-router.mjs")
-            .SetVersion(VueRouterVersion);
+            .SetCdn($"https://unpkg.com/vue-router@{LibMan_vue_router}/dist/vue-router.mjs")
+            .SetVersion(LibMan_vue_router);
 
         context.DefineScript(SetupEnvironment, "setup-environment.js");
     }

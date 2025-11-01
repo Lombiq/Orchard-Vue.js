@@ -1,0 +1,16 @@
+{
+  "version": "3.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "vue@3.5.22",
+      "destination": "wwwroot/vendors/vue",
+      "files": [ "dist/vue.esm-browser.prod.js", "dist/vue.esm-browser.js" ]
+    },
+    {
+      "library": "vue-router@4.6.3",
+      "destination": "wwwroot/vendors/vue-router",
+      "files": [ "dist/vue-router.mjs" ]
+    }
+  ]
+}
