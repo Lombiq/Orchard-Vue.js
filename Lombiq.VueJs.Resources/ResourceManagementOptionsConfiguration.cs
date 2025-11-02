@@ -8,7 +8,7 @@ namespace Lombiq.VueJs.Resources;
 [LibManVersions]
 public partial class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfiguratorBase
 {
-    private const string VueCdnRoot = $"https://unpkg.com/vue@{LibMan_vue}/dist/";
+    private const string VueCdnRoot = $"https://unpkg.com/vue@{LibManVersions.Vue}/dist/";
 
     protected override string Area => FeatureIds.Area;
 
@@ -20,11 +20,11 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
                 Vue3,
                 (Production: "vue/vue.esm-browser.prod.js", Debug: "vue/vue.esm-browser.js"))
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
-            .SetVersion(LibMan_vue);
+            .SetVersion(LibManVersions.Vue);
 
         context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
-            .SetCdn($"https://unpkg.com/vue-router@{LibMan_vue_router}/dist/vue-router.mjs")
-            .SetVersion(LibMan_vue_router);
+            .SetCdn($"https://unpkg.com/vue-router@{LibManVersions.VueRouter}/dist/vue-router.mjs")
+            .SetVersion(LibManVersions.VueRouter);
 
         context.DefineScript(SetupEnvironment, "setup-environment.js");
     }
