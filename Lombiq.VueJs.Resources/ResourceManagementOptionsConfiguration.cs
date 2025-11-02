@@ -18,11 +18,11 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
 
         context.DefineVendorScriptModule(
                 Vue3,
-                (Production: "vue/vue.esm-browser.prod.js", Debug: "vue/vue.esm-browser.js"))
+                (Production: "vue/dist/vue.esm-browser.prod.js", Debug: "vue/dist/vue.esm-browser.js"))
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(LibManVersions.Vue);
 
-        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
+        context.DefineVendorScriptModule(VueRouter, "vue-router/dist/vue-router.mjs", Vue3, VueDevtoolsApi)
             .SetCdn($"https://unpkg.com/vue-router@{LibManVersions.VueRouter}/dist/vue-router.mjs")
             .SetVersion(LibManVersions.VueRouter);
 
