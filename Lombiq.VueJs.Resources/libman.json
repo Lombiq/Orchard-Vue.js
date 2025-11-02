@@ -9,7 +9,7 @@
     },
     {
       "library": "vue-router@4.6.3",
-      "files": [ "dist/vue-router.mjs" ]
+      "files": [ "dist/*.mjs" ]
     }
   ]
 }
