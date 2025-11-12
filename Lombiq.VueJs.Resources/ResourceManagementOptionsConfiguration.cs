@@ -1,6 +1,7 @@
 using Lombiq.HelpfulLibraries.Attributes;
 using Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement;
 using Lombiq.VueJs.Resources.Constants;
+using System;
 using static Lombiq.VueJs.Resources.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Resources;
@@ -8,6 +9,12 @@ namespace Lombiq.VueJs.Resources;
 [LibManVersions]
 public partial class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfiguratorBase
 {
+    [Obsolete($"Use the values in {nameof(LibManVersions)}.")]
+    public const string VueVersion = LibManVersions.Vue;
+
+    [Obsolete($"Use the values in {nameof(LibManVersions)}.")]
+    public const string VueRouterVersion = LibManVersions.VueRouter;
+
     private const string VueCdnRoot = $"https://unpkg.com/vue@{LibManVersions.Vue}/dist/";
 
     protected override string Area => FeatureIds.Area;
