@@ -1,6 +1,6 @@
 # Lombiq Vue.js module for Orchard Core
 
-[![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs?label=Lombiq.VueJs)](https://www.nuget.org/packages/Lombiq.VueJs/) [![Lombiq.VueJs.Resources NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Resources?label=Lombiq.VueJs.Resources)](https://www.nuget.org/packages/Lombiq.VueJs.Resources/) [![Lombiq.VueJs.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Samples?label=Lombiq.VueJs.Samples)](https://www.nuget.org/packages/Lombiq.VueJs.Samples/) [![Lombiq.VueJs.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Tests.UI?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
+[![Lombiq.VueJs.Resources NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Resources?label=Lombiq.VueJs.Resources)](https://www.nuget.org/packages/Lombiq.VueJs.Resources/)
 
 ## About
 
