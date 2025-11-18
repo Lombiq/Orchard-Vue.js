@@ -8,7 +8,7 @@
     <Title>Lombiq Vue.js module for Orchard Core - UI Test Extensions</Title>
     <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2019, Lombiq Technologies Ltd.</Copyright>
-    <Description>Lombiq Vue.js module for Orchard Core - UI Test Extensions: Extensions to aid in UI testing Lombiq Vue.js module for Orchard Core.</Description>
+    <Description>[Warning: this package is deprecated and this is the last version] Lombiq Vue.js module for Orchard Core - UI Test Extensions: Extensions to aid in UI testing Lombiq Vue.js module for Orchard Core.</Description>
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Vue.js</RepositoryUrl>
