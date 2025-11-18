@@ -24,7 +24,7 @@
     "eslint-plugin-promise": "7.2.1",
     "fancy-log": "2.0.0",
     "fs": "0.0.1-security",
-    "glob": "11.0.3",
+    "glob": "11.1.0",
     "npm-run-all2": "8.0.4",
     "rollup": "4.52.5",
     "rollup-plugin-eslint": "7.0.0",
