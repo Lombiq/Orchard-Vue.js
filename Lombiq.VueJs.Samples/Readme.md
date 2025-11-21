@@ -1,8 +1,11 @@
 # Lombiq Vue.js module for Orchard Core - Samples
 
+> [!WARNING]
+> The current latest version of `Lombiq.VueJs.Samples` is deprecated. It will keep working for the foreseeable future, but won't receive any updates besides security fixes.
+
 ## About
 
-Example Orchard Core module that makes use of Lombiq Vue.js module for Orchard Core. For general details about and usage instructions see the [root Readme](../Readme.md).
+Example Orchard Core module that makes use of Lombiq Vue.js module for Orchard Core. For general details about and usage instructions see the [parent project's Readme](../Lombiq.VueJs/Readme.md).
 
 Vue.js is a progressive framework for building user interfaces, mostly single-page applications. What if you want to build an SPA only for one feature or build multiple SPAs in one Orchard Core module? Here's an example of how to organize your Vue apps and components to keep them reusable and also have all the features we like in Orchard Core such as shape overrides and localization. Besides applications using separate JavaScript and HTML files, it supports [Single File Components](https://vuejs.org/guide/scaling-up/sfc.html) too, which encapsulate the template and logic of a single reusable component into a single file.
 

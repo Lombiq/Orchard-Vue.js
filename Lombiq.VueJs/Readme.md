@@ -3,7 +3,7 @@
 [![Lombiq.VueJs NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs?label=Lombiq.VueJs)](https://www.nuget.org/packages/Lombiq.VueJs/) [![Lombiq.VueJs.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Samples?label=Lombiq.VueJs.Samples)](https://www.nuget.org/packages/Lombiq.VueJs.Samples/) [![Lombiq.VueJs.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.VueJs.Tests.UI?label=Lombiq.VueJs.Tests.UI)](https://www.nuget.org/packages/Lombiq.VueJs.Tests.UI/)
 
 > [!WARNING]
-> The current latest version of `Lombiq.VueJs` is deprecated. It will keep working for the foreseeable future, but won't receive any updates besides security fixes. If you want to use our `vue` or `vue-router` JS module resources, use the [`Lombiq.VueJs.Resources`](Lombiq.VueJs.Resources/Readme.md) package instead.
+> The current latest version of `Lombiq.VueJs` is deprecated. It will keep working for the foreseeable future, but won't receive any updates besides security fixes. If you want to use our `vue` or `vue-router` JS module resources, use the [`Lombiq.VueJs.Resources`](Lombiq.VueJs.Resources/Readme.md) package instead. On why we moved away from Node.js-using builds and how, see [our "Step away from that Node.js" blog post](https://orcharddojo.net/blog/step-away-from-that-node-js).
 
 ## About
 

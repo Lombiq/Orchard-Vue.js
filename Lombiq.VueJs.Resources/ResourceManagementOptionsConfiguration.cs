@@ -1,15 +1,21 @@
 using Lombiq.HelpfulLibraries.Attributes;
 using Lombiq.HelpfulLibraries.OrchardCore.ResourceManagement;
 using Lombiq.VueJs.Resources.Constants;
+using System;
 using static Lombiq.VueJs.Resources.Constants.ResourceNames;
 
 namespace Lombiq.VueJs.Resources;
 
-[ConstantFromJson("VueVersion", "package.json", "vue")]
-[ConstantFromJson("VueRouterVersion", "package.json", "vue-router")]
+[LibManVersions]
 public partial class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfiguratorBase
 {
-    private const string VueCdnRoot = $"https://unpkg.com/vue@{VueVersion}/dist/";
+    [Obsolete($"Use the values in {nameof(LibManVersions)}.")]
+    public const string VueVersion = LibManVersions.Vue;
+
+    [Obsolete($"Use the values in {nameof(LibManVersions)}.")]
+    public const string VueRouterVersion = LibManVersions.VueRouter;
+
+    private const string VueCdnRoot = $"https://unpkg.com/vue@{LibManVersions.Vue}/dist/";
 
     protected override string Area => FeatureIds.Area;
 
@@ -19,13 +25,13 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
 
         context.DefineVendorScriptModule(
                 Vue3,
-                (Production: "vue/vue.esm-browser.prod.js", Debug: "vue/vue.esm-browser.js"))
+                (Production: "vue/dist/vue.esm-browser.prod.js", Debug: "vue/dist/vue.esm-browser.js"))
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
-            .SetVersion(VueVersion);
+            .SetVersion(LibManVersions.Vue);
 
-        context.DefineVendorScriptModule(VueRouter, "vue-router/vue-router.mjs", Vue3, VueDevtoolsApi)
-            .SetCdn($"https://unpkg.com/vue-router@{VueRouterVersion}/dist/vue-router.mjs")
-            .SetVersion(VueRouterVersion);
+        context.DefineVendorScriptModule(VueRouter, "vue-router/dist/vue-router.mjs", Vue3, VueDevtoolsApi)
+            .SetCdn($"https://unpkg.com/vue-router@{LibManVersions.VueRouter}/dist/vue-router.mjs")
+            .SetVersion(LibManVersions.VueRouter);
 
         context.DefineScript(SetupEnvironment, "setup-environment.js");
     }
