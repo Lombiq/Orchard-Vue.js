@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
-    <AdditionalFiles Include="libman.json" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
