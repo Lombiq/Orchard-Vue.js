@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18907" GeneratePathProperty="true" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18908" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
