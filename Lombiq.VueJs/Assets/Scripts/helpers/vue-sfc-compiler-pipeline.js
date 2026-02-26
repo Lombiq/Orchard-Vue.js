@@ -1,6 +1,7 @@
 const fs = require('fs');
 const json = require('@rollup/plugin-json');
-const alias = require('@rollup/plugin-alias');
+const aliasModule = require('@rollup/plugin-alias');
+const alias = aliasModule.default ?? aliasModule;
 const path = require('path');
 const replace = require('@rollup/plugin-replace');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
