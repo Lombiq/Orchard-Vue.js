@@ -76,11 +76,6 @@
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
-  <!-- Execute Lombiq.NodeJs separately, to avoid inheriting these instructions in projects that consume Lombiq.VueJs. -->
-  <Target Name="BuildLocalScripts" AfterTargets="NpmInstall">
-    <Exec Command="pnpm build" />
-  </Target>
-
   <ItemGroup>
     <AdditionalFiles Include="package.json" />
   </ItemGroup>
