@@ -78,7 +78,7 @@
 
   <!-- Execute Lombiq.NodeJs separately, to avoid inheriting these instructions in projects that consume Lombiq.VueJs. -->
   <Target Name="BuildLocalScripts" AfterTargets="NpmInstall">
-    <Exec Command="npm explore nodejs-extensions -- pnpm build" />
+    <Exec Command="pnpm build" />
   </Target>
 
   <ItemGroup>
