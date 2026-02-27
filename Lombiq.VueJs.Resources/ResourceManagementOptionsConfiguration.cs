@@ -16,6 +16,7 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
     public const string VueRouterVersion = LibManVersions.VueRouter;
 
     private const string VueCdnRoot = $"https://unpkg.com/vue@{LibManVersions.Vue}/dist/";
+    private const string VueRouterCdnRoot = $"https://unpkg.com/vue-router@{LibManVersions.VueRouter}/dist/";
 
     protected override string Area => FeatureIds.Area;
 
@@ -29,8 +30,8 @@ public partial class ResourceManagementOptionsConfiguration : ResourceManagement
             .SetCdn(VueCdnRoot + "vue.esm-browser.prod.js", VueCdnRoot + "vue.esm-browser.js")
             .SetVersion(LibManVersions.Vue);
 
-        context.DefineVendorScriptModule(VueRouter, "vue-router/dist/vue-router.mjs", Vue3, VueDevtoolsApi)
-            .SetCdn($"https://unpkg.com/vue-router@{LibManVersions.VueRouter}/dist/vue-router.mjs")
+        context.DefineVendorScriptModule(VueRouter, "vue-router/dist/vue-router.esm-browser.prod.js", Vue3, VueDevtoolsApi)
+            .SetCdn(VueRouterCdnRoot + "vue-router.esm-browser.prod.js", VueRouterCdnRoot + "vue-router.esm-browser.js")
             .SetVersion(LibManVersions.VueRouter);
 
         context.DefineScript(SetupEnvironment, "setup-environment.js");
