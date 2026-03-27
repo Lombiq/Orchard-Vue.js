@@ -4,11 +4,11 @@
   "defaultDestination": "wwwroot/vendors/[Name]",
   "libraries": [
     {
-      "library": "vue@3.5.30",
+      "library": "vue@3.5.31",
       "files": [ "dist/vue.esm-browser.prod.js", "dist/vue.esm-browser.js" ]
     },
     {
-      "library": "vue-router@5.0.3",
+      "library": "vue-router@5.0.4",
       "files": [ "dist/vue-router.esm-browser.prod.js", "dist/vue-router.esm-browser.js" ]
     }
   ]
