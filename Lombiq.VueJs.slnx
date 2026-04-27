@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Readme.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/" />
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/create-jira-issues-for-community-activities.yml" />
+    <File Path=".github/workflows/publish-nuget.yml" />
+    <File Path=".github/workflows/validate-nuget-publish.yml" />
+    <File Path=".github/workflows/validate-pull-request.yml" />
+  </Folder>
+  <Project Path="Lombiq.VueJs.Resources/Lombiq.VueJs.Resources.csproj" />
+</Solution>
