@@ -8,7 +8,7 @@
       "files": [ "dist/vue.esm-browser.prod.js", "dist/vue.esm-browser.js" ]
     },
     {
-      "library": "vue-router@5.0.6",
+      "library": "vue-router@5.0.7",
       "files": [ "dist/vue-router.esm-browser.prod.js", "dist/vue-router.esm-browser.js" ]
     }
   ]
