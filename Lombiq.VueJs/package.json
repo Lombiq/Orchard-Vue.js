@@ -9,7 +9,7 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.5",
+    "@eslint/eslintrc": "3.3.6",
     "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-commonjs": "28.0.9",
     "@rollup/plugin-json": "6.1.0",
