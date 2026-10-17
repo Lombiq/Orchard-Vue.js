@@ -3,13 +3,15 @@
     extends: [
         'github>Lombiq/Open-Source-Orchard-Core-Extensions:renovate-osoce-orchard-core-submodule.json5',
     ],
+    // Only the deprecated projects have lock files, so lock file maintenance isn't needed.
+    lockFileMaintenance: {
+        enabled: false,
+    },
     packageRules: [
         {
-            // As the Lombiq.VueJs project is deprecated, its dependencies should not be updated besides security fixes.
+            // Everything except Lombiq.VueJs.Resources is deprecated, so those projects shouldn't be updated at all.
             groupName: 'Legacy Lombiq.VueJs',
-            matchFileNames: ['Lombiq.VueJs/**', 'Lombiq.VueJs.Samples/**'],
-            matchManagers: ['npm'],
-            matchUpdateTypes: ['major', 'minor'],
+            matchFileNames: ['Lombiq.VueJs/**', 'Lombiq.VueJs.Samples/**', 'Lombiq.VueJs.Tests.UI/**'],
             enabled: false,
         },
         {
