@@ -15,6 +15,11 @@
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Vue.js/blob/dev/Lombiq.VueJs.Resources/Readme.md</PackageProjectUrl>
   </PropertyGroup>
 
+  <!-- Security Updates for Orchard Core - make sure to check if these are still necessary -->
+  <ItemGroup Condition="'$(ManagePackageVersionsCentrally)' != 'true'">
+    <PackageReference Include="MySqlConnector" Version="2.6.2" NoWarn="NU1510" />
+  </ItemGroup>
+
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.targets" />
   <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="2.1.1-alpha.9.osoe-344" />
 </Project>
